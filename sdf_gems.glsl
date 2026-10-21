@@ -62,6 +62,7 @@
 #include "glsl/primitives2d/sdCross2D.glsl"
 #include "glsl/primitives2d/sdEllipse2D.glsl"
 #include "glsl/primitives2d/sdEquilateralTriangle2D.glsl"
+#include "glsl/primitives2d/sdHeart2D.glsl"
 #include "glsl/primitives2d/sdHexagon2D.glsl"
 #include "glsl/primitives2d/sdHexagram2D.glsl"
 #include "glsl/primitives2d/sdMoon2D.glsl"
