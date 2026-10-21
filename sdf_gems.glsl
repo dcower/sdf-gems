@@ -107,6 +107,7 @@
 #include "glsl/repetition/opRepBCC.glsl"
 #include "glsl/repetition/opRepFCC.glsl"
 #include "glsl/repetition/opRepHex.glsl"
+#include "glsl/repetition/opRepIcosahedral.glsl"
 #include "glsl/repetition/opRepPolar.glsl"
 
 #endif // SDF_GEMS_GLSL
