@@ -89,6 +89,7 @@ All polyhedra below fold $p \in \mathbb{R}^3$ into the fundamental Weyl chamber 
 | <img src="docs/images/primitives2d/sdTunnel2D.png" width="110"> | [**`sdTunnel2D`**](docs/primitives2d/sdTunnel2D.md) | [`sdTunnel2D.glsl`](glsl/primitives2d/sdTunnel2D.glsl) | **Yes** | 1-`sqrt` exact 2D arched tunnel via closed-form radial-vs-base square comparison (`max(q.x, q.y) < 0` sign) |
 | <img src="docs/images/primitives2d/sdEllipse2D.png" width="110"> | [**`sdEllipse2D`**](docs/primitives2d/sdEllipse2D.md) | [`sdEllipse2D.glsl`](glsl/primitives2d/sdEllipse2D.glsl) | **Yes** | Singularity-free pole-midpoint quartic & trig-free algebraic Householder (fixes circle & evolute `NaN`s) |
 | <img src="docs/images/primitives2d/sdParabola2D.png" width="110"> | [**`sdParabola2D`**](docs/primitives2d/sdParabola2D.md) | [`sdParabola2D.glsl`](glsl/primitives2d/sdParabola2D.glsl) | **Yes** | Singularity-free 2D parabola & segment (`sdParabolaSeg2D`); fixes focal `0/0` `NaN` and $x=0$ sign inversion |
+| <img src="docs/images/primitives2d/sdParallelogram2D.png" width="110"> | [**`sdParallelogram2D`**](docs/primitives2d/sdParallelogram2D.md) | [`sdParallelogram2D.glsl`](glsl/primitives2d/sdParallelogram2D.glsl) | **Yes** | 1-`sqrt` 2D parallelogram (`sdParallelogram2D`) & 1-`sqrt` 3D skewed prism (`sdParallelogramPrism`) |
 
 ---
 
@@ -137,7 +138,7 @@ Functions returning `vec4(d, grad.xyz)` in 3D (or `vec3(d, grad.xy)` in 2D) enab
 
 | 3D Surface | 2D Slice | Operator & Docs | GLSL Source | Exact? | Notes |
 | :---: | :---: | :--- | :--- | :---: | :--- |
-| <img src="docs/images/deform/opExtrusion.png" width="110"> | <img src="docs/images/deform/opExtrusion_slice.png" width="110"> | [**`opExtrusion`**](docs/deform/opExtrusion.md) | [`opExtrusion.glsl`](glsl/deform/opExtrusion.glsl) | Yes | Orthogonal composition of any 2D SDF $d(p_{xy})$ with a 1D interval $[-h, h]$ |
+| <img src="docs/images/deform/opExtrusion.png" width="110"> | <img src="docs/images/deform/opExtrusion_slice.png" width="110"> | [**`opExtrusion` / `opExtrusionSq`**](docs/deform/opExtrusion.md) | [`opExtrusion.glsl`](glsl/deform/opExtrusion.glsl) | **Yes** | Orthogonal composition of any 2D SDF with $[-h, h]$, plus 1-`sqrt` `opExtrusionSq(d2, s, z, h)` |
 | <img src="docs/images/deform/opExtrudeRound.png" width="110"> | <img src="docs/images/deform/opExtrudeRound_slice.png" width="110"> | [**`opExtrudeRound`**](docs/deform/opExtrudeRound.md) | [`opExtrudeRound.glsl`](glsl/deform/opExtrudeRound.glsl) | **Yes** | Orthogonal composition with a 2D rounded-box profile; bevels only the top/bottom rims |
 | <img src="docs/images/deform/opExtrudeChamfer.png" width="110"> | <img src="docs/images/deform/opExtrudeChamfer_slice.png" width="110"> | [**`opExtrudeChamfer`**](docs/deform/opExtrudeChamfer.md) | [`opExtrudeChamfer.glsl`](glsl/deform/opExtrudeChamfer.glsl) | **Yes** | 5-line corner-local orthogonal composition with an exact $45^\circ$ chamfered cap profile ($\|\nabla d\| = 1$) |
 | <img src="docs/images/deform/opExtrudeStairs.png" width="110"> | <img src="docs/images/deform/opExtrudeStairs_slice.png" width="110"> | [**`opExtrudeStairs`**](docs/deform/opExtrudeStairs.md) | [`opExtrudeStairs.glsl`](glsl/deform/opExtrudeStairs.glsl) | **Yes** | 1-`sqrt` orthogonal composition sculpting an exact $n$-tier ziggurat / stepped rim around any 2D SDF |
