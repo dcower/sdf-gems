@@ -33,10 +33,25 @@ float opUnionChamfer( float a, float b, float r )
                                   : min(x, (x + y - r) * sqrt(0.5));
 }
 
-// 2. Angle-Exact Oblique Chamfer Union for surfaces meeting at cos(theta) = c = dot(grad(a), grad(b))
+// 2. Angle-Exact Oblique Chamfer Union, Intersection & Subtraction for cos(theta) = c = dot(grad(a), grad(b))
 float opUnionChamferOblique( float a, float b, float r, float c )
 {
-    return min(min(a, b), (a + b - r) * inversesqrt(max(2.0 + 2.0 * c, 1e-6)));
+    float x  = min(a, b), y = max(a, b);
+    float ch = (x + y - r) * inversesqrt(max(2.0 + 2.0 * c, 1e-5));
+    if( x > 0.0 && x + y > r ) return min(x, ch);
+    float h  = max(r - y + c * x, 0.0);
+    float dv = -sqrt(x * x + h * h / max(1.0 - c * c, 1e-5));
+    return (y - x > r) ? dv : max(dv, ch);
+}
+
+float opIntersectionChamferOblique( float a, float b, float r, float c )
+{
+    return -opUnionChamferOblique(-a, -b, r, c);
+}
+
+float opSubtractionChamferOblique( float a, float b, float r, float c )
+{
+    return -opUnionChamferOblique(a, -b, r, -c);
 }
 
 // 3. Exact Euclidean Chamfer Intersection & Subtraction

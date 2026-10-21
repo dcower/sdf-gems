@@ -32,6 +32,7 @@
 #include "glsl/deform/opSphericalExtrude.glsl"
 #include "glsl/deform/opTwist.glsl"
 #include "glsl/gradients3d/sdgBox.glsl"
+#include "glsl/gradients3d/sdgChamfer.glsl"
 #include "glsl/gradients3d/sdgExtrusion.glsl"
 #include "glsl/gradients3d/sdgRevolution.glsl"
 #include "glsl/gradients3d/sdgSmoothUnion.glsl"
