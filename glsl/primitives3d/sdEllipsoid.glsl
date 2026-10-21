@@ -1,0 +1,13 @@
+// ============================================================================
+// sdEllipsoid — 3D Ellipsoid (V2 Lower Bound)
+// @author Inigo Quilez
+// @source https://iquilezles.org/articles/ellipsoids/
+// @exact  No (Lower Bound)
+// ============================================================================
+
+float sdEllipsoid( vec3 p, vec3 r )
+{
+    float k0 = length(p/r);
+    float k1 = length(p/(r*r));
+    return k0*(k0 - 1.0)/k1;
+}
