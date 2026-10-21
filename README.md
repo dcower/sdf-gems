@@ -80,6 +80,7 @@ All polyhedra below fold $p \in \mathbb{R}^3$ into the fundamental Weyl chamber 
 | <img src="docs/images/primitives2d/sdHexagon2D.png" width="110"> | [**`sdHexagon2D`**](docs/primitives2d/sdHexagon2D.md) | [`sdHexagon2D.glsl`](glsl/primitives2d/sdHexagon2D.glsl) | Yes | $D_6$ symmetry fold into a $30^\circ$ sector + clamped flat-edge projection |
 | <img src="docs/images/primitives2d/sdPie2D.png" width="110"> | [**`sdPie2D`**](docs/primitives2d/sdPie2D.md) | [`sdPie2D.glsl`](glsl/primitives2d/sdPie2D.glsl) | **Yes** | 1-`sqrt` circular pie & annular ring sector via orthonormal ray-basis dominance (down from 2 `sqrt`s) |
 | <img src="docs/images/primitives2d/sdMoon2D.png" width="110"> | [**`sdMoon2D`**](docs/primitives2d/sdMoon2D.md) | [`sdMoon2D.glsl`](glsl/primitives2d/sdMoon2D.glsl) | **Yes** | 1-`length()` crescent moon (`sdMoon2D`) & asymmetric lens (`sdLens2D`) via confocal-conic bisector |
+| <img src="docs/images/primitives2d/sdStairs2D.png" width="110"> | [**`sdStairs2D`**](docs/primitives2d/sdStairs2D.md) | [`sdStairs2D.glsl`](glsl/primitives2d/sdStairs2D.glsl) | **Yes** | 1-`sqrt` rotation-free 2D staircase; fixes IQ `7tKSWt` tall-step (`wh.x < wh.y`) sign-flip & Voronoi tear |
 | <img src="docs/images/primitives2d/sdEllipse2D.png" width="110"> | [**`sdEllipse2D`**](docs/primitives2d/sdEllipse2D.md) | [`sdEllipse2D.glsl`](glsl/primitives2d/sdEllipse2D.glsl) | **Yes** | Singularity-free pole-midpoint quartic & trig-free algebraic Householder (fixes circle & evolute `NaN`s) |
 
 ---
