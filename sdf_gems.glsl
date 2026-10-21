@@ -57,6 +57,7 @@
 #include "glsl/primitives2d/sdEquilateralTriangle2D.glsl"
 #include "glsl/primitives2d/sdHexagon2D.glsl"
 #include "glsl/primitives2d/sdMoon2D.glsl"
+#include "glsl/primitives2d/sdOctagon2D.glsl"
 #include "glsl/primitives2d/sdParabola2D.glsl"
 #include "glsl/primitives2d/sdParallelogram2D.glsl"
 #include "glsl/primitives2d/sdPie2D.glsl"
