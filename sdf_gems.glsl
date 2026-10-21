@@ -65,6 +65,7 @@
 #include "glsl/primitives2d/sdHeart2D.glsl"
 #include "glsl/primitives2d/sdHexagon2D.glsl"
 #include "glsl/primitives2d/sdHexagram2D.glsl"
+#include "glsl/primitives2d/sdHyperbola2D.glsl"
 #include "glsl/primitives2d/sdMoon2D.glsl"
 #include "glsl/primitives2d/sdOctagon2D.glsl"
 #include "glsl/primitives2d/sdParabola2D.glsl"

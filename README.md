@@ -97,6 +97,7 @@ All polyhedra below fold $p \in \mathbb{R}^3$ into the fundamental Weyl chamber 
 | <img src="docs/images/primitives2d/sdParabola2D.png" width="110"> | [**`sdParabola2D`**](docs/primitives2d/sdParabola2D.md) | [`sdParabola2D.glsl`](glsl/primitives2d/sdParabola2D.glsl) | **Yes** | Singularity-free 2D parabola & segment (`sdParabolaSeg2D`); fixes focal `0/0` `NaN` and $x=0$ sign inversion |
 | <img src="docs/images/primitives2d/sdParallelogram2D.png" width="110"> | [**`sdParallelogram2D`**](docs/primitives2d/sdParallelogram2D.md) | [`sdParallelogram2D.glsl`](glsl/primitives2d/sdParallelogram2D.glsl) | **Yes** | 1-`sqrt` 2D parallelogram (`sdParallelogram2D`) & 1-`sqrt` 3D skewed prism (`sdParallelogramPrism`) |
 | <img src="docs/images/primitives2d/sdHeart2D.png" width="110"> | [**`sdHeart2D` / `sdEgg2D` / `sdHorseshoe2D`**](docs/primitives2d/sdHeart2D.md) | [`sdHeart2D.glsl`](glsl/primitives2d/sdHeart2D.glsl) | **Yes** | 0/1-`sqrt` heart (`0` `sqrt`s in $24.4\%$ of domain, `NaN`-free `sdgHeart2D`) & 1-`sqrt` `sdEgg2D` / `sdHorseshoe2D` (down from 2 `sqrt`s) |
+| <img src="docs/images/primitives2d/sdHyperbola2D.png" width="110"> | [**`sdHyperbola2D` / `sdBlobbyCross2D` / `sdQuadraticCircle2D`**](docs/primitives2d/sdHyperbola2D.md) | [`sdHyperbola2D.glsl`](glsl/primitives2d/sdHyperbola2D.glsl) | **Yes** | 1-`cbrt` conjugate-rationalized curves; fixes origin/vertex `NaN`s in `sdHyperbola2D` ($2.6\times 10^6\times$ lower FP32 error) & cuts `pow` in half |
 
 ---
 
