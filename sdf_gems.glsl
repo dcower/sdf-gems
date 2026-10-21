@@ -24,6 +24,7 @@
 #include "glsl/deform/opExtrudeChamfer.glsl"
 #include "glsl/deform/opExtrudeRound.glsl"
 #include "glsl/deform/opExtrudeStairs.glsl"
+#include "glsl/deform/opExtrudeTaper.glsl"
 #include "glsl/deform/opExtrusion.glsl"
 #include "glsl/deform/opOnion.glsl"
 #include "glsl/deform/opRevolution.glsl"
