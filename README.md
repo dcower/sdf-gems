@@ -48,6 +48,7 @@ Every primitive and operator has:
 | <img src="docs/images/primitives3d/sdRectFrustum.png" width="110"> | <img src="docs/images/primitives3d/sdRectFrustum_slice.png" width="110"> | [**`sdRectFrustum`**](docs/primitives3d/sdRectFrustum.md) | [`sdRectFrustum.glsl`](glsl/primitives3d/sdRectFrustum.glsl) | **Yes** | General rectangular frustum, rectangular pyramid, and hip roof |
 | <img src="docs/images/primitives3d/sdSquareBucket.png" width="110"> | <img src="docs/images/primitives3d/sdSquareBucket_slice.png" width="110"> | [**`sdSquareBucket`**](docs/primitives3d/sdSquareBucket.md) | [`sdSquareBucket.glsl`](glsl/primitives3d/sdSquareBucket.glsl) | **Yes** | Open-ended hollow square frustum shell with rounded rim |
 | <img src="docs/images/primitives3d/sdCross3D.png" width="110"> | <img src="docs/images/primitives3d/sdCross3D_slice.png" width="110"> | [**`sdCross3D`**](docs/primitives3d/sdCross3D.md) | [`sdCross3D.glsl`](glsl/primitives3d/sdCross3D.glsl) | **Yes** | 1-`sqrt` exact 3D orthogonal cross (`sdCross3D`) & infinite Menger cross (`sdInfCross3D`) via Weyl-chamber folding |
+| <img src="docs/images/primitives3d/sdParaboloid.png" width="110"> | <img src="docs/images/primitives3d/sdParaboloid_slice.png" width="110"> | [**`sdParaboloid`**](docs/primitives3d/sdParaboloid.md) | [`sdParaboloid.glsl`](glsl/primitives3d/sdParaboloid.glsl) | **Yes** | Exact closed-form 3D solid capped paraboloid & parabolic reflector dish (`sdParaboloidDish`) via depressed cubic |
 
 ---
 
@@ -86,6 +87,7 @@ All polyhedra below fold $p \in \mathbb{R}^3$ into the fundamental Weyl chamber 
 | <img src="docs/images/primitives2d/sdCross2D.png" width="110"> | [**`sdCross2D`**](docs/primitives2d/sdCross2D.md) | [`sdCross2D.glsl`](glsl/primitives2d/sdCross2D.glsl) | **Yes** | 1-`sqrt` symmetric & rectangular 2D cross (`sdRectCross2D`); fixes IQ `sdCross` $b_x < b_y$ shape corruption |
 | <img src="docs/images/primitives2d/sdTunnel2D.png" width="110"> | [**`sdTunnel2D`**](docs/primitives2d/sdTunnel2D.md) | [`sdTunnel2D.glsl`](glsl/primitives2d/sdTunnel2D.glsl) | **Yes** | 1-`sqrt` exact 2D arched tunnel via closed-form radial-vs-base square comparison (`max(q.x, q.y) < 0` sign) |
 | <img src="docs/images/primitives2d/sdEllipse2D.png" width="110"> | [**`sdEllipse2D`**](docs/primitives2d/sdEllipse2D.md) | [`sdEllipse2D.glsl`](glsl/primitives2d/sdEllipse2D.glsl) | **Yes** | Singularity-free pole-midpoint quartic & trig-free algebraic Householder (fixes circle & evolute `NaN`s) |
+| <img src="docs/images/primitives2d/sdParabola2D.png" width="110"> | [**`sdParabola2D`**](docs/primitives2d/sdParabola2D.md) | [`sdParabola2D.glsl`](glsl/primitives2d/sdParabola2D.glsl) | **Yes** | Singularity-free 2D parabola & segment (`sdParabolaSeg2D`); fixes focal `0/0` `NaN` and $x=0$ sign inversion |
 
 ---
 
