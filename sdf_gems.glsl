@@ -56,6 +56,7 @@
 #include "glsl/primitives2d/sdMoon2D.glsl"
 #include "glsl/primitives2d/sdParabola2D.glsl"
 #include "glsl/primitives2d/sdPie2D.glsl"
+#include "glsl/primitives2d/sdRing2D.glsl"
 #include "glsl/primitives2d/sdSegment2D.glsl"
 #include "glsl/primitives2d/sdStairs2D.glsl"
 #include "glsl/primitives2d/sdTunnel2D.glsl"
