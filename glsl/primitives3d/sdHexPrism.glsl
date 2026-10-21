@@ -1,6 +1,6 @@
 // ============================================================================
-// sdHexPrism — Exact 3D Hexagonal Prism
-// @author Inigo Quilez
+// sdHexPrism — Exact 3D Hexagonal Prism (1-Sqrt Fundamental Sector Optimization)
+// @author Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
 // @exact  Yes (`||grad d|| = 1`)
 // ============================================================================
@@ -10,8 +10,6 @@ float sdHexPrism( vec3 p, vec2 h )
     const vec3 k = vec3(-0.8660254, 0.5, 0.57735027);
     p = abs(p);
     p.xy -= 2.0*min(dot(k.xy, p.xy), 0.0)*k.xy;
-    vec2 d = vec2(
-       length(p.xy - vec2(clamp(p.x, -k.z*h.x, k.z*h.x), h.x))*sign(p.y - h.x),
-       p.z - h.y );
-    return min(max(d.x, d.y), 0.0) + length(max(d, 0.0));
+    vec3 d = vec3(abs(p.x) - k.z*h.x, p.y - h.x, p.z - h.y);
+    return min(max(d.y, d.z), 0.0) + length(max(d, 0.0));
 }
