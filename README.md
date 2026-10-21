@@ -104,6 +104,8 @@ All polyhedra below fold $p \in \mathbb{R}^3$ into the fundamental Weyl chamber 
 | <img src="docs/images/booleans/opUnionChamfer.png" width="110"> | [**`opUnionChamfer`**](docs/booleans/opUnionChamfer.md) | [`opUnionChamfer.glsl`](glsl/booleans/opUnionChamfer.glsl) | **Yes** | Corner-local exact Euclidean $45^\circ$ & oblique chamfer booleans (fixes interior $a=b \to -\infty$ distortion) |
 | <img src="docs/images/booleans/opUnionStairs.png" width="110"> | [**`opUnionStairs`**](docs/booleans/opUnionStairs.md) | [`opUnionStairs.glsl`](glsl/booleans/opUnionStairs.glsl) | **Yes** | 1-`sqrt` exact Euclidean $n$-tier stairs booleans (replaces $\ell_\infty$ square corners & unbounded interior zig-zag) |
 | <img src="docs/images/booleans/opUnionColumns.png" width="110"> | [**`opUnionColumns`**](docs/booleans/opUnionColumns.md) | [`opUnionColumns.glsl`](glsl/booleans/opUnionColumns.glsl) | **Yes** | 1-`sqrt` exact Euclidean columned union, subtraction, and intersection (fixes `hg_sdf` $a=r,b=r$ jump & $+24.1\%$ overstep) |
+| <img src="docs/images/booleans/opEngrave.png" width="110"> | [**`opEngrave` / `opPipe`**](docs/booleans/opEngrave.md) | [`opEngrave.glsl`](glsl/booleans/opEngrave.glsl) | **Yes** | 0/1-`sqrt` exact Euclidean V-groove engraving & Gram-Schmidt oblique intersection pipe (`opPipeOblique`) |
+| <img src="docs/images/booleans/opGroove.png" width="110"> | [**`opGroove` / `opTongue`**](docs/booleans/opGroove.md) | [`opGroove.glsl`](glsl/booleans/opGroove.glsl) | **Yes** | 4-line 1-`sqrt` exact Euclidean carpenter's tongue & De Morgan dual groove (`0.0` error vs. $29.3\%$ in `hg_sdf`) |
 
 ---
 

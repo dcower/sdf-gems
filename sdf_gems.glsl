@@ -3,6 +3,8 @@
 #define SDF_GEMS_GLSL
 
 #include "glsl/common/common.glsl"
+#include "glsl/booleans/opEngrave.glsl"
+#include "glsl/booleans/opGroove.glsl"
 #include "glsl/booleans/opIntersection.glsl"
 #include "glsl/booleans/opSubtraction.glsl"
 #include "glsl/booleans/opUnion.glsl"
