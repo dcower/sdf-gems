@@ -48,6 +48,7 @@
 #include "glsl/primitives2d/sdSegment2D.glsl"
 #include "glsl/primitives2d/sdStairs2D.glsl"
 #include "glsl/primitives2d/sdUnevenCapsule2D.glsl"
+#include "glsl/primitives2d/sdVesica2D.glsl"
 #include "glsl/primitives3d/sdBarrel.glsl"
 #include "glsl/primitives3d/sdBox.glsl"
 #include "glsl/primitives3d/sdBoxFrame.glsl"
