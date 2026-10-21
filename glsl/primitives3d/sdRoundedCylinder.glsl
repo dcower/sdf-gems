@@ -1,12 +1,14 @@
 // ============================================================================
-// sdRoundedCylinder — Exact 3D Rounded Cylinder
-// @author Inigo Quilez
+// sdRoundedCylinder — 0/1/2-Sqrt Exact 3D Rounded Cylinder
+// @author Inigo Quilez — upgraded to 0/1/2 sqrts via Cap-Voronoi Radius Theorem using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
-// @exact  Yes (`||grad d|| = 1`)
+// @exact  Yes (`||grad d|| = 1`, `0` sqrts in cap zones, `1` in wall zone, `2` in rim wedge)
 // ============================================================================
 
 float sdRoundedCylinder( vec3 p, float ra, float rb, float h )
 {
-    vec2 d = vec2( length(p.xz) - 2.0*ra + rb, abs(p.y) - h );
-    return min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - rb;
+    float r = 2.0 * ra - rb, r2 = dot(p.xz, p.xz), wy = abs(p.y) - h, rc = r + min(wy, 0.0);
+    if( rc >= 0.0 && r2 <= rc * rc ) return wy - rb;
+    float wx = sqrt(r2) - r;
+    return ((wy <= 0.0) ? wx : sqrt(wx * wx + wy * wy)) - rb;
 }
