@@ -1,8 +1,8 @@
 // ============================================================================
-// sdPyramid — 3D Square Pyramid
-// @author Inigo Quilez
+// sdPyramid — Exact 3D Square Pyramid (Base-Face Bug Fixed)
+// @author Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
-// @exact  Partial (y >= 0)
+// @exact  Yes (`||grad d|| = 1` everywhere in R^3)
 // ============================================================================
 
 float sdPyramid( vec3 p, float h )
@@ -20,5 +20,6 @@ float sdPyramid( vec3 p, float h )
     float b = m2*(q.x + 0.5*t)*(q.x + 0.5*t) + (q.y - m2*t)*(q.y - m2*t);
     float d2 = min(q.y, -q.x*m2 - q.y*0.5) > 0.0 ? 0.0 : min(a, b);
 
-    return sqrt( (d2 + q.z*q.z)/m2 ) * sign(max(q.z, -p.y));
+    float d = (d2 + q.z*q.z) / m2;
+    return sqrt( max(q.z, p.x) < 0.0 ? min(d, p.y*p.y) : d ) * sign(max(q.z, -p.y));
 }
