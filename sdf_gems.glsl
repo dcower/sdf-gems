@@ -40,6 +40,7 @@
 #include "glsl/gradients3d/sdgEngrave.glsl"
 #include "glsl/gradients3d/sdgExtrusion.glsl"
 #include "glsl/gradients3d/sdgHexPrism.glsl"
+#include "glsl/gradients3d/sdgLink.glsl"
 #include "glsl/gradients3d/sdgOctahedron.glsl"
 #include "glsl/gradients3d/sdgRevolution.glsl"
 #include "glsl/gradients3d/sdgRoundCone.glsl"
