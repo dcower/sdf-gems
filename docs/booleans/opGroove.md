@@ -52,4 +52,16 @@ float opGroove( float a, float b, float ra, float rb )
 {
     return -opTongue(-a, b, ra, rb);
 }
+
+// 3. Angle-Exact Oblique Carpenter's Tongue & Groove via Gram-Schmidt Surface-Anchored Orthonormal Map
+// c = dot(grad(a), grad(b)) = cos(theta)
+float opTongueOblique( float a, float b, float ra, float rb, float c )
+{
+    return opTongue(a, (b - c * a) * inversesqrt(max(1.0 - c * c, 1e-5)), ra, rb);
+}
+
+float opGrooveOblique( float a, float b, float ra, float rb, float c )
+{
+    return -opTongueOblique(-a, b, ra, rb, -c);
+}
 ```

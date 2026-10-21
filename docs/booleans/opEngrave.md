@@ -41,13 +41,19 @@ float opEngrave( float a, float b, float r )
     return ((s < -r) ? -1.0 : 1.0) * length((s < -r) ? vec2(a + r, y) : vec2(a, r - y));
 }
 
-// 2. Orthogonal & Angle-Exact Oblique Intersection Pipe
+// 2. Angle-Exact Oblique V-Groove Engraving via Gram-Schmidt Surface-Anchored Orthonormal Map
+// c = dot(grad(a), grad(b)) = cos(theta)
+float opEngraveOblique( float a, float b, float r, float c )
+{
+    return opEngrave(a, (b - c * a) * inversesqrt(max(1.0 - c * c, 1e-5)), r);
+}
+
+// 3. Orthogonal & Angle-Exact Oblique Intersection Pipe
 float opPipe( float a, float b, float r )
 {
     return length(vec2(a, b)) - r;
 }
 
-// c = dot(grad(a), grad(b)) = cos(theta)
 float opPipeOblique( float a, float b, float r, float c )
 {
     return sqrt(max(a * a + b * b - 2.0 * c * a * b, 0.0) / max(1.0 - c * c, 1e-5)) - r;

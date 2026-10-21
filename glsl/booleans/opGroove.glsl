@@ -1,8 +1,8 @@
 // ============================================================================
 // opGroove — Exact 1-Sqrt Euclidean Carpenter's Tongue & Groove Joint Booleans
-// @author Mercury Demogroup (L-infinity bound) — upgraded to exact Euclidean using Gemini 4 Argon (sdf-gems, 2026)
+// @author Mercury Demogroup (L-infinity bound) — upgraded to exact Euclidean & oblique Gram-Schmidt using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://mercury.sexy/hg_sdf/
-// @exact  Yes (`||grad d|| = 1` for orthogonal surfaces, `0.0` error vs `29.3%` in hg_sdf)
+// @exact  Yes (`||grad d|| = 1`, `0.0` error vs `29.3%` orthogonal & `0.500` oblique error in hg_sdf)
 // ============================================================================
 
 // 1. Exact 4-Line 1-Sqrt Euclidean Carpenter's Tongue
@@ -18,4 +18,16 @@ float opTongue( float a, float b, float ra, float rb )
 float opGroove( float a, float b, float ra, float rb )
 {
     return -opTongue(-a, b, ra, rb);
+}
+
+// 3. Angle-Exact Oblique Carpenter's Tongue & Groove via Gram-Schmidt Surface-Anchored Orthonormal Map
+// c = dot(grad(a), grad(b)) = cos(theta)
+float opTongueOblique( float a, float b, float ra, float rb, float c )
+{
+    return opTongue(a, (b - c * a) * inversesqrt(max(1.0 - c * c, 1e-5)), ra, rb);
+}
+
+float opGrooveOblique( float a, float b, float ra, float rb, float c )
+{
+    return -opTongueOblique(-a, b, ra, rb, -c);
 }

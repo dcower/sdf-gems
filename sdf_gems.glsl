@@ -35,6 +35,7 @@
 #include "glsl/gradients3d/sdgBox.glsl"
 #include "glsl/gradients3d/sdgCappedCone.glsl"
 #include "glsl/gradients3d/sdgChamfer.glsl"
+#include "glsl/gradients3d/sdgEngrave.glsl"
 #include "glsl/gradients3d/sdgExtrusion.glsl"
 #include "glsl/gradients3d/sdgRevolution.glsl"
 #include "glsl/gradients3d/sdgRoundCone.glsl"
