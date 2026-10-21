@@ -86,16 +86,17 @@ def render_3d_sdf(
         n = np.stack([nx, ny, nz], axis=-1)
         n /= np.maximum(np.linalg.norm(n, axis=-1, keepdims=True), 1e-8)
 
-        lig = np.array([0.58, 0.70, 0.42])
+        lig = np.array([0.55, 0.72, 0.42])
         lig /= np.linalg.norm(lig)
         dif = np.clip(n @ lig, 0.0, 1.0)
         amb = np.clip(0.5 + 0.5 * n[:, 1], 0.0, 1.0)
-        bac = np.clip(n @ np.array([-lig[0], 0.0, -lig[2]]), 0.0, 1.0)
+        bac = np.clip(n @ np.array([-lig[0], -0.2, -lig[2]]), 0.0, 1.0)
 
-        c_ob = (
-            dif[:, None] * np.array([0.85, 0.78, 0.72])[None, :]
-            + amb[:, None] * np.array([0.22, 0.28, 0.32])[None, :]
-            + bac[:, None] * np.array([0.15, 0.14, 0.16])[None, :]
+        albedo = 0.66 + 0.20 * n
+        c_ob = albedo * (
+            0.62 * dif[:, None] * np.array([1.00, 0.95, 0.90])[None, :]
+            + 0.34 * amb[:, None] * np.array([0.75, 0.84, 0.94])[None, :]
+            + 0.18 * bac[:, None] * np.array([0.65, 0.62, 0.68])[None, :]
         )
         col[idx] = np.clip(c_ob, 0.0, 1.0)
 
