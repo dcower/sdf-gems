@@ -103,6 +103,7 @@ All polyhedra below fold $p \in \mathbb{R}^3$ into the fundamental Weyl chamber 
 | <img src="docs/images/booleans/sminLocalOblique.png" width="110"> | [**`sminLocalOblique`**](docs/booleans/sminLocalOblique.md) | [`sminLocalOblique.glsl`](glsl/booleans/sminLocalOblique.glsl) | Bound | Pure-scalar corner-local, rigid, conservative smooth minimum parameterized by $c \ge \nabla a \cdot \nabla b$ |
 | <img src="docs/images/booleans/opUnionChamfer.png" width="110"> | [**`opUnionChamfer`**](docs/booleans/opUnionChamfer.md) | [`opUnionChamfer.glsl`](glsl/booleans/opUnionChamfer.glsl) | **Yes** | Corner-local exact Euclidean $45^\circ$ & oblique chamfer booleans (fixes interior $a=b \to -\infty$ distortion) |
 | <img src="docs/images/booleans/opUnionStairs.png" width="110"> | [**`opUnionStairs`**](docs/booleans/opUnionStairs.md) | [`opUnionStairs.glsl`](glsl/booleans/opUnionStairs.glsl) | **Yes** | 1-`sqrt` exact Euclidean $n$-tier stairs booleans (replaces $\ell_\infty$ square corners & unbounded interior zig-zag) |
+| <img src="docs/images/booleans/opUnionColumns.png" width="110"> | [**`opUnionColumns`**](docs/booleans/opUnionColumns.md) | [`opUnionColumns.glsl`](glsl/booleans/opUnionColumns.glsl) | **Yes** | 1-`sqrt` exact Euclidean columned union, subtraction, and intersection (fixes `hg_sdf` $a=r,b=r$ jump & $+24.1\%$ overstep) |
 
 ---
 
