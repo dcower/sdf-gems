@@ -73,6 +73,7 @@
 #include "glsl/primitives2d/sdParallelogram2D.glsl"
 #include "glsl/primitives2d/sdPentagon2D.glsl"
 #include "glsl/primitives2d/sdPie2D.glsl"
+#include "glsl/primitives2d/sdRhombus2D.glsl"
 #include "glsl/primitives2d/sdRing2D.glsl"
 #include "glsl/primitives2d/sdRoundedX2D.glsl"
 #include "glsl/primitives2d/sdSegment2D.glsl"
