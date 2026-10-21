@@ -1,13 +1,13 @@
 // ============================================================================
-// sdCappedTorus — Exact 3D Capped Torus Arc
-// @author Inigo Quilez
+// sdCappedTorus — Exact 3D Capped Torus (Cancellation-Free Core Circle)
+// @author Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
-// @exact  Yes
+// @exact  Yes (`||grad d|| = 1`, 0% NaN rate)
 // ============================================================================
 
 float sdCappedTorus( vec3 p, vec2 sc, float ra, float rb )
 {
     p.x = abs(p.x);
-    float k = (sc.y*p.x > sc.x*p.y) ? dot(p.xy, sc) : length(p.xy);
-    return sqrt( dot(p,p) + ra*ra - 2.0*ra*k ) - rb;
+    vec2 q = (sc.y*p.x > sc.x*p.y) ? p.xy - ra*sc : vec2(length(p.xy) - ra, 0.0);
+    return length(vec3(q, p.z)) - rb;
 }
