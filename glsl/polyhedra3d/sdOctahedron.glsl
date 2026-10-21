@@ -1,20 +1,15 @@
 // ============================================================================
-// sdOctahedron — Exact 3D Regular Octahedron
-// @author Inigo Quilez
+// sdOctahedron — Exact 3D Regular Octahedron (4-Line Branchless Pythagorean Weyl-Basis Form)
+// @author Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
-// @exact  Yes (`||grad d|| = 1`)
+// @exact  Yes (`||grad d|| = 1`, 0 branches)
 // ============================================================================
 
 float sdOctahedron( vec3 p, float s )
 {
     p = abs(p);
-    float m = p.x + p.y + p.z - s;
-    vec3 q;
-         if( 3.0*p.x < m ) q = p.xyz;
-    else if( 3.0*p.y < m ) q = p.yzx;
-    else if( 3.0*p.z < m ) q = p.zxy;
-    else return m*0.57735027;
-
-    float k = clamp(0.5*(q.z - q.y + s), 0.0, s);
-    return length(vec3(q.x, q.y - s + k, q.z - k));
+    float m = p.x + p.y + p.z - s, z = min(p.x, min(p.y, p.z));
+    float a = max(m - 3.0*z, 0.0);
+    float b = max(2.0*max(p.x, max(p.y, p.z)) + z - m - 2.0*s, 0.0);
+    return sign(m) * sqrt((2.0*m*m + a*a + 3.0*b*b) / 6.0);
 }
