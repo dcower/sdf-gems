@@ -1,15 +1,17 @@
 // ============================================================================
-// sdRhombus — Exact 3D Extruded Rounded Rhombus (x=0 Sign Bug Fixed)
-// @author Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
+// sdRhombus — 0/1/2-Sqrt Exact 3D Extruded Rounded Rhombus (x=0 Sign Bug Fixed)
+// @author Inigo Quilez — upgraded to 0/1/2-sqrt & bug-fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
-// @exact  Yes (`||grad d|| = 1`)
+// @exact  Yes (`||grad d|| = 1`, `0` sqrts in interior & face strips, fixes x=0 sign(0.0) bug)
 // ============================================================================
 
 float sdRhombus( vec3 p, float la, float lb, float h, float ra )
 {
     p = abs(p);
-    float f = clamp( (la*p.x - lb*p.z + lb*lb) / (la*la + lb*lb), 0.0, 1.0 );
-    vec2 w = p.xz - vec2(la, lb) * vec2(f, 1.0 - f);
-    vec2 q = vec2( length(w)*sign(w.x + w.y) - ra, p.y - h );
-    return min(max(q.x, q.y), 0.0) + length(max(q, 0.0));
+    float invL = inversesqrt(la * la + lb * lb);
+    float du = (abs(la * p.x - lb * p.z + 0.5 * (lb * lb - la * la)) - 0.5 * (la * la + lb * lb)) * invL;
+    float dv = (lb * p.x + la * p.z - la * lb) * invL;
+    float qx = ((du > 0.0) ? length(vec2(du, dv)) : dv) - ra;
+    float qy = p.y - h;
+    return (qy <= 0.0) ? max(qx, qy) : ((qx <= 0.0) ? qy : length(vec2(qx, qy)));
 }

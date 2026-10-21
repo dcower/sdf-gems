@@ -25,10 +25,13 @@ Folds $p_{xy}$ into the fundamental dihedral sector of an equilateral triangle a
 ```glsl
 float sdTriPrism( vec3 p, vec2 h )
 {
-    const vec2 k = vec2(0.5, 0.8660254);
+    const float k = 1.7320508;
+    float r = 0.5 * k * h.x;
     p.xz = abs(p.xz);
-    p.xy -= 2.0*max(dot(k, p.xy), 0.0)*k;
-    vec3 d = vec3(abs(p.x) - k.y*h.x, -p.y - 0.5*h.x, p.z - h.y);
+    p.x -= r;
+    p.y += 0.5 * h.x;
+    if( p.x + k * p.y > 0.0 ) p.xy = vec2(p.x - k * p.y, -k * p.x - p.y) * 0.5;
+    vec3 d = vec3(abs(p.x + r) - r, -p.y, p.z - h.y);
     return min(max(d.y, d.z), 0.0) + length(max(d, 0.0));
 }
 ```
