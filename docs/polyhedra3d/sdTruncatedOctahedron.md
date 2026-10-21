@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Mercury Demogroup (plane bound) — upgraded/fixed by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Mercury Demogroup (plane bound) — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://mercury.sexy/hg_sdf/](https://mercury.sexy/hg_sdf/) |
 | **Category** | `polyhedra3d` |
 | **GLSL File** | [`glsl/polyhedra3d/sdTruncatedOctahedron.glsl`](../../glsl/polyhedra3d/sdTruncatedOctahedron.glsl) |
@@ -42,7 +42,7 @@ float sdTruncatedOctahedron( vec3 p, float s )
 
 ---
 
-## Improvement & Bug-Fix Analysis (Dillon Cower (sdf-gems, 2026))
+## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
 
 ![Before vs After Comparison](../images/comparisons/polyhedra_truncated_octahedron_slice_comp.png)
 

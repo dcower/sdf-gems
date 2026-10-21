@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Mercury Demogroup — upgraded/fixed by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Mercury Demogroup — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://mercury.sexy/hg_sdf/](https://mercury.sexy/hg_sdf/) |
 | **Category** | `repetition` |
 | **GLSL File** | [`glsl/repetition/opRepPolar.glsl`](../../glsl/repetition/opRepPolar.glsl) |
@@ -37,7 +37,7 @@ void opLimitedPolarRep2Tap( in vec2 p, in float n, in float max_idx, out float i
 
 ---
 
-## Improvement & Bug-Fix Analysis (Dillon Cower (sdf-gems, 2026))
+## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
 
 ![Before vs After Comparison](../images/comparisons/polar_limited_2d.png)
 

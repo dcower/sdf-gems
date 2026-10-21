@@ -4,7 +4,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions2d/](https://iquilezles.org/articles/distfunctions2d/) |
 | **Category** | `primitives2d` |
 | **GLSL File** | [`glsl/primitives2d/sdEllipse2D.glsl`](../../glsl/primitives2d/sdEllipse2D.glsl) |

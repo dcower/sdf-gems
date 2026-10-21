@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez (opCheapBend) — upgraded/fixed by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez (opCheapBend) — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `deform` |
 | **GLSL File** | [`glsl/deform/opBend.glsl`](../../glsl/deform/opBend.glsl) |
@@ -37,7 +37,7 @@ vec3 opBendArch( in vec3 p, in float R, in float alpha, in vec2 cs )
 
 ---
 
-## Improvement & Bug-Fix Analysis (Dillon Cower (sdf-gems, 2026))
+## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
 
 ![Before vs After Comparison](../images/comparisons/bend_comparison_2d.png)
 

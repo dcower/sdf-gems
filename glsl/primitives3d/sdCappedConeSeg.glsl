@@ -1,6 +1,6 @@
 // ============================================================================
 // sdCappedConeSeg — Exact 3D Arbitrary-Segment Capped Cone (Axis-NaN Fixed)
-// @author Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
 // @exact  Yes (`||grad d|| = 1`, 0% NaN rate)
 // ============================================================================

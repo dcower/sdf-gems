@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdCappedTorus.glsl`](../../glsl/primitives3d/sdCappedTorus.glsl) |
@@ -33,7 +33,7 @@ float sdCappedTorus( vec3 p, vec2 sc, float ra, float rb )
 
 ---
 
-## Improvement & Bug-Fix Analysis (Dillon Cower (sdf-gems, 2026))
+## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
 
 - **Bug in Baseline**: Expanding `dot(p,p) + ra*ra - 2.0*ra*k` suffers catastrophic cancellation when `length(p.xy) ~= ra, p.z == 0`, producing negative radicands (`NaN`) on **16.9% of points** along the core circle in IEEE-754 FP32.
 - **Fix**: Completing the square (`length(vec3(q, p.z)) - rb`) reduces the `NaN` rate from **16.9% to 0.0%** with the same 2 `sqrt`s.

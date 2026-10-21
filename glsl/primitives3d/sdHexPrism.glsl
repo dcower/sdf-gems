@@ -1,6 +1,6 @@
 // ============================================================================
 // sdHexPrism — Exact 3D Hexagonal Prism (1-Sqrt Fundamental Sector Optimization)
-// @author Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
 // @exact  Yes (`||grad d|| = 1`)
 // ============================================================================

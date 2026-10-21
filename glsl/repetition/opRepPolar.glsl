@@ -1,6 +1,6 @@
 // ============================================================================
 // opRepPolar — Gap-Aware 2-Tap Limited Polar Repetition (opLimitedPolarRep2Tap)
-// @author Mercury Demogroup — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Mercury Demogroup — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://mercury.sexy/hg_sdf/
 // @exact  Yes (eliminates theta = +-pi branch cut)
 // ============================================================================

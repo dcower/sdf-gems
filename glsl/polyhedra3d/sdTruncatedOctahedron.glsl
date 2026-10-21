@@ -1,6 +1,6 @@
 // ============================================================================
 // sdTruncatedOctahedron — Exact 1-Sqrt 3D Truncated Octahedron / Kelvin Cell
-// @author Mercury Demogroup (plane bound) — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Mercury Demogroup (plane bound) — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://mercury.sexy/hg_sdf/
 // @exact  Yes (`||grad d|| = 1`, max error `1.78e-15`)
 // ============================================================================

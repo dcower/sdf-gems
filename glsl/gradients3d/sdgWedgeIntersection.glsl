@@ -1,6 +1,6 @@
 // ============================================================================
 // sdgWedgeIntersection — Exact Euclidean Gram-Schmidt Wedge Booleans
-// @author Dillon Cower (sdf-gems, 2026)
+// @author Discovered using Gemini 4 Argon (sdf-gems, 2026)
 // @exact  true (||grad d|| = 1 in exterior normal cone; fixes 10x error of max(a,b))
 // ============================================================================
 

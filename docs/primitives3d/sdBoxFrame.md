@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez — upgraded/optimized by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez — upgraded/optimized using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdBoxFrame.glsl`](../../glsl/primitives3d/sdBoxFrame.glsl) |
@@ -57,7 +57,7 @@ float sdBoxEdges( vec3 p, vec3 b, float r )
 
 ---
 
-## Improvement & Optimization Analysis (Dillon Cower (sdf-gems, 2026))
+## Improvement & Optimization Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
 
 ![Box Frame 1-Sqrt Reduction](../images/comparisons/box_frame_comparison.png)
 

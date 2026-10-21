@@ -1,6 +1,6 @@
 // ============================================================================
 // opRep2D — 3-Tap 2D Hexagonal (A2) Delaunay Domain Repetition (opRepHex3)
-// @author Inigo Quilez (4-tap Cartesian) — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Inigo Quilez (4-tap Cartesian) — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/sdfrepetition/
 // @exact  Yes (`0.0` error vs 19-tap brute force)
 // ============================================================================

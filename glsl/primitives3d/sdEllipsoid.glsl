@@ -1,6 +1,6 @@
 // ============================================================================
 // sdEllipsoid — 3D Triaxial Ellipsoid (11-Line Unified Interior/Exterior Concave-Secular Halley)
-// @author Inigo Quilez (V2 bound) — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Inigo Quilez (V2 bound) — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/ellipsoids/
 // @exact  Unified Conservative Bound (~1e-6 mean error exterior & interior, 0 overstep, 0 NaNs)
 // ============================================================================

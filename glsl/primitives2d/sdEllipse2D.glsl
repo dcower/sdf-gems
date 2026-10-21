@@ -1,6 +1,6 @@
 // ============================================================================
 // sdEllipse2D — Exact Singularity-Free 2D Ellipse (Pole-Midpoint Secular-Cardano + Algebraic Householder)
-// @author Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions2d/
 // @exact  Yes (< 1 ULP in FP32 across all aspect ratios 1:1 to 100:1, 0 NaNs)
 // ============================================================================

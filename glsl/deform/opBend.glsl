@@ -1,6 +1,6 @@
 // ============================================================================
 // opBend — Exact atan-Free Circular Arch Bend + Straight Tangent Legs (opBendArch)
-// @author Inigo Quilez (opCheapBend) — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Inigo Quilez (opCheapBend) — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
 // @exact  Yes (`||grad d|| = 1` outside inner focal axis)
 // ============================================================================

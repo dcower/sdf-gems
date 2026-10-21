@@ -1,6 +1,6 @@
 // ============================================================================
 // opRep3D — 4-Tap 3D BCC Delaunay Tetrahedron Domain Repetition (opRepBCC4)
-// @author Inigo Quilez (8-tap Cartesian) — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Inigo Quilez (8-tap Cartesian) — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/sdfrepetition/
 // @exact  Yes (`0.0` error vs 35-tap brute force)
 // ============================================================================

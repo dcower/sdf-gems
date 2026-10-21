@@ -1,6 +1,6 @@
 // ============================================================================
 // sdSpheroid — Exact Closed-Form 3D Spheroid (Oblate & Prolate Ellipsoid of Revolution)
-// @author Dillon Cower (sdf-gems, 2026)
+// @author Discovered using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://github.com/dcower/sdf-gems
 // @exact  Yes (< 1 ULP in FP32, 0 NaNs)
 // ============================================================================

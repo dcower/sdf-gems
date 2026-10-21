@@ -1,6 +1,6 @@
 // ============================================================================
 // sdSphericalZone — Exact 3D Hollow Spherical Zone (Two-Plane Cut Shell)
-// @author Dillon Cower (sdf-gems, 2026)
+// @author Discovered using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://github.com/dcower/sdf-gems
 // @exact  Yes (`||grad d|| = 1`)
 // ============================================================================

@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdCappedConeSeg.glsl`](../../glsl/primitives3d/sdCappedConeSeg.glsl) |
@@ -43,7 +43,7 @@ float sdCappedConeSeg( vec3 p, vec3 a, vec3 b, float ra, float rb )
 
 ---
 
-## Improvement & Bug-Fix Analysis (Dillon Cower (sdf-gems, 2026))
+## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
 
 - **Bug in Baseline**: `sqrt(papa - paba*paba*baba)` cancels to negative float noise (`NaN`) on the cone axis `pa || ba`.
 - **Fix**: Orthogonal rejection `length(pa - ba * paba)` guarantees a non-negative sum of squares everywhere (`0.0%` NaN rate).

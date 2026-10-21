@@ -1,6 +1,6 @@
 // ============================================================================
 // sdTriPrism — Exact 1-Sqrt 3D Equilateral Triangular Prism
-// @author Inigo Quilez (plane bound) — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Inigo Quilez (plane bound) — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
 // @exact  Yes (`||grad d|| = 1`, upgraded from plane bound)
 // ============================================================================

@@ -1,6 +1,6 @@
 // ============================================================================
 // sminCircularApprox — [3/1] Padé Rational Circular CD Smooth Minimum
-// @author Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/smin/
 // @exact  Conservative (`9.80e-4` max error — `11.0x` more accurate than IQ's quartic)
 // ============================================================================

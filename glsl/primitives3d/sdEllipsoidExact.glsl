@@ -1,6 +1,6 @@
 // ============================================================================
 // sdEllipsoidExact — True Exact 3D Triaxial Ellipsoid Euclidean SDF
-// @author Dillon Cower (sdf-gems, 2026)
+// @author Discovered using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://github.com/dcower/sdf-gems
 // @exact  Yes (~1 ULP of FP32 everywhere in R^3, including focal ellipse)
 // ============================================================================

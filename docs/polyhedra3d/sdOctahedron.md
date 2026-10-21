@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `polyhedra3d` |
 | **GLSL File** | [`glsl/polyhedra3d/sdOctahedron.glsl`](../../glsl/polyhedra3d/sdOctahedron.glsl) |
@@ -35,7 +35,7 @@ float sdOctahedron( vec3 p, float s )
 
 ---
 
-## Improvement & Bug-Fix Analysis (Dillon Cower (sdf-gems, 2026))
+## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
 
 - **Before (IQ `sdOctahedron`)**: 4 `if/else` branches, exterior-only early return.
 - **After (`sdf-gems` `sdOctahedron`)**: **0 branches, 4 lines**, exact interior & exterior (`max_err = 8.88e-16`).

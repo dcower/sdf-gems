@@ -1,6 +1,6 @@
 // ============================================================================
 // sminLocalOblique — Pure-Scalar Local Oblique Smooth Minimum
-// @author Dillon Cower (sdf-gems, 2026)
+// @author Discovered using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://github.com/dcower/sdf-gems
 // @exact  Conservative for theta >= acos(c0) & Strictly Local
 // ============================================================================

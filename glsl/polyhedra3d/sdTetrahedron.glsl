@@ -1,6 +1,6 @@
 // ============================================================================
 // sdTetrahedron — Exact 1-Sqrt 3D Regular Tetrahedron (Td Parity-Sorted Weyl Chamber)
-// @author Mercury Demogroup (plane bound) — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Mercury Demogroup (plane bound) — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://mercury.sexy/hg_sdf/
 // @exact  Yes (`||grad d|| = 1`, max error `8.88e-16`)
 // ============================================================================

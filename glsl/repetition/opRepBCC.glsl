@@ -1,6 +1,6 @@
 // ============================================================================
 // opRepBCC — 1-Tap 3D Body-Centered Cubic (BCC) Kelvin-Cell Repetition
-// @author Dillon Cower (sdf-gems, 2026)
+// @author Discovered using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://github.com/dcower/sdf-gems
 // @exact  Yes (symmetric SDFs)
 // ============================================================================

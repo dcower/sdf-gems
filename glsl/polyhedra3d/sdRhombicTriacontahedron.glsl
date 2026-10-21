@@ -1,6 +1,6 @@
 // ============================================================================
 // sdRhombicTriacontahedron — Exact 1-Sqrt 3D Catalan Rhombic Triacontahedron
-// @author Dillon Cower (sdf-gems, 2026)
+// @author Discovered using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://github.com/dcower/sdf-gems
 // @exact  Yes (`||grad d|| = 1`, max error `2.22e-15`)
 // ============================================================================

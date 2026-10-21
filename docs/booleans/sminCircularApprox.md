@@ -4,7 +4,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://iquilezles.org/articles/smin/](https://iquilezles.org/articles/smin/) |
 | **Category** | `booleans` |
 | **GLSL File** | [`glsl/booleans/sminCircularApprox.glsl`](../../glsl/booleans/sminCircularApprox.glsl) |
@@ -31,7 +31,7 @@ float sminCircularApprox( float a, float b, float k )
 
 ---
 
-## Improvement & Bug-Fix Analysis (Dillon Cower (sdf-gems, 2026))
+## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
 
 - **Before (IQ Quartic Polynomial)**: Max error `1.08e-2`.
 - **After (`sdf-gems` `[3/1]` Padé Rational)**: Max error **`9.80e-4` (`11.0x` more accurate)** with 1 fewer multiply.

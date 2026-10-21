@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Discovered using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://github.com/dcower/sdf-gems](https://github.com/dcower/sdf-gems) |
 | **Category** | `deform` |
 | **GLSL File** | [`glsl/deform/opExtrudeRound.glsl`](../../glsl/deform/opExtrudeRound.glsl) |

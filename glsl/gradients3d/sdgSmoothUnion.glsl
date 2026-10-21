@@ -1,6 +1,6 @@
 // ============================================================================
 // sdgSmoothUnion — Angle-Exact Eikonal Circular Smooth Union
-// @author Dillon Cower (sdf-gems, 2026)
+// @author Discovered using Gemini 4 Argon (sdf-gems, 2026)
 // @exact  true (||grad d|| = 1 identically, corner-local for c < 1, 0% overstep)
 // ============================================================================
 

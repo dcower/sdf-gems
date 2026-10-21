@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdHexPrism.glsl`](../../glsl/primitives3d/sdHexPrism.glsl) |
@@ -35,7 +35,7 @@ float sdHexPrism( vec3 p, vec2 h )
 
 ---
 
-## Improvement & Bug-Fix Analysis (Dillon Cower (sdf-gems, 2026))
+## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
 
 - **Before (IQ `sdHexPrism`)**: 2 `sqrt`s, 1 `clamp`, 1 `sign`.
 - **After (`sdf-gems` `sdHexPrism`)**: **1 `sqrt`, 0 `clamp`s, 0 `sign`s**, `0.0` numerical difference across all of $\mathbb{R}^3$.

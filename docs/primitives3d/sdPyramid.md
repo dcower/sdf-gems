@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdPyramid.glsl`](../../glsl/primitives3d/sdPyramid.glsl) |
@@ -45,7 +45,7 @@ float sdPyramid( vec3 p, float h )
 
 ---
 
-## Improvement & Bug-Fix Analysis (Dillon Cower (sdf-gems, 2026))
+## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
 
 ![Before vs After Comparison](../images/comparisons/pyramid_bug_2d.png)
 

@@ -1,6 +1,6 @@
 // ============================================================================
 // opExtrudeChamfer — Orthogonal Eikonal 45-Degree Chamfer Extrusion
-// @author Dillon Cower (sdf-gems, 2026)
+// @author Discovered using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://github.com/dcower/sdf-gems
 // @exact  Yes (`||grad d|| = 1`)
 // ============================================================================

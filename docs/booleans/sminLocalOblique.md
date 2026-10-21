@@ -4,7 +4,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Discovered using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://github.com/dcower/sdf-gems](https://github.com/dcower/sdf-gems) |
 | **Category** | `booleans` |
 | **GLSL File** | [`glsl/booleans/sminLocalOblique.glsl`](../../glsl/booleans/sminLocalOblique.glsl) |

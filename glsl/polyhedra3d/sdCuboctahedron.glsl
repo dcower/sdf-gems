@@ -1,6 +1,6 @@
 // ============================================================================
 // sdCuboctahedron — Exact 1-Sqrt 3D Cuboctahedron (Oh Weyl Chamber)
-// @author Mercury Demogroup (plane bound) — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Mercury Demogroup (plane bound) — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://mercury.sexy/hg_sdf/
 // @exact  Yes (`||grad d|| = 1`, max error `1.33e-15`)
 // ============================================================================

@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez (8-tap Cartesian) — upgraded/fixed by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez (8-tap Cartesian) — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://iquilezles.org/articles/sdfrepetition/](https://iquilezles.org/articles/sdfrepetition/) |
 | **Category** | `repetition` |
 | **GLSL File** | [`glsl/repetition/opRep3D.glsl`](../../glsl/repetition/opRep3D.glsl) |
@@ -43,7 +43,7 @@ void opRepBCC4( in vec3 p, in float s, out vec3 c0, out vec3 c1, out vec3 c2, ou
 
 ---
 
-## Improvement & Bug-Fix Analysis (Dillon Cower (sdf-gems, 2026))
+## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
 
 ![Before vs After Comparison](../images/comparisons/bcc4_slice_comparison_2d.png)
 

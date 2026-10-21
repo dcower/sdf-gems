@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Discovered using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://github.com/dcower/sdf-gems](https://github.com/dcower/sdf-gems) |
 | **Category** | `gradients3d` |
 | **GLSL File** | [`glsl/gradients3d/sdgWedgeIntersection.glsl`](../../glsl/gradients3d/sdgWedgeIntersection.glsl) |

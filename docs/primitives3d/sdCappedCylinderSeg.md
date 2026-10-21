@@ -6,7 +6,7 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdCappedCylinderSeg.glsl`](../../glsl/primitives3d/sdCappedCylinderSeg.glsl) |
@@ -37,7 +37,7 @@ float sdCappedCylinderSeg( vec3 p, vec3 a, vec3 b, float r )
 
 ---
 
-## Improvement & Bug-Fix Analysis (Dillon Cower (sdf-gems, 2026))
+## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
 
 - **Bug in Baseline**: Scaling intermediates by `baba = |b-a|^2` causes `x2 = x*x` to scale as `O(|b-a|^6)`, overflowing FP16 (`mediump`, max 65504) whenever `|b - a| > 11.5`.
 - **Fix**: Normalizing `ba` first reduces intermediate scaling to `O(|b-a|^1)` and shortens the code by 4 lines.

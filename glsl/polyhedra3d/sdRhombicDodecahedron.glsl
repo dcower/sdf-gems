@@ -1,6 +1,6 @@
 // ============================================================================
 // sdRhombicDodecahedron — Exact 4-Line Branchless 3D Rhombic Dodecahedron (FCC Voronoi Cell)
-// @author Dillon Cower (sdf-gems, 2026)
+// @author Discovered using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://github.com/dcower/sdf-gems
 // @exact  Yes (`||grad d|| = 1`, max error `8.88e-16`)
 // ============================================================================

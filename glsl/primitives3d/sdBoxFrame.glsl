@@ -1,6 +1,6 @@
 // ============================================================================
 // sdBoxFrame — Exact 1-Sqrt 3D Wireframe Box Frame (Closest-Beam Reduction)
-// @author Inigo Quilez — upgraded/optimized by Dillon Cower (sdf-gems, 2026)
+// @author Inigo Quilez — upgraded/optimized using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
 // @exact  Yes (`||grad d|| = 1`, 1 sqrt down from 3, 0.0 error vs 3-beam form)
 // ============================================================================

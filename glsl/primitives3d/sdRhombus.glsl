@@ -1,6 +1,6 @@
 // ============================================================================
 // sdRhombus — Exact 3D Extruded Rounded Rhombus (x=0 Sign Bug Fixed)
-// @author Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
+// @author Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
 // @exact  Yes (`||grad d|| = 1`)
 // ============================================================================
