@@ -16,6 +16,7 @@
 #include "glsl/booleans/sminCircularApprox.glsl"
 #include "glsl/booleans/sminCircularGeom.glsl"
 #include "glsl/booleans/sminCubic.glsl"
+#include "glsl/booleans/sminCubicGeom.glsl"
 #include "glsl/booleans/sminLocalOblique.glsl"
 #include "glsl/booleans/sminQuadratic.glsl"
 #include "glsl/deform/opBend.glsl"
