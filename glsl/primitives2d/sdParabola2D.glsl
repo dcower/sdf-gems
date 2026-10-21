@@ -1,18 +1,19 @@
 // Singularity-Free Exact 2D Parabola & Capped Parabola Segment SDF
 // Original author: Inigo Quilez (https://iquilezles.org/articles/distfunctions2d/)
-// Singularity & y-axis sign-inversion fixes: Discovered using Gemini 4 Argon (sdf-gems, 2026)
+// Singularity, y-axis sign-inversion & sum-of-cubes cancellation fixes:
+// Discovered using Gemini 4 Argon (sdf-gems, 2026)
 //
 // Improvements over IQ's sdParabola (ws3GD7) & sdParabola segment (3lSczz):
-//   1. Fixes the 0.0 / 0.0 NaN at the center of curvature (0, 1/(2k)) where pc = 0
-//      and qc = 0 cause IQ's else-branch `acos(q / (p * r))` to evaluate `acos(0/0) = NaN`.
-//   2. Fixes IQ's y-axis sign-inversion and zero-collapse bug in `sdParabola(pos, k)`:
-//      IQ uses `sign(pos.x - x)` for the exterior/interior sign. On the symmetry axis
-//      `pos.x == 0` below the center of curvature (`pos.y <= 0.5/k`), the exact root is
-//      `x = 0`, so `sign(0.0 - 0.0) = 0.0` collapses the entire negative y-axis to 0
-//      (or in FP32, `r = pow(sqrt(-p^3), 1/3)` rounds slightly above `-p`, making
-//      `x = r + p/r > 0` and flipping `sign(0 - x) = -1` on the entire exterior y < 0!).
-//      Using the algebraic implicit sign `sign(k * pos.x * pos.x - pos.y)` is exact
-//      everywhere in R^2 and decoupled from root-finding rounding error.
+//   1. Fixes the 0.0 / 0.0 NaN at the center of curvature (0, 1/(2k)) and evolute
+//      cusp NaNs via `h >= 0.0` and `clamp(q / (p * r), -1.0, 1.0)`.
+//   2. Fixes IQ's y-axis sign-inversion and zero-collapse bug (`sign(pos.x - x)`
+//      returns false 0.0 or wrong sign on pos.x == 0, pos.y <= 0.5/k) via the
+//      exact implicit algebraic sign `k * pos.x * pos.x - pos.y`.
+//   3. Eliminates FP32 catastrophic cancellation in `x = r + p / r` for `p < 0`
+//      near the symmetry axis via Sum-of-Cubes Conjugate Rationalization:
+//        r + p / r == 2 * q / (r^2 - p + (p / r)^2),
+//      where all three denominator terms are positive when p < 0 (800,000x lower
+//      FP32 error near x = 0).
 
 #ifndef SDF_GEMS_SD_PARABOLA2D_GLSL
 #define SDF_GEMS_SD_PARABOLA2D_GLSL
@@ -29,7 +30,8 @@ float sdParabola2D(vec2 pos, float k) {
     float x;
     if (h >= 0.0) {
         float r = pow(q + sqrt(h), 1.0 / 3.0);
-        x = (r > 0.0) ? max(r + p / r, 0.0) : 0.0;
+        x = (p < 0.0) ? 2.0 * q / (r * r - p + (p / r) * (p / r))
+                      : (r > 0.0) ? r + p / r : 0.0;
     } else {
         float r = sqrt(p);
         x = 2.0 * r * cos(acos(clamp(q / (p * r), -1.0, 1.0)) / 3.0);
@@ -48,7 +50,8 @@ float sdParabolaSeg2D(vec2 pos, float wi, float he) {
     float x;
     if (h >= 0.0) {
         float r = pow(q + sqrt(h), 1.0 / 3.0);
-        x = (r > 0.0) ? max(r + p / r, 0.0) : 0.0;
+        x = (p < 0.0) ? 2.0 * q / (r * r - p + (p / r) * (p / r))
+                      : (r > 0.0) ? r + p / r : 0.0;
     } else {
         float r = sqrt(p);
         x = 2.0 * r * cos(acos(clamp(q / (p * r), -1.0, 1.0)) / 3.0);

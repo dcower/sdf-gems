@@ -64,6 +64,7 @@
 #include "glsl/primitives2d/sdRing2D.glsl"
 #include "glsl/primitives2d/sdSegment2D.glsl"
 #include "glsl/primitives2d/sdStairs2D.glsl"
+#include "glsl/primitives2d/sdTrapezoid2D.glsl"
 #include "glsl/primitives2d/sdTunnel2D.glsl"
 #include "glsl/primitives2d/sdUnevenCapsule2D.glsl"
 #include "glsl/primitives2d/sdVesica2D.glsl"
