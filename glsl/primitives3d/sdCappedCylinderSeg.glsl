@@ -1,20 +1,17 @@
 // ============================================================================
-// sdCappedCylinderSeg — Exact 3D Arbitrary-Segment Capped Cylinder
-// @author Inigo Quilez
+// sdCappedCylinderSeg — Exact 3D Arbitrary-Segment Capped Cylinder (FP16 Overflow Fixed)
+// @author Inigo Quilez — upgraded/fixed by Dillon Cower (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
-// @exact  Yes
+// @exact  Yes (`||grad d|| = 1`)
 // ============================================================================
 
 float sdCappedCylinderSeg( vec3 p, vec3 a, vec3 b, float r )
 {
-    vec3  ba = b - a;
-    vec3  pa = p - a;
-    float baba = dot(ba,ba);
-    float paba = dot(pa,ba);
-    float x = length(pa*baba - ba*paba) - r*baba;
-    float y = abs(paba - baba*0.5) - baba*0.5;
-    float x2 = x*x;
-    float y2 = y*y*baba;
-    float d = (max(x,y) < 0.0) ? -min(x2,y2) : (((x > 0.0) ? x2 : 0.0) + ((y > 0.0) ? y2 : 0.0));
-    return sign(d)*sqrt(abs(d))/baba;
+    vec3  ba = b - a, pa = p - a;
+    float L  = length(ba);
+    vec3  n  = ba / L;
+    float y  = dot(pa, n);
+    float x  = length(pa - n * y) - r;
+    vec2  d  = vec2(x, abs(y - 0.5 * L) - 0.5 * L);
+    return min(max(d.x, d.y), 0.0) + length(max(d, 0.0));
 }
