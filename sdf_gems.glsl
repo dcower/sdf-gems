@@ -59,6 +59,7 @@
 #include "glsl/polyhedra3d/sdTruncatedOctahedron.glsl"
 #include "glsl/primitives2d/sdBox2D.glsl"
 #include "glsl/primitives2d/sdCircle.glsl"
+#include "glsl/primitives2d/sdCircleWave2D.glsl"
 #include "glsl/primitives2d/sdCross2D.glsl"
 #include "glsl/primitives2d/sdEllipse2D.glsl"
 #include "glsl/primitives2d/sdEquilateralTriangle2D.glsl"
