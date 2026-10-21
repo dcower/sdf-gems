@@ -47,6 +47,7 @@ Every primitive and operator has:
 | <img src="docs/images/primitives3d/sdPyramidFrustum.png" width="110"> | <img src="docs/images/primitives3d/sdPyramidFrustum_slice.png" width="110"> | [**`sdPyramidFrustum`**](docs/primitives3d/sdPyramidFrustum.md) | [`sdPyramidFrustum.glsl`](glsl/primitives3d/sdPyramidFrustum.glsl) | **Yes** | Flat-topped square frustum via $D_4$ folding and ridge-edge decoupling |
 | <img src="docs/images/primitives3d/sdRectFrustum.png" width="110"> | <img src="docs/images/primitives3d/sdRectFrustum_slice.png" width="110"> | [**`sdRectFrustum`**](docs/primitives3d/sdRectFrustum.md) | [`sdRectFrustum.glsl`](glsl/primitives3d/sdRectFrustum.glsl) | **Yes** | General rectangular frustum, rectangular pyramid, and hip roof |
 | <img src="docs/images/primitives3d/sdSquareBucket.png" width="110"> | <img src="docs/images/primitives3d/sdSquareBucket_slice.png" width="110"> | [**`sdSquareBucket`**](docs/primitives3d/sdSquareBucket.md) | [`sdSquareBucket.glsl`](glsl/primitives3d/sdSquareBucket.glsl) | **Yes** | Open-ended hollow square frustum shell with rounded rim |
+| <img src="docs/images/primitives3d/sdCross3D.png" width="110"> | <img src="docs/images/primitives3d/sdCross3D_slice.png" width="110"> | [**`sdCross3D`**](docs/primitives3d/sdCross3D.md) | [`sdCross3D.glsl`](glsl/primitives3d/sdCross3D.glsl) | **Yes** | 1-`sqrt` exact 3D orthogonal cross (`sdCross3D`) & infinite Menger cross (`sdInfCross3D`) via Weyl-chamber folding |
 
 ---
 

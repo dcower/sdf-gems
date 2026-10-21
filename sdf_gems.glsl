@@ -59,6 +59,7 @@
 #include "glsl/primitives3d/sdCappedTorus.glsl"
 #include "glsl/primitives3d/sdCapsule.glsl"
 #include "glsl/primitives3d/sdCone.glsl"
+#include "glsl/primitives3d/sdCross3D.glsl"
 #include "glsl/primitives3d/sdCutHollowSphere.glsl"
 #include "glsl/primitives3d/sdCutSphere.glsl"
 #include "glsl/primitives3d/sdDeathStar.glsl"
