@@ -119,6 +119,7 @@
 #include "glsl/primitives3d/sdTorus.glsl"
 #include "glsl/primitives3d/sdTriPrism.glsl"
 #include "glsl/primitives3d/sdVesicaSegment.glsl"
+#include "glsl/primitives3d/udTriangle.glsl"
 #include "glsl/repetition/opRep.glsl"
 #include "glsl/repetition/opRep2D.glsl"
 #include "glsl/repetition/opRep3D.glsl"
