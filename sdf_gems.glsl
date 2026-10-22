@@ -111,6 +111,7 @@
 #include "glsl/primitives2d/sdParallelogram2D.glsl"
 #include "glsl/primitives2d/sdPentagon2D.glsl"
 #include "glsl/primitives2d/sdPie2D.glsl"
+#include "glsl/primitives2d/sdQuad2D.glsl"
 #include "glsl/primitives2d/sdRhombus2D.glsl"
 #include "glsl/primitives2d/sdRing2D.glsl"
 #include "glsl/primitives2d/sdRoundedCross2D.glsl"
