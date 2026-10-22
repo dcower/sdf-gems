@@ -107,6 +107,7 @@
 #include "glsl/primitives2d/sdAstroid2D.glsl"
 #include "glsl/primitives2d/sdBezier2D.glsl"
 #include "glsl/primitives2d/sdBox2D.glsl"
+#include "glsl/primitives2d/sdCardioid2D.glsl"
 #include "glsl/primitives2d/sdChamferBox2D.glsl"
 #include "glsl/primitives2d/sdCircle.glsl"
 #include "glsl/primitives2d/sdCircleWave2D.glsl"
