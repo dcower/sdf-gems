@@ -154,6 +154,7 @@
 #include "glsl/primitives3d/sdEllipsoidExact.glsl"
 #include "glsl/primitives3d/sdHelix.glsl"
 #include "glsl/primitives3d/sdHexPrism.glsl"
+#include "glsl/primitives3d/sdHollowCone.glsl"
 #include "glsl/primitives3d/sdJack3D.glsl"
 #include "glsl/primitives3d/sdLens.glsl"
 #include "glsl/primitives3d/sdLink.glsl"
