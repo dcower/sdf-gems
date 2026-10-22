@@ -20,11 +20,14 @@ Inigo Quilez's 3D and 2D gradient articles note that any 2D SDF+gradient `d2g = 
 By the **Orthogonal Profile Chain Rule**, given $u = d_{2\text{D}}(p_{xy})$ with $\nabla_{xy} u = (g_x, g_y)$ and $v = |z| - h$ with $\partial_z v = s_z = \operatorname{sign}(z)$, any 2D corner profile $f(u, v)$ with unit partial-derivative vector $(\partial_u f, \partial_v f)$ lifts to an exact 3D `vec4(d, grad.xyz)`:
 $$\operatorname{sdg}(p) = \bigl(f(u, v), \; (\partial_u f)\,g_x, \; (\partial_u f)\,g_y, \; (\partial_v f)\,s_z\bigr), \qquad \|\nabla_{x,y,z} f\|_2^2 = (\partial_u f)^2(g_x^2 + g_y^2) + (\partial_v f)^2 s_z^2 = 1.$$
 
-This file provides four exact 2D-to-3D gradient extrusion operators:
+This file provides seven exact 2D-to-3D gradient extrusion operators:
 1. **`sdgExtrusion(d2g, z, h)`**: Sharp linear extrusion.
 2. **`sdgExtrudeRound(d2g, z, h, r)`**: Round-beveled extrusion.
 3. **`sdgExtrudeChamfer(d2g, z, h, c)`**: $45^\circ$-chamfered extrusion.
-4. **`sdgExtrudeStairs(d2g, z, h, r, n)`**: $n$-tier ziggurat stepped extrusion (where the interior concave notch offset $q = (-u - k_1, -v - r + k_1)$ has $\partial q / \partial(u, v) = (-1, -1)$ while the interior distance is $-l$, so the two minus signs cancel identically and $(\partial_u f, \partial_v f) = \max(m \; ? \; q : p, 0.0) / l$ in both exterior step noses and interior notches!).
+4. **`sdgExtrudeStairs(d2g, z, h, r, n)`**: $n$-tier ziggurat stepped extrusion.
+5. **`sdgExtrudeCove(d2g, z, h, r)`**: Quarter-circle concave cove / rabbet molding extrusion.
+6. **`sdgExtrudeBead(d2g, z, h, r)`**: Convex astragal torus bead molding extrusion.
+7. **`sdgExtrudeOgee(d2g, z, h, r)`**: Tangent Roman Ogee (Cyma Recta) S-curve molding extrusion.
 
 ### Numerical Verification ($50{,}000$ Random 3D Points vs. Central Differences $\epsilon = 10^{-6}$)
 
