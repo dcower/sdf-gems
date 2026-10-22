@@ -75,6 +75,7 @@
 #include "glsl/polyhedra3d/sdKeplerPoinsot.glsl"
 #include "glsl/polyhedra3d/sdOctahedron.glsl"
 #include "glsl/polyhedra3d/sdPentakisDodecahedron.glsl"
+#include "glsl/polyhedra3d/sdPolyhedralCompounds.glsl"
 #include "glsl/polyhedra3d/sdRhombicDodecahedron.glsl"
 #include "glsl/polyhedra3d/sdRhombicTriacontahedron.glsl"
 #include "glsl/polyhedra3d/sdRhombicosidodecahedron.glsl"
