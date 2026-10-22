@@ -17,6 +17,7 @@
 #include "glsl/booleans/sminCircularGeom.glsl"
 #include "glsl/booleans/sminCubic.glsl"
 #include "glsl/booleans/sminCubicGeom.glsl"
+#include "glsl/booleans/sminExp.glsl"
 #include "glsl/booleans/sminLocalOblique.glsl"
 #include "glsl/booleans/sminQuadratic.glsl"
 #include "glsl/booleans/sminQuintic.glsl"
