@@ -1,4 +1,4 @@
-# `sdCone` — Exact 1-to-2 Sqrt 3D Finite & Infinite Cone
+# `sdCone` & `sdConeInf` — Exact 0/1/2-`sqrt` 3D Finite & 1-`sqrt` Infinite Cone (Slanted-Wall Cap-Voronoi Theorem)
 
 | 3D Surface ($f(p) = 0$) | 2D Cross-Section Slice ($z = 0$) |
 | :---: | :---: |
@@ -6,46 +6,36 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez — upgraded/optimized using Gemini 4 Argon (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez — upgraded to 0/1/2-`sqrt` via Slanted-Wall Cap-Voronoi Theorem using Gemini 4 Argon (`sdf-gems`, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdCone.glsl`](../../glsl/primitives3d/sdCone.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, `1` `sqrt` everywhere except base-rim wedge & `1` division, down from `2` `sqrt`s & `3` divisions) |
+| **Exact Euclidean SDF?** | Yes ($\|\nabla d\| = 1$, **`0` `sqrt`s** in base-cap Voronoi, `1` in apex/mantle, `2` in rim wedge; down from `2` `sqrt`s & `3` divs in IQ) |
+
+![0/1/2-Sqrt Cone, RoundedCylinder, and Rhombus Comparison](../images/comparisons/cone_rcyl_rhombus_comparison.png)
 
 ---
 
 ## Mathematical Overview
 
-Inigo Quilez's finite `sdCone(p, c, h)` receives the unit aperture vector `c = vec2(sin(alpha), cos(alpha))` ($\|c\| = 1$), un-normalizes it to `q = h * vec2(c.x/c.y, -1.0)` (division #1), projects `w = vec2(length(p.xz), p.y)` onto `q` via `dot(w, q) / dot(q, q)` (division #2) and `w.x / q.x` (division #3), and evaluates **2 `sqrt`s everywhere** (`length(p.xz)` and `sqrt(d)`).
+### 1. The Slanted-Wall Cap-Voronoi Radius Theorem (`0` `sqrt`s in Cap Voronoi)
+Let $c = (\sin\alpha, \cos\alpha)$ be the unit cone aperture vector, $h$ be the cone height, $r_b = h\, c_x / c_y$ be the base radius, and $d = -p_y - h$ be the signed distance below the flat base disk $y = -h$.
+- **Outside below the base disk ($d \ge 0$):** The closest point on the cone lies in the interior of the flat base disk whenever $p_x^2 + p_z^2 \le r_b^2$, with exact distance $d = -p_y - h$.
+- **Inside the cone ($d < 0$):** The signed distance to the slanted mantle at $p_y = -h - d$ is:
+  $$d_{\text{mantle}} = c_y \sqrt{x_2} + c_x p_y = c_y(\sqrt{x_2} - r_b) - c_x d.$$
+  Thus the flat base disk dominates the slanted mantle ($d \ge d_{\text{mantle}}$) if and only if:
+  $$(1 + c_x) d \ge c_y(\sqrt{x_2} - r_b) \iff \sqrt{x_2} \le r_b + \frac{1 + c_x}{c_y} d.$$
 
-Because $\|c\| = 1$:
-1. **In the Top Apex Cone ($p_y \ge 0 \;\wedge\; c_x^2 x_2 \le c_y^2 p_y^2$)**: The closest point is the apex $(0, 0, 0)$ at distance $\sqrt{x_2 + p_y^2}$, which does not even require $\sqrt{x_2}$ (**1 `sqrt` total**).
-2. **In the Mantle, Base Disk, and Interior**: The signed normal distance to the cone mantle is linear (`c.y * wx + c.x * p.y` where $w_x = \sqrt{x_2}$) and the signed distance to the base cap is linear (`d = -p.y - h`), so their maximum `max(c.y * wx + c.x * p.y, d)` is exact with **only 1 `sqrt` total**. A second `sqrt` (`length(vec2(rx, d))`) is needed only inside the narrow exterior base-rim wedge ($r_x > 0 \;\wedge\; c_x r_x + c_y d \ge 0$).
-3. **Infinite Cone (`sdConeInf`)**: Collapses from 2 `sqrt`s to **1 `sqrt` everywhere in $\mathbb{R}^3$** (`4.44e-16` max error).
+Unifying both exterior ($d \ge 0$) and interior ($d < 0$) into a single cap-Voronoi radius:
+$$r_c = r_b + \frac{1 + c_x}{c_y}\min(d, 0) = \frac{h c_x + (1 + c_x)\min(d, 0)}{c_y},$$
+whenever $r_c \ge 0$ and $p_x^2 + p_z^2 \le r_c^2$, the exact 3D Euclidean distance is simply **`d = -p.y - h` with `0` `sqrt`s**!
+
+### 2. 1-`sqrt` Apex Cone & Mantle
+- **Top Apex Cone ($p_y \ge 0 \;\wedge\; c_x^2 x_2 \le c_y^2 p_y^2$):** Closest point is the apex $(0,0,0)$ at distance $\sqrt{x_2 + p_y^2}$ (**1 `sqrt` total**, skipping $\sqrt{x_2}$).
+- **Slanted Mantle:** Since the base-cap Voronoi region is already handled by $x_2 \le r_c^2$, the remaining interior and mantle region evaluates $c_y \sqrt{x_2} + c_x p_y$ (**1 `sqrt` total**), needing a 2nd `sqrt` only in the narrow exterior base-rim wedge.
 
 ---
 
 ## GLSL Implementation
 
-```glsl
-// c = vec2(sin(alpha), cos(alpha)) normalized cone aperture, h = cone height
-float sdCone( vec3 p, vec2 c, float h )
-{
-    float x2 = dot(p.xz, p.xz);
-    if( p.y >= 0.0 && c.x * c.x * x2 <= c.y * c.y * p.y * p.y )
-        return sqrt(x2 + p.y * p.y);
-    float wx = sqrt(x2), rx = wx - h * c.x / c.y, d = -p.y - h;
-    return (rx > 0.0 && c.x * rx + c.y * d >= 0.0)
-         ? length(vec2(rx, d))
-         : max(c.y * wx + c.x * p.y, d);
-}
-
-// Infinite 3D cone (1 `sqrt` everywhere in R^3, down from 2 `sqrt`s)
-float sdConeInf( vec3 p, vec2 c )
-{
-    float x2 = dot(p.xz, p.xz);
-    return (p.y >= 0.0 && c.x * c.x * x2 <= c.y * c.y * p.y * p.y)
-         ? sqrt(x2 + p.y * p.y)
-         : sqrt(x2) * c.y + p.y * c.x;
-}
-```
+See [`glsl/primitives3d/sdCone.glsl`](../../glsl/primitives3d/sdCone.glsl) (and [`glsl/gradients3d/sdgCone.glsl`](../../glsl/gradients3d/sdgCone.glsl) for `sdgCone` and `sdgConeInf`).

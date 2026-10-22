@@ -1,4 +1,4 @@
-# `sdRhombus` — Exact 3D Extruded Rounded Rhombus (x=0 Sign Bug Fixed)
+# `sdRhombus` — 0/1/2-`sqrt` Exact 3D Extruded Rounded Rhombus (Direct Vertex-Wedge Form)
 
 | 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
@@ -6,17 +6,25 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez — upgraded to 0/1/2-`sqrt` & bug-fixed using Gemini 4 Argon (`sdf-gems`, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdRhombus.glsl`](../../glsl/primitives3d/sdRhombus.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`) |
+| **Exact Euclidean SDF?** | Yes ($\|\nabla d\| = 1$, **`0` `sqrt`s** for constant $(l_a, l_b)$ in interior, flat caps, & side-wall strips; fixes $x=0$ `sign(0.0)` fault line) |
+
+![0/1/2-Sqrt Cone, RoundedCylinder, and Rhombus Comparison](../images/comparisons/cone_rcyl_rhombus_comparison.png)
 
 ---
 
 ## Mathematical Overview
 
-Projects $p_{xz}$ onto the 2D rhombus segment in the first quadrant and uses `sign(w.x + w.y)` to avoid the GLSL `sign(0.0) == 0.0` fault line on $p_x = 0, |p_z| > l_b$.
+1. **Eliminating the `p.x == 0` Exterior Fault Line:**
+   In Inigo Quilez's baseline `sdRhombus`, when `p.x == 0` and `|p.z| > lb`, the clamped projection lands on the vertex `(0, lb)`, making `w.x == 0.0` so `length(w)*sign(w.x) - ra` evaluates to `-ra <= 0` along the entire exterior plane `p.x = 0, |p.z| > lb`.
+2. **0-Division, 0/1/2-`sqrt` Direct Vertex-Wedge Decomposition:**
+   In the folded first octant $p = |p| \ge 0$:
+   - If $l_a(p_x - l_a) > l_b p_z$, the closest 2D rhombus point is $(l_a, 0)$ at horizontal distance $\|(p_x - l_a, p_z)\| - r_a$ (**1 `sqrt`, 0 divisions**).
+   - If $l_b(p_z - l_b) > l_a p_x$, the closest 2D rhombus point is $(0, l_b)$ at horizontal distance $\|(p_x, p_z - l_b)\| - r_a$ (**1 `sqrt`, 0 divisions**).
+   - Otherwise (**100% of the rhombus interior and all 4 slanted wall strips**), the horizontal signed distance is linear: $(l_b p_x + l_a p_z - l_a l_b)\operatorname{inversesqrt}(l_a^2 + l_b^2) - r_a$ (**0 per-pixel `sqrt`s** for constant $l_a, l_b$!).
 
 ---
 
@@ -26,31 +34,10 @@ Projects $p_{xz}$ onto the 2D rhombus segment in the first quadrant and uses `si
 float sdRhombus( vec3 p, float la, float lb, float h, float ra )
 {
     p = abs(p);
-    float invL = inversesqrt(la * la + lb * lb);
-    float du = (abs(la * p.x - lb * p.z + 0.5 * (lb * lb - la * la)) - 0.5 * (la * la + lb * lb)) * invL;
-    float dv = (lb * p.x + la * p.z - la * lb) * invL;
-    float qx = ((du > 0.0) ? length(vec2(du, dv)) : dv) - ra;
+    float qx = (la * (p.x - la) > lb * p.z) ? length(vec2(p.x - la, p.z)) - ra
+             : (lb * (p.z - lb) > la * p.x) ? length(vec2(p.x, p.z - lb)) - ra
+             : (lb * p.x + la * p.z - la * lb) * inversesqrt(la * la + lb * lb) - ra;
     float qy = p.y - h;
     return (qy <= 0.0) ? max(qx, qy) : ((qx <= 0.0) ? qy : length(vec2(qx, qy)));
 }
-```
-
----
-
-## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
-
-![Before vs After Comparison](../images/comparisons/rhombus_bug_2d.png)
-
-- **Bug in Baseline**: When `p.x == 0` and `|p.z| > lb`, `f` clamps to the top vertex `(0, lb)`, making `w.x == 0.0`. Because GLSL defines `sign(0.0) == 0.0`, `length(w)*sign(w.x) - ra` evaluates to `-ra <= 0` along the entire exterior plane `p.x = 0, |p.z| > lb`!
-- **Fix**: Replacing `sign(w.x)` with `sign(w.x + w.y)` eliminates the exterior fault line (`+0.350000` vs buggy `-0.050000` at `(0, 0, 2*lb)`) and saves 4 FLOPs.
-
-### Code Diff vs. Baseline (Inigo Quilez)
-```diff
--    vec2 b = vec2(la, lb);
--    float f = clamp( (ndot(b, b - 2.0*p.xz))/dot(b,b), -1.0, 1.0 );
--    vec2 w = p.xz - 0.5*b*vec2(1.0 - f, 1.0 + f);
--    vec2 q = vec2( length(w)*sign(w.x) - ra, p.y - h );
-+    float f = clamp( (la*p.x - lb*p.z + lb*lb) / (la*la + lb*lb), 0.0, 1.0 );
-+    vec2 w = p.xz - vec2(la, lb) * vec2(f, 1.0 - f);
-+    vec2 q = vec2( length(w)*sign(w.x + w.y) - ra, p.y - h );
 ```

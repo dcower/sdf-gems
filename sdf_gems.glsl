@@ -37,6 +37,7 @@
 #include "glsl/gradients3d/sdgCappedCone.glsl"
 #include "glsl/gradients3d/sdgChamfer.glsl"
 #include "glsl/gradients3d/sdgColumns.glsl"
+#include "glsl/gradients3d/sdgCone.glsl"
 #include "glsl/gradients3d/sdgCylinder.glsl"
 #include "glsl/gradients3d/sdgEllipsoid.glsl"
 #include "glsl/gradients3d/sdgEngrave.glsl"
