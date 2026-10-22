@@ -1,4 +1,4 @@
-# `sdCappedCone` — Exact 1-to-2 Sqrt 3D Capped Cone via Endpoint Subsumption
+# `sdCappedCone` — Exact 0-Division, 0/1/2-Sqrt 3D Capped Cone
 
 | 3D Surface ($f(p) = 0$) | 2D Cross-Section Slice ($z = 0$) |
 | :---: | :---: |
@@ -6,38 +6,25 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez — upgraded/optimized using Gemini 4 Argon (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez — upgraded to 0-div, 0-clamp, 0/1/2-`sqrt` using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdCappedCone.glsl`](../../glsl/primitives3d/sdCappedCone.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, `1` `sqrt` in flat-cap Voronoi zone & `2` in mantle, down from `2` everywhere) |
+| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, `0` `sqrt`s in flat-cap Voronoi zone, `1` coord `sqrt` on slanted wall, `0` divs) |
 
 ---
 
 ## Mathematical Overview
 
-Inigo Quilez's `sdCappedCone(p, h, r1, r2)` computes `ca = vec2(q.x - min(q.x, rcap), abs(q.y) - h)` and `cb` (the vector to the slanted mantle segment connecting $(r_1, -h)$ and $(r_2, +h)$), then calls `s * sqrt(min(dot2(ca), dot2(cb)))`.
+![Capped Cone & Gradient Comparison](../images/comparisons/capped_cone_gradient_comparison.png)
 
-### Endpoint-Subsumption Theorem
-Observe that the outer rim corners of the two horizontal caps — $(r_1, -h)$ and $(r_2, +h)$ — are the **exact endpoints** of the slanted mantle segment $[A, B]$:
-- Whenever $q_x > r_{\text{cap}}$ (where $r_{\text{cap}} = (q_y < 0) \; ? \; r_1 : r_2$), the closest point on the horizontal cap is the rim corner $(r_{\text{cap}}, \pm h)$, which is already an endpoint of the mantle segment $[A, B]$. Therefore, $\|\text{cb}\|^2 \le \|\text{ca}\|^2$ holds **identically** whenever $q_x > r_{\text{cap}}$!
-- Consequently, the horizontal cap can **only** win when $q_x \le r_{\text{cap}}$ and $(|q_y| - h)^2 \le \|\text{cb}\|^2$, in which case $\text{ca}_x \equiv 0$ and the signed distance to the horizontal cap is simply the linear expression $c_y = |q_y| - h$ (**0 additional `sqrt`s**, saving the second `sqrt` across the entire top and bottom cap Voronoi regions and eliminating `ca.x`).
+1. **0-`sqrt` Exterior & Interior Cap-Voronoi Early Exit**:
+   Outside the caps ($c_y = |p_y| - h \ge 0$), the exact Cap-Voronoi cylinder is $x^2 = p_x^2 + p_z^2 \le r_c^2$. Inside the cone ($c_y < 0$), using $\sqrt{k_x^2 + 4h^2} \le |k_x| + 2h$ yields the unified 0-`sqrt`, 0-division test $h_{\text{rc}} = h r_c + \min(c_y, 0)(h + \max(s_y k_x, 0)) \ge 0$ and $x^2 h^2 \le h_{\text{rc}}^2$, returning $c_y$ without even computing `length(p.xz)`.
+2. **0-Division, 0-Clamp Slanted-Wall Partition**:
+   With $l = \sqrt{x^2}$, $\mathbf{q} = (l - r_2, p_y - h)$, and signed cross product $w_c = 2h q_x - k_x q_y$, a point lies inside the frustum iff $c_y \le 0 \;\land\; w_c \le 0$ (where the cap wins iff $c_y^2 m \le w_c^2$ with **0 divisions and 0 clamps**), and lies in the exterior slanted-wall normal strip iff $q_k = \mathbf{q} \cdot \mathbf{k} \in (-m, 0)$, where $d = w_c / \sqrt{m}$ requires only **1 coordinate `sqrt`**.
 
 ---
 
 ## GLSL Implementation
 
-```glsl
-float sdCappedCone( vec3 p, float h, float r1, float r2 )
-{
-    vec2  q  = vec2(length(p.xz), p.y);
-    vec2  k1 = vec2(r2, h);
-    vec2  k2 = vec2(r2 - r1, 2.0 * h);
-    float rc = (q.y < 0.0) ? r1 : r2;
-    float cy = abs(q.y) - h;
-    vec2  cb = q - k1 + k2 * clamp(dot(k1 - q, k2) / dot2(k2), 0.0, 1.0);
-    float b2 = dot2(cb);
-    if( q.x <= rc && cy * cy <= b2 ) return cy;
-    return ((cb.x < 0.0 && cy < 0.0) ? -1.0 : 1.0) * sqrt(b2);
-}
-```
+See [`glsl/primitives3d/sdCappedCone.glsl`](../../glsl/primitives3d/sdCappedCone.glsl).
