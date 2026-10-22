@@ -1,25 +1,32 @@
 // ============================================================================
-// sdPyramid — Exact 3D Square Pyramid (Base-Face Bug Fixed)
-// @author Inigo Quilez — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)
+// sdPyramid — Exact 0/1-Sqrt 3D Square Pyramid (Three-Zone Euclidean Decomposition)
+// @author Inigo Quilez — upgraded to 0/1-sqrt & base-bug-fixed using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distfunctions/
-// @exact  Yes (`||grad d|| = 1` everywhere in R^3)
+// @exact  Yes (`||grad d|| = 1` everywhere in R^3; 0 per-pixel sqrts in interior, base, & slanted faces)
 // ============================================================================
+
+#ifndef SDF_GEMS_SD_PYRAMID_GLSL
+#define SDF_GEMS_SD_PYRAMID_GLSL
 
 float sdPyramid( vec3 p, float h )
 {
-    float m2 = h*h + 0.25;
-    p.xz = abs(p.xz);
-    p.xz = (p.z > p.x) ? p.zx : p.xz;
-    p.xz -= 0.5;
+    vec2 u = abs(p.xz);
+    u = (u.y > u.x) ? u.yx : u;
+    u -= 0.5;
 
-    vec3 q = vec3( p.z, h*p.y - 0.5*p.x, h*p.x + 0.5*p.y );
-    float s = max(-q.x, 0.0);
-    float t = clamp( (q.y - 0.5*p.z)/(m2 + 0.25), 0.0, 1.0 );
+    float m2 = h * h + 0.25;
+    float qy = h * p.y - 0.5 * u.x;
+    float qz = h * u.x + 0.5 * p.y;
 
-    float a = m2*(q.x + s)*(q.x + s) + q.y*q.y;
-    float b = m2*(q.x + 0.5*t)*(q.x + 0.5*t) + (q.y - m2*t)*(q.y - m2*t);
-    float d2 = min(q.y, -q.x*m2 - q.y*0.5) > 0.0 ? 0.0 : min(a, b);
+    if( (p.y <= 0.0 && u.x <= 0.0) || (qz <= 0.0 && p.y > 0.0 && m2 * p.y * p.y <= qz * qz) )
+        return -p.y; // 0 sqrts in exterior & interior base-face prism!
+    if( (qz <= 0.0 && p.y > 0.0) || (qy > 0.0 && -u.y * m2 - 0.5 * qy > 0.0) )
+        return qz * inversesqrt(m2); // 0 per-pixel sqrts in slanted-face prism!
 
-    float d = (d2 + q.z*q.z) / m2;
-    return sqrt( max(q.z, p.x) < 0.0 ? min(d, p.y*p.y) : d ) * sign(max(q.z, -p.y));
+    vec3  vA = vec3(u.x, p.y, max(u.y, 0.0));
+    float t  = clamp((qy - 0.5 * u.y) / (m2 + 0.25), 0.0, 1.0);
+    vec3  vB = vec3(u.x + 0.5 * t, p.y - h * t, u.y + 0.5 * t);
+    return sqrt(min(dot(vA, vA), dot(vB, vB)));
 }
+
+#endif // SDF_GEMS_SD_PYRAMID_GLSL
