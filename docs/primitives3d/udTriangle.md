@@ -1,4 +1,4 @@
-# `udTriangle`, `sdgTriangle3D`, `udQuad` & `sdTriangle2D` — Barycentric Partition-of-Unity & Half-Space Edge-Pruning
+# `udTriangle`, `sdgTriangle3D` & `udQuad` — Barycentric Partition-of-Unity & Half-Space Edge-Pruning
 
 - **Category:** `primitives3d`
 - **GLSL File:** [`glsl/primitives3d/udTriangle.glsl`](../../glsl/primitives3d/udTriangle.glsl)
@@ -30,16 +30,15 @@ Thus we obtain the **exact conservation law**:
 
 $$s_1(p) + s_2(p) + s_3(p) \equiv \|\mathbf{n}\|_2^2 \quad \forall p \in \mathbb{R}^3,$$
 
-so $s_3 = \|\mathbf{n}\|_2^2 - s_1 - s_2$ is computed in **2 scalar subtractions**, eliminating `cross(ac, nor)` and `dot(..., pc)` completely! By the same proof in 2D (`sdTriangle2D`), the three signed edge cross products satisfy $c_0(p) + c_1(p) + c_2(p) \equiv |\mathbf{e}_0 \times \mathbf{e}_2|$.
+so $s_3 = \|\mathbf{n}\|_2^2 - s_1 - s_2$ is computed in **2 scalar subtractions**, eliminating `cross(ac, nor)` and `dot(..., pc)` completely!
 
 ### 2. The Supporting-Hyperplane Half-Space Edge-Pruning Theorem
 
-In IQ's baseline `udTriangle`, `udQuad`, and `sdTriangle2D`, all 3 (or 4) clamped edge projections and divisions (`dot(e_i, p_i) / dot2(e_i)`) are evaluated unconditionally at every point in $\mathbb{R}^3$.
+In IQ's baseline `udTriangle` and `udQuad`, all 3 (or 4) clamped edge projections and divisions (`dot(e_i, p_i) / dot2(e_i)`) are evaluated unconditionally at every point in $\mathbb{R}^3$.
 
 By convexity of a triangle or convex quadrilateral:
 - **Face Voronoi Prism ($s_i > 0\;\forall i$):** The closest point lies strictly in the face interior, at distance $|\mathbf{n} \cdot (p - a)|\,\text{inversesqrt}(\|\mathbf{n}\|_2^2)$ (**0 edge projections, 0 divisions, 1 `inversesqrt`**).
-- **2D Triangle Interior ($c_0, c_1, c_2 > 0$):** Because every interior angle of a triangle is strictly $< 180^\circ$, no vertex can ever be the closest boundary point to an interior point; the exact signed interior distance is $-\sqrt{\min_i(c_i^2 / \|e_i\|_2^2)}$ (**0 `clamp`s, 0 tangential `dot`s**).
-- **Exterior Edge Pruning:** Outside the face prism, an edge $e_i$ can contain the closest boundary point **if and only if $s_i(p) \le 0$** (for a shared vertex $v_k$, convexity guarantees at least one incident edge has $s_i \le 0$). Moreover, since $s_1 + s_2 + s_3 = \|\mathbf{n}\|^2 > 0$, it is **mathematically impossible for all 3 edges to have $s_i \le 0$ simultaneously**, cutting average edge evaluations from **3.00 down to 1.12** in `udTriangle` and from **4.00 down to 1.41** in `udQuad`!
+- **Exterior Edge Pruning:** Outside the face prism, an edge $e_i$ can contain the closest boundary point **if and only if $s_i(p) \le 0$**. Moreover, since $s_1 + s_2 + s_3 = \|\mathbf{n}\|^2 > 0$, it is **mathematically impossible for all 3 edges to have $s_i \le 0$ simultaneously**, cutting average edge evaluations from **3.00 down to 1.12** in `udTriangle` and `sdgTriangle3D`, and from **4.00 down to 1.41** in `udQuad`!
 
 ---
 
@@ -51,4 +50,3 @@ By convexity of a triangle or convex quadrilateral:
 | **`sdf-gems` `udTriangle` / `sdgTriangle3D`** | **`3`** | **`1.12` (max `2`)** | **`0` (`1` `rsq`)** | **$8.88 \times 10^{-16}$** | **$2.22 \times 10^{-9}$** |
 | Baseline IQ `udQuad` | `5` | `4.00` | `5` | $0.00 \times 10^0$ | N/A |
 | **`sdf-gems` `udQuad`** | `5` | **`1.41`** | **`0` (`1` `rsq`)** | **$1.33 \times 10^{-15}$** | N/A |
-| **`sdf-gems` `sdTriangle2D`** | N/A | **`0.00` in interior (`1.31` ext)** | `0` in ext vertices | **$4.58 \times 10^{-16}$** | N/A |

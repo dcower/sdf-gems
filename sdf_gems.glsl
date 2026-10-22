@@ -104,6 +104,7 @@
 #include "glsl/primitives2d/sdStairs2D.glsl"
 #include "glsl/primitives2d/sdStar2D.glsl"
 #include "glsl/primitives2d/sdTrapezoid2D.glsl"
+#include "glsl/primitives2d/sdTriangle2D.glsl"
 #include "glsl/primitives2d/sdTunnel2D.glsl"
 #include "glsl/primitives2d/sdUnevenCapsule2D.glsl"
 #include "glsl/primitives2d/sdVesica2D.glsl"
