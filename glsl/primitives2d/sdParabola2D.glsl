@@ -61,4 +61,29 @@ float sdParabolaSeg2D(vec2 pos, float wi, float he) {
     return length(pos - vec2(x, he - x * x / ik)) * s;
 }
 
+// Singularity-Free 2D Parabola Distance & Analytical Unit Gradient via Co-Normal Projection vn = (2*k*x, -1):
+// Replaces length(w) + w/l + sign check with 1 inversesqrt(4*k^2*x^2 + 1) (0 surface/axis NaNs)
+vec3 sdgParabola2D(vec2 pos, float k) {
+    float sx = (pos.x < 0.0) ? -1.0 : 1.0;
+    pos.x = abs(pos.x);
+    float ik = 1.0 / k;
+    float p  = ik * (pos.y - 0.5 * ik) / 3.0;
+    float q  = 0.25 * ik * ik * pos.x;
+    float h  = q * q - p * p * p;
+    float x;
+    if (h >= 0.0) {
+        float r = pow(q + sqrt(h), 1.0 / 3.0);
+        x = (p < 0.0) ? (2.0 * q / (r * r - p + (p / r) * (p / r)))
+                      : ((r > 0.0) ? (r + p / r) : 0.0);
+    } else {
+        float r = sqrt(p);
+        x = 2.0 * r * cos(acos(clamp(q / (p * r), -1.0, 1.0)) / 3.0);
+    }
+    float nx   = 2.0 * k * x;
+    float invN = inversesqrt(nx * nx + 1.0);
+    vec2  n    = vec2(nx * invN, -invN);
+    float d    = dot(pos - vec2(x, k * x * x), n);
+    return vec3(d, sx * n.x, n.y);
+}
+
 #endif // SDF_GEMS_SD_PARABOLA2D_GLSL
