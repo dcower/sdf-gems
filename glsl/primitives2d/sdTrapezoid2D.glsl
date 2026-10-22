@@ -61,4 +61,36 @@ float sdTrapezoidSeg2D(vec2 p, vec2 a, vec2 b, float ra, float rb) {
     return ((cbx < 0.0 && cay < 0.0) ? -1.0 : 1.0) * sqrt(b2);
 }
 
+// 3. 0/1-SFU 2D Trapezoid Distance & Analytical Unit Gradient (Endpoint Subsumption: 0 SFU in cap zone)
+vec3 sdgTrapezoid2D(vec2 p, float r1, float r2, float he) {
+    float sx = (p.x < 0.0) ? -1.0 : 1.0, sy = (p.y < 0.0) ? -1.0 : 1.0;
+    p.x = abs(p.x);
+    float rc = (p.y < 0.0) ? r1 : r2, cy = abs(p.y) - he;
+    if (p.x <= rc && cy >= 0.0) return vec3(cy, 0.0, sy);
+    vec2  k  = vec2(r2 - r1, 2.0 * he), w = p - vec2(r1, -he);
+    vec2  q  = w - k * clamp(dot(w, k) / dot(k, k), 0.0, 1.0);
+    float b2 = dot(q, q);
+    if (p.x <= rc && cy * cy <= b2) return vec3(cy, 0.0, sy);
+    float s    = (w.x * k.y < w.y * k.x && cy < 0.0) ? -1.0 : 1.0;
+    float invD = s * inversesqrt(max(b2, 1e-30));
+    return (b2 > 0.0) ? vec3(b2 * invD, sx * q.x * invD, q.y * invD)
+                      : vec3(0.0, vec2(sx * k.y, -k.x) * inversesqrt(dot(k, k)));
+}
+
+// 4. Exact Convex & Concave 2D Quad Distance & Analytical Unit Gradient (Jordan Winding-Parity + 1 inversesqrt)
+vec3 sdgQuad2D(in vec2 p, in vec2 v[4]) {
+    vec3  res = vec3(dot(p - v[0], p - v[0]), p - v[0]);
+    float s   = 1.0;
+    for (int i = 0, j = 3; i < 4; j = i, i++) {
+        vec2  e = v[i] - v[j], w = p - v[j];
+        vec2  q = w - e * clamp(dot(w, e) / dot(e, e), 0.0, 1.0);
+        float d = dot(q, q);
+        if (d < res.x) res = vec3(d, q);
+        bvec3 c = bvec3(p.y >= v[j].y, p.y < v[i].y, e.x * w.y > e.y * w.x);
+        if (all(c) || all(not(c))) s = -s;
+    }
+    float invD = s * inversesqrt(max(res.x, 1e-30));
+    return vec3(res.x * invD, res.yz * invD);
+}
+
 #endif // SDF_GEMS_SD_TRAPEZOID2D_GLSL
