@@ -1,4 +1,4 @@
-# `opBend` — Exact atan-Free Circular Arch Bend + Straight Tangent Legs (opBendArch)
+# `opBend`, `sdgBendArchFinalize` & `sdgCheapBendFinalize` — Exact Circular Arch Bend & Jacobian Eikonal Normalization
 
 | 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
@@ -6,61 +6,27 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Inigo Quilez (opCheapBend) — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Inigo Quilez (`opCheapBend`) — upgraded to `opBendArch` & Jacobian Eikonal Normalization using Gemini 4 Argon (`sdf-gems`, 2026)** |
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `deform` |
 | **GLSL File** | [`glsl/deform/opBend.glsl`](../../glsl/deform/opBend.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1` outside inner focal axis) |
+| **Exact Euclidean SDF?** | Yes ($\|\nabla d\| = 1$ on surface; `0` `atan`/`sin`/`cos` calls per step in `opBendArch` & `sdgBendArchFinalize`) |
+
+![Taper and Bend Jacobian Eikonal Normalization Comparison](../images/comparisons/taper_bend_comparison.png)
 
 ---
 
 ## Mathematical Overview
 
-Maps $p$ onto an orthogonal $C^1$ spline consisting of a circular arc of radius $R$ and half-angle $\alpha$ with precomputed $(\cos\alpha, \sin\alpha) = cs$ and straight tangent leg extensions — using **zero `atan`/`sin`/`cos` calls per step**.
+1. **`opBendArch` (0-Trig Circular Arch + Straight Tangent Legs):**
+   Maps $p$ onto an orthogonal $C^1$ spline consisting of a circular arc of radius $R$ and half-angle $\alpha$ with precomputed $(\cos\alpha, \sin\alpha) = \mathit{cs}$ and straight tangent leg extensions — using **zero `atan`/`sin`/`cos` calls per step**.
+2. **`sdgBendArchFinalize` (Curvature-Normalized Analytical 3D Gradient):**
+   In the circular arch sector ($u \le 0$), the polar map has orthogonal principal stretches $(R / \rho, 1, 1)$ where $\rho = \|(|p_x|, R + p_y)\|_2$. Scaling the tangential gradient component by $R / \rho$, rotating into world space via $\mathbf{e}_r = \mathbf{w}/\rho$, and normalizing by $\|\mathbf{g}\|_2$ corrects the radial compression/expansion off the neutral axis $y = 0$ and yields exact analytical 3D normals.
+3. **`sdgCheapBendFinalize` (Chain-Rule Correction for `opCheapBend`):**
+   For Inigo Quilez's `opCheapBend(p, k)`, the Jacobian pullback is $\mathbf{g}_p = J(p)^T \mathbf{g}_q = (c g_{qx} - s g_{qy} + k(q_y g_{qx} - q_x g_{qy}),\; s g_{qx} + c g_{qy},\; g_{qz})$. Dividing by $\|\mathbf{g}_p\|_2$ restores $\|\nabla d\| = 1.000$ on the bent surface (fixing naive `opCheapBend`'s $\|\nabla d\| \in [0.43, 1.85]$ distortion).
 
 ---
 
 ## GLSL Implementation
 
-```glsl
-vec3 opBendArch( in vec3 p, in float R, in float alpha, in vec2 cs )
-{
-    float sx = (p.x < 0.0) ? -1.0 : 1.0;
-    vec2  w  = vec2( abs(p.x), R + p.y );
-    float u  = w.x*cs.x - w.y*cs.y;
-    float v  = w.x*cs.y + w.y*cs.x;
-    return vec3( sx * max(R*alpha + u, 0.0),
-                 (u <= 0.0) ? length(w) - R : v - R,
-                 p.z );
-}
-```
-
----
-
-## Improvement & Bug-Fix Analysis (Discovered using Gemini 4 Argon (sdf-gems, 2026))
-
-![Before vs After Comparison](../images/comparisons/bend_comparison_2d.png)
-
-- **Before (IQ `opCheapBend`)**: Shears cross-sections (`||grad d|| in [0.58, 1.62]`), calls `sin`/`cos` every step.
-- **After (`sdf-gems` `opBendArch`)**: **Exact circular arch + straight legs** (`||grad d|| = 1.000`), **0 `atan`/`sin`/`cos` calls per step**.
-
-### Code Diff vs. Baseline (Inigo Quilez (opCheapBend))
-```diff
--vec3 opCheapBend( in vec3 p, in float k )
--{
--    float c = cos(k*p.x);
--    float s = sin(k*p.x);
--    mat2  m = mat2(c, -s, s, c);
--    return vec3(m*p.xy, p.z);
--}
-+vec3 opBendArch( in vec3 p, in float R, in float alpha, in vec2 cs )
-+{
-+    float sx = (p.x < 0.0) ? -1.0 : 1.0;
-+    vec2  w  = vec2( abs(p.x), R + p.y );
-+    float u  = w.x*cs.x - w.y*cs.y;
-+    float v  = w.x*cs.y + w.y*cs.x;
-+    return vec3( sx * max(R*alpha + u, 0.0),
-+                 (u <= 0.0) ? length(w) - R : v - R,
-+                 p.z );
-+}
-```
+See [`glsl/deform/opBend.glsl`](../../glsl/deform/opBend.glsl).
