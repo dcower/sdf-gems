@@ -63,6 +63,7 @@
 #include "glsl/polyhedra3d/sdDisdyakisTriacontahedron.glsl"
 #include "glsl/polyhedra3d/sdDodecahedron.glsl"
 #include "glsl/polyhedra3d/sdGreatIcosahedron.glsl"
+#include "glsl/polyhedra3d/sdHexFrustum.glsl"
 #include "glsl/polyhedra3d/sdIcosahedron.glsl"
 #include "glsl/polyhedra3d/sdIcosidodecahedron.glsl"
 #include "glsl/polyhedra3d/sdKeplerPoinsot.glsl"
