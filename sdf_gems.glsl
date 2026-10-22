@@ -176,6 +176,7 @@
 #include "glsl/repetition/opRepHelix.glsl"
 #include "glsl/repetition/opRepHex.glsl"
 #include "glsl/repetition/opRepIcosahedral.glsl"
+#include "glsl/repetition/opRepLogPolar.glsl"
 #include "glsl/repetition/opRepPerimeter.glsl"
 #include "glsl/repetition/opRepPolar.glsl"
 
