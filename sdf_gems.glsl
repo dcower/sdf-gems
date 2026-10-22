@@ -173,6 +173,7 @@
 #include "glsl/repetition/opRep3D.glsl"
 #include "glsl/repetition/opRepBCC.glsl"
 #include "glsl/repetition/opRepFCC.glsl"
+#include "glsl/repetition/opRepHelix.glsl"
 #include "glsl/repetition/opRepHex.glsl"
 #include "glsl/repetition/opRepIcosahedral.glsl"
 #include "glsl/repetition/opRepPerimeter.glsl"
