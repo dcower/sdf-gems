@@ -89,6 +89,7 @@
 #include "glsl/polyhedra3d/sdTruncatedOctahedron.glsl"
 #include "glsl/polyhedra3d/sdTruncatedTetrahedron.glsl"
 #include "glsl/primitives2d/sdArchimedeanSpiral2D.glsl"
+#include "glsl/primitives2d/sdAstroid2D.glsl"
 #include "glsl/primitives2d/sdBezier2D.glsl"
 #include "glsl/primitives2d/sdBox2D.glsl"
 #include "glsl/primitives2d/sdChamferBox2D.glsl"
