@@ -1,8 +1,8 @@
 // ============================================================================
-// sdgRoundCone & sdgTorus — Exact 1-Sqrt 3D Round Cone & 2-Sqrt Torus Gradients
+// sdgRoundCone — Exact 1-Sqrt 3D Round Cone & Segment Analytical Gradients
 // @author Inigo Quilez — upgraded/optimized using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://iquilezles.org/articles/distgradfunctions3d/
-// @exact  Yes (`||grad d|| = 1`, 1 `sqrt` everywhere for sdgRoundCone/Seg, 2 `sqrt`s for sdgTorus)
+// @exact  Yes (`||grad d|| = 1`, 1 `sqrt` everywhere for sdgRoundCone & sdgRoundConeSeg)
 // ============================================================================
 
 #ifndef SDF_GEMS_SDG_ROUND_CONE_GLSL
@@ -33,15 +33,6 @@ vec4 sdgRoundConeSeg(vec3 p, vec3 a, vec3 b, float r1, float r2) {
     if (sign(z) * a2 * (z * z * l2) > s) { float w = max(length(pb), 1e-12); return vec4(w - r2, pb / w); }
     float w = max(sqrt(a2 * x2), 1e-12);
     return vec4(w + y * rr - r1, (rr * il2) * ba + (a2 / w) * u);
-}
-
-// 3. Exact 2-Sqrt 3D Torus with Analytical Gradient (down from 3 sqrts in IQ's sdgTorus
-//    by factoring ||(px*(h - ra), py*h, pz*(h - ra))||_2 = h * l).
-vec4 sdgTorus(vec3 p, float ra, float rb) {
-    float h = max(length(p.xz), 1e-12);
-    float u = h - ra;
-    float l = max(length(vec2(u, p.y)), 1e-12);
-    return vec4(l - rb, vec3(p.x * u / h, p.y, p.z * u / h) / l);
 }
 
 #endif // SDF_GEMS_SDG_ROUND_CONE_GLSL

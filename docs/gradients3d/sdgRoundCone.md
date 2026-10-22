@@ -1,4 +1,4 @@
-# `sdgRoundCone`, `sdgRoundConeSeg`, & `sdgTorus` — 1-`sqrt` Round Cone & 2-`sqrt` Torus Analytical Gradients
+# `sdgRoundCone` & `sdgRoundConeSeg` — 1-`sqrt` Round Cone Analytical Gradients
 
 | 3D Raymarched Surface | 2D Cross-Section Slice |
 | :---: | :---: |
@@ -6,7 +6,7 @@
 
 - **GLSL Implementation**: [`sdgRoundCone.glsl`](../../glsl/gradients3d/sdgRoundCone.glsl)
 - **Category**: `gradients3d`
-- **Status**: **Exact 1-`sqrt` / 2-`sqrt` Euclidean SDF + Unit 3D Gradient** (Discovered using **Gemini 4 Argon**, `sdf-gems`, 2026)
+- **Status**: **Exact 1-`sqrt` Euclidean SDF + Unit 3D Gradient** (Discovered using **Gemini 4 Argon**, `sdf-gems`, 2026)
 
 ---
 
@@ -18,8 +18,8 @@
    - In the conical mantle, setting $w = \sqrt{a_2 x_2} = \sqrt{1 - b^2}\|p_{xz}\|_2$ yields both the radial distance term $w$ and the horizontal gradient $\frac{a_2 p_{xz}}{w} = \sqrt{1 - b^2}\frac{p_{xz}}{\|p_{xz}\|_2}$ without ever computing $a = \sqrt{1 - b^2}$. Thus `sdgRoundCone` uses **only `1` `sqrt` everywhere in $\mathbb{R}^3$**.
 2. **1-`sqrt` $O(L^2)$ Scale-Safe `sdgRoundConeSeg`**:
    Replaces IQ's $O(L^8)$ discriminator `sign(z)*a2*z2 > sign(rr)*rr*rr*x2` (which overflows FP16 for $\|b - a\|_2 \ge 4$) and catastrophic-cancellation `sqrt(il2*(x2+z2))` with normalized projection $y = \operatorname{dot}(p_a, b_a)/L^2$ and orthogonal residual $u = p_a - y b_a$, using **only `1` `sqrt` everywhere in $\mathbb{R}^3$**.
-3. **2-`sqrt` `sdgTorus` (Down from `3` `sqrt`s in IQ's `sdgTorus`)**:
-   In IQ's `sdgTorus`, `normalize(p * vec3(h - ra, h, h - ra))` invokes a 3rd `sqrt`. Since $\|(p_x(h - r_a), p_y h, p_z(h - r_a))\|_2 = h \cdot l$ where $h = \|p_{xz}\|_2$ and $l = \|(h - r_a, p_y)\|_2$ are already computed, dividing by $h \cdot l$ eliminates the 3rd `sqrt` and avoids $O(\|p\|^4)$ intermediate overflow.
+
+*(For `sdgTorus`, see [`sdgTorus.md`](sdgTorus.md) and [`glsl/gradients3d/sdgTorus.glsl`](../../glsl/gradients3d/sdgTorus.glsl).)*
 
 ---
 
@@ -29,7 +29,6 @@
 | :--- | :---: | :---: | :---: | :---: |
 | **1-`sqrt` `sdgRoundCone`** | **`1` everywhere** | `3.331e-16` | `1.204e-10` | `0.0%` |
 | **1-`sqrt` `sdgRoundConeSeg`** | **`1` everywhere** | `1.110e-15` | `1.345e-10` | **`0.0%` (vs. `100%` in IQ)** |
-| **2-`sqrt` `sdgTorus`** | **`2` (down from `3`)** | `4.441e-16` | `9.812e-11` | `0.0%` |
 
 ---
 

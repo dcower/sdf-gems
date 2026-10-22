@@ -51,6 +51,7 @@
 #include "glsl/gradients3d/sdgSolidAngle.glsl"
 #include "glsl/gradients3d/sdgSphere.glsl"
 #include "glsl/gradients3d/sdgStairs.glsl"
+#include "glsl/gradients3d/sdgTorus.glsl"
 #include "glsl/gradients3d/sdgTriPrism.glsl"
 #include "glsl/gradients3d/sdgWedgeIntersection.glsl"
 #include "glsl/polyhedra3d/sdCuboctahedron.glsl"
