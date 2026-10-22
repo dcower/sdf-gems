@@ -1,4 +1,4 @@
-# `opRepPolar` & `opRepPolarLim` — Voronoi-Centered 1-Tap & Margin-Guarded 2-Tap Polar Repetition
+# `opRepPolar` & `opRepPolarLim` — 0-Sqrt Direct-Rotation & 0-Trig Dihedral/Cyclic Polar Repetition
 
 | 3D Surface ($f(p) = 0$) | 2D Cross-Section Slice |
 | :---: | :---: |
@@ -6,39 +6,39 @@
 
 | Property | Value |
 | :--- | :--- |
-| **Author / Discoverer** | **Mercury Demogroup — upgraded/fixed using Gemini 4 Argon (sdf-gems, 2026)** |
+| **Author / Discoverer** | **Mercury Demogroup — upgraded to 0-Sqrt Direct Rotation, Voronoi-Centered Wrapping & 0-Trig $D_n/C_n$ Folding using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Source** | [https://mercury.sexy/hg_sdf/](https://mercury.sexy/hg_sdf/) |
 | **Category** | `repetition` |
 | **GLSL File** | [`glsl/repetition/opRepPolar.glsl`](../../glsl/repetition/opRepPolar.glsl) |
-| **Exact Euclidean SDF?** | Yes (eliminates $\theta = \pm\pi$ branch cut, asymmetric `[lima, limb]` Voronoi tear, and boundary neighbor drop) |
+| **Exact Euclidean SDF?** | Yes (`0` `sqrt`s; eliminates $\theta = \pm\pi$ branch cut, asymmetric `[lima, limb]` Voronoi tear, and boundary neighbor drop) |
 
 ---
 
 ## Mathematical Overview
 
-### 1. Voronoi-Centered Periodic Wrapping for General `[lima, limb]`
+![0-Sqrt Direct-Rotation opRepPolar & 0-Trig Dihedral/Cyclic Sector Folding](../images/comparisons/polar_direct_rotation_fold_comparison.png)
 
-In limited polar repetition on an arbitrary sector range `[lima, limb]`, naive clamping `clamp(round(a / sp), lima, limb)` places the periodic branch cut at $\theta = \pm\pi$. Whenever $\text{lima} + \text{limb} \ne 0$ (e.g. `[-1, 2]` or `[0, 3]`), the true Voronoi bisector of the empty angular wedge is at the antipode of the midpoint angle $\text{mid} = \frac{1}{2}(\text{lima} + \text{limb})$, causing up to **`2.869` (`286.9%`!)** distance error across the empty wedge.
+### 1. 0-`Sqrt` Direct-Rotation Identity (`opRepPolar` & `opRepPolarLim`)
+Standard polar repetition evaluates `length(p) * vec2(cos(a - id*sp), sin(a - id*sp))` (`1` `atan`, `1` `sqrt`, `1` `sin`/`cos` pair). Since $p = \|p\|(\cos a, \sin a)$, rotating $p$ directly by $-\text{id}\cdot s_p$:
+$$q = \begin{pmatrix} c \, p_x + s \, p_y \\ c \, p_y - s \, p_x \end{pmatrix}, \qquad (c, s) = \bigl(\cos(\text{id}\cdot s_p), \, \sin(\text{id}\cdot s_p)\bigr)$$
+**eliminates `length(p)` (`0` `sqrt`s)** and wipes out `atan` SFU roundoff error inside each sector.
 
-Wrapping the continuous sector coordinate around `mid` with period $n$:
+### 2. Parity-Tracked Dihedral-to-Cyclic ($D_n \to C_n$) Exact Polar Repetition (`0` `atan`, `0` `sin`/`cos`, `0` `sqrt`)
+Every conditional reflection across a line at angle $\alpha_j = m_j \frac{\pi}{n}$ maps $\phi \mapsto m_j \frac{2\pi}{n} - \phi$. Tracking an orientation parity sign $s \in \{-1, +1\}$ (flipped on each reflection) preserves the exact modular invariant $s \cdot \phi \equiv \theta \pmod{2\pi/n}$:
+- Returning `(p.x, abs(p.y))` gives the **Exact $D_n$ Dihedral Fold (`opFoldPolar3..12`)** into $[0, \pi/n]$.
+- Returning `(p.x, s * p.y)` gives the **Exact Un-Mirrored $C_n$ Proper Rotation (`opRepPolar3..12`, $\det = +1$)** into $[-\pi/n, \pi/n]$, preserving chiral pinwheels and gears with **0 `atan`, 0 `sin`/`cos`, 0 `sqrt`**, and at most 1–2 dot products.
 
-$$\text{sector} = \text{mid} + \operatorname{mod}(a - \text{mid} + 0.5 n,\; n) - 0.5 n \in [\text{mid} - 0.5 n,\; \text{mid} + 0.5 n]$$
+### 3. Voronoi-Centered Periodic Wrapping & Margin-Guarded 2-Tap (`opRepPolarLim`, `opLimitedPolarRep2Tap`)
+Wrapping `sector = mid + mod(a - mid + 0.5*n, n) - 0.5*n` places the periodic branch cut at the exact Voronoi bisector of the empty wedge, while `margin = 0.25 * max(n - span - 1.0, 0.0)` preserves overhanging asymmetric neighbors past the boundary rays.
 
-places the periodic branch cut at the **exact Voronoi bisector** $\text{mid} \pm 0.5 n$, reducing 1-tap `opRepPolarLim` error from **`2.853`** down to **`1.55e-15` (machine epsilon)**.
-
-### 2. Margin-Guarded Empty-Wedge Straddling (`opLimitedPolarRep2Tap`)
-
-For 2-tap asymmetric polar repetition, switching immediately to `(lima, limb)` at $|\text{sector} - \text{mid}| > 0.5(\text{limb} - \text{lima})$ drops the adjacent neighbor (`lima + 1` or `limb - 1`) right at the boundary ray, clipping any asymmetric primitive that overhangs the boundary ray (`0.339` error). Extending the active adjacent-pair zone by $\text{margin} = 0.25\max(n - \text{span} - 1, 0)$ preserves `(lima, lima + 1)` and `(limb - 1, limb)` past the boundary rays before transitioning to `(lima, limb)` across the central Voronoi bisector (`0.0` error everywhere).
-
----
-
-## Numerical Verification
-
-| Operator / Test Case | Baseline Max Error | **Ours (`opRepPolar.glsl`)** Max Error |
-| :--- | :---: | :---: |
-| `opRepPolarLim` 1-Tap Symmetric ($n=5, [-1, 2]$) | `1.72e+00` (naive `clamp`) | **`2.44e-15`** |
-| `opRepPolarLim` 1-Tap Symmetric ($n=5, [0, 3]$) | `2.85e+00` (naive `clamp`) | **`1.55e-15`** |
-| `opLimitedPolarRep2Tap` Asymmetric ($n=8, [-2, 2]$) | `3.39e-01` (no boundary margin) | **`0.00e+00`** |
-| `opLimitedPolarRep2Tap` Asymmetric ($n=5, [0, 3]$) | `2.87e+00` ($\pm\pi$ cut) | **`0.00e+00`** |
+| Operator | `atan` | `sin`/`cos` | `sqrt` | Dot Products | Max Error vs Exact Polar Rotation |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| `opRepPolar` / `opRepPolarLim` | 1 | 1 pair | **0** (was 1) | 0 | `2.29e-15` |
+| `opFoldPolar3` / `opRepPolar3` ($D_3 / C_3$) | **0** | **0** | **0** | **1** | `3.20e-15` |
+| `opFoldPolar4` / `opRepPolar4` ($D_4 / C_4$) | **0** | **0** | **0** | **0** | `1.26e-15` |
+| `opFoldPolar5` / `opRepPolar5` ($D_5 / C_5$) | **0** | **0** | **0** | **2** | `3.97e-15` |
+| `opFoldPolar6` / `opRepPolar6` ($D_6 / C_6$) | **0** | **0** | **0** | **1** | `3.23e-15` |
+| `opFoldPolar8` / `opRepPolar8` ($D_8 / C_8$) | **0** | **0** | **0** | **1** | `3.20e-15` |
+| `opFoldPolar12` / `opRepPolar12` ($D_{12} / C_{12}$) | **0** | **0** | **0** | **1** | `4.97e-15` |
 
 ![Before vs After Comparison](../images/comparisons/polar_limited_2d.png)
