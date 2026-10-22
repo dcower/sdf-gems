@@ -39,4 +39,14 @@ vec4 sdgSmoothUnion( in vec4 a, in vec4 b, in float k )
     float b_ = m * h / q;
     return vec4( a.x - w / ( u + q ), ( u / q - c * b_ ) * a.yzw + b_ * b.yzw );
 }
+
+vec4 sdgSmoothIntersection( in vec4 a, in vec4 b, in float k )
+{
+    return -sdgSmoothUnion( -a, -b, k );
+}
+
+vec4 sdgSmoothSubtraction( in vec4 a, in vec4 b, in float k )
+{
+    return -sdgSmoothUnion( a, -b, k );
+}
 ```

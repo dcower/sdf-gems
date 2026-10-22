@@ -1,8 +1,11 @@
 // ============================================================================
-// sdgSmoothUnion — Angle-Exact Eikonal Circular Smooth Union
+// sdgSmoothUnion — Angle-Exact Eikonal Circular Smooth Union, Intersection & Subtraction
 // @author Discovered using Gemini 4 Argon (sdf-gems, 2026)
 // @exact  true (||grad d|| = 1 identically, corner-local for c < 1, 0% overstep)
 // ============================================================================
+
+#ifndef SDF_GEMS_SDG_SMOOTH_UNION_GLSL
+#define SDF_GEMS_SDG_SMOOTH_UNION_GLSL
 
 vec4 sdgSmoothUnion( in vec4 a, in vec4 b, in float k )
 {
@@ -18,3 +21,17 @@ vec4 sdgSmoothUnion( in vec4 a, in vec4 b, in float k )
     float b_ = m * h / q;
     return vec4( a.x - w / ( u + q ), ( u / q - c * b_ ) * a.yzw + b_ * b.yzw );
 }
+
+// Angle-Exact Eikonal Circular Smooth Intersection (De Morgan dual)
+vec4 sdgSmoothIntersection( in vec4 a, in vec4 b, in float k )
+{
+    return -sdgSmoothUnion( -a, -b, k );
+}
+
+// Angle-Exact Eikonal Circular Smooth Subtraction (subtracts a from b)
+vec4 sdgSmoothSubtraction( in vec4 a, in vec4 b, in float k )
+{
+    return -sdgSmoothUnion( a, -b, k );
+}
+
+#endif // SDF_GEMS_SDG_SMOOTH_UNION_GLSL

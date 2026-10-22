@@ -19,6 +19,7 @@
 #include "glsl/booleans/sminCubicGeom.glsl"
 #include "glsl/booleans/sminLocalOblique.glsl"
 #include "glsl/booleans/sminQuadratic.glsl"
+#include "glsl/booleans/sminQuintic.glsl"
 #include "glsl/deform/opBend.glsl"
 #include "glsl/deform/opElongate.glsl"
 #include "glsl/deform/opExtrudeChamfer.glsl"
