@@ -71,6 +71,7 @@
 #include "glsl/primitives2d/sdCircleWave2D.glsl"
 #include "glsl/primitives2d/sdCross2D.glsl"
 #include "glsl/primitives2d/sdCutDisk2D.glsl"
+#include "glsl/primitives2d/sdEgg2D.glsl"
 #include "glsl/primitives2d/sdEllipse2D.glsl"
 #include "glsl/primitives2d/sdEquilateralTriangle2D.glsl"
 #include "glsl/primitives2d/sdHeart2D.glsl"
