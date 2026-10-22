@@ -177,6 +177,7 @@
 #include "glsl/primitives3d/sdSpheroid.glsl"
 #include "glsl/primitives3d/sdSquareBucket.glsl"
 #include "glsl/primitives3d/sdSquircleCube3D.glsl"
+#include "glsl/primitives3d/sdSteinmetz.glsl"
 #include "glsl/primitives3d/sdTorus.glsl"
 #include "glsl/primitives3d/sdTriPrism.glsl"
 #include "glsl/primitives3d/sdVesicaSegment.glsl"
