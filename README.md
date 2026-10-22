@@ -166,6 +166,7 @@ All polyhedra below fold $p \in \mathbb{R}^3$ into the fundamental Weyl chamber 
 | <img src="docs/images/booleans/opEngrave.png" width="84"> | [**`opEngrave`**](docs/booleans/opEngrave.md)<br>[`glsl`](glsl/booleans/opEngrave.glsl) · **Exact** | **Also**: `opPipe`. 0/1-`sqrt` exact Euclidean V-groove engraving, oblique `opEngraveOblique`, & Gram-Schmidt `opPipeOblique` |
 | <img src="docs/images/booleans/opGroove.png" width="84"> | [**`opGroove`**](docs/booleans/opGroove.md)<br>[`glsl`](glsl/booleans/opGroove.glsl) · **Exact** | **Also**: `opTongue`. 4-line 1-`sqrt` exact Euclidean carpenter's tongue, De Morgan dual groove, & oblique `opTongueOblique` / `opGrooveOblique` |
 | <img src="docs/images/booleans/sminQuintic.png" width="84"> | [**`sminQuintic`**](docs/booleans/sminQuintic.md)<br>[`glsl`](glsl/booleans/sminQuintic.glsl) · Bound | **Also**: `sdgSmoothQuintic`, `sminSeptic`, `sdgSmoothSeptic`, `sdgSmoothQuinticOblique`. Division-free $C^3$-continuous quintic and $C^4$-continuous septic polynomial smooth minimums with $C^2$/$C^3$ normals |
+| <img src="docs/images/booleans/opUnionRound3.png" width="84"> | [**`opUnionRound3`**](docs/booleans/opUnionRound3.md)<br>[`glsl`](glsl/booleans/opUnionRound3.glsl) · **Exact** | **Also**: `opUnionChamfer3`, `opUnionChamferOct3`, `sdgRound3`, `sdgChamfer3`, `sminCubicGeom3`. 0/1-`sqrt` $S_3$-symmetric ternary 3-way corner booleans (eliminates $9.74^\circ$ normal tilt & $41.4\%$ skew of chained binary chamfers) |
 
 ---
 

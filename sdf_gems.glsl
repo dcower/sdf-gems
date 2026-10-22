@@ -10,6 +10,7 @@
 #include "glsl/booleans/opUnion.glsl"
 #include "glsl/booleans/opUnionChamfer.glsl"
 #include "glsl/booleans/opUnionColumns.glsl"
+#include "glsl/booleans/opUnionRound3.glsl"
 #include "glsl/booleans/opUnionStairs.glsl"
 #include "glsl/booleans/opXor.glsl"
 #include "glsl/booleans/sminCircular.glsl"
