@@ -67,6 +67,8 @@
 #include "glsl/polyhedra3d/sdTriakisOctahedron.glsl"
 #include "glsl/polyhedra3d/sdTriakisTetrahedron.glsl"
 #include "glsl/polyhedra3d/sdTruncatedCube.glsl"
+#include "glsl/polyhedra3d/sdTruncatedDodecahedron.glsl"
+#include "glsl/polyhedra3d/sdTruncatedIcosahedron.glsl"
 #include "glsl/polyhedra3d/sdTruncatedOctahedron.glsl"
 #include "glsl/polyhedra3d/sdTruncatedTetrahedron.glsl"
 #include "glsl/primitives2d/sdBezier2D.glsl"
