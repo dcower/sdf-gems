@@ -57,16 +57,30 @@ vec3 sdgCircleWave2D( in vec2 p, in float tb, in float ra )
 }
 
 // 4. Exact 1-SFU (`inversesqrt`) 2D Circular Arc with Analytical Gradient
+#ifndef SDF_GEMS_HAS_SDG_ARC2D
+#define SDF_GEMS_HAS_SDG_ARC2D
 vec3 sdgArc2D( in vec2 p, in vec2 sc, in float ra, in float rb )
 {
     float sx = (p.x < 0.0) ? -1.0 : 1.0;
     p.x = abs(p.x);
-    if( sc.y * p.x > sc.x * p.y ) {
+    if( sc.y * p.x > sc.x * p.y )
+    {
         vec2  w  = p - ra * sc;
-        float l2 = dot(w, w), il = inversesqrt(max(l2, 1e-24));
-        return vec3(l2 * il - rb, vec2(sx * w.x, w.y) * il);
+        float l2 = dot(w, w);
+        if( l2 > 0.0 )
+        {
+            float il = inversesqrt(l2);
+            return vec3(l2 * il - rb, vec2(sx * w.x, w.y) * il);
+        }
+        return vec3(-rb, sx * sc.y, -sc.x);
     }
-    float l2 = dot(p, p), il = inversesqrt(max(l2, 1e-24));
-    float w  = l2 * il - ra, sw = (w < 0.0) ? -1.0 : 1.0;
-    return vec3(abs(w) - rb, vec2(sx * p.x, p.y) * (sw * il));
+    float l2 = dot(p, p);
+    if( l2 > 0.0 )
+    {
+        float il = inversesqrt(l2);
+        float w  = l2 * il - ra, sw = (w < 0.0) ? -1.0 : 1.0;
+        return vec3(abs(w) - rb, vec2(sx * p.x, p.y) * (sw * il));
+    }
+    return vec3(ra - rb, 0.0, -1.0);
 }
+#endif // SDF_GEMS_HAS_SDG_ARC2D

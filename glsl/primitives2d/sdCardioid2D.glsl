@@ -19,7 +19,7 @@ float sdCardioid2D( vec2 p, float R )
     float W = sqrt(B * B + 9.0 * Y * Y);
 
     // Unique turning point s_* of Q'(s) = 3*Y*s^2 - 2*B*s - 3*Y = 0 on [0, inf)
-    float s_star = (B >= 0.0) ? (B + W) / max(3.0 * Y, 1e-15 * R)
+    float s_star = (B >= 0.0) ? (B + W) / max(3.0 * Y, 1e-4 * R)
                               : (3.0 * Y) / max(W - B, 1e-20);
     float Q_star = X - s_star * (B * s_star + 6.0 * Y) * (1.0 / 3.0);
     float K      = max(-Q_star, 0.0);
@@ -54,7 +54,7 @@ vec3 sdgCardioid2D( vec2 p, float R )
     float B  = 3.0 * X - R;
     float W  = sqrt(B * B + 9.0 * Y * Y);
 
-    float s_star = (B >= 0.0) ? (B + W) / max(3.0 * Y, 1e-15 * R)
+    float s_star = (B >= 0.0) ? (B + W) / max(3.0 * Y, 1e-4 * R)
                               : (3.0 * Y) / max(W - B, 1e-20);
     float Q_star = X - s_star * (B * s_star + 6.0 * Y) * (1.0 / 3.0);
     float K      = max(-Q_star, 0.0);
@@ -211,15 +211,18 @@ float sdLemniscate2D( vec2 p, float a )
         }
     }
 
-    // 1 Halley-Cayley step on G(c, s) = s*(2*a*c - x*(2 + c^2)) + y*(3*c^2 - 2) = 0
-    float G   = s * (2.0 * a * c - q.x * (2.0 + c * c)) + q.y * (3.0 * c * c - 2.0);
-    float dG  = -3.0 * c * (q.x * c * c + 2.0 * q.y * s) + 2.0 * a * (c * c - s * s);
-    float ddG = 3.0 * s * (3.0 * q.x * c * c + 2.0 * q.y * s) - 6.0 * q.y * c * c - 8.0 * a * s * c;
-    float dt  = -(G * dG) / max(dG * dG - 0.5 * G * ddG, 1e-20);
-    float cn  = clamp(c - s * dt, 0.0, 1.0);
-    float sn  = clamp(s + c * dt, 0.0, 1.0);
-    float inv = inversesqrt(cn * cn + sn * sn);
-    c = cn * inv; s = sn * inv;
+    // 2 Halley-Cayley steps on G(c, s) = s*(2*a*c - x*(2 + c^2)) + y*(3*c^2 - 2) = 0
+    for( int i = 0; i < 2; i++ )
+    {
+        float G   = s * (2.0 * a * c - q.x * (2.0 + c * c)) + q.y * (3.0 * c * c - 2.0);
+        float dG  = -3.0 * c * (q.x * c * c + 2.0 * q.y * s) + 2.0 * a * (c * c - s * s);
+        float ddG = 3.0 * s * (3.0 * q.x * c * c + 2.0 * q.y * s) - 6.0 * q.y * c * c - 8.0 * a * s * c;
+        float dt  = -(G * dG) / max(dG * dG - 0.5 * G * ddG, 1e-20);
+        float cn  = clamp(c - s * dt, 0.0, 1.0);
+        float sn  = clamp(s + c * dt, 0.0, 1.0);
+        float inv = inversesqrt(cn * cn + sn * sn);
+        c = cn * inv; s = sn * inv;
+    }
 
     float qx  = (a * c) / (1.0 + s * s);
     vec2  d   = q - vec2(qx, qx * s);

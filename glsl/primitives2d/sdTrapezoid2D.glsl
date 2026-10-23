@@ -57,7 +57,7 @@ float sdTrapezoidSeg2D(vec2 p, vec2 a, vec2 b, float ra, float rb) {
     float cbx  = x - ra - f * rba;
     float cby  = paba - f;
     float b2   = cbx * cbx + cby * cby * baba;
-    if (x <= rc && cay * cay * baba <= b2) return -cay * l;
+    if (x <= rc && cay * cay * baba <= b2) return cay * l;
     return ((cbx < 0.0 && cay < 0.0) ? -1.0 : 1.0) * sqrt(b2);
 }
 

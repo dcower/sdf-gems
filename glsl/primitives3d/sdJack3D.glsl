@@ -35,7 +35,7 @@ float sdJack3D(vec3 p, float w, float r) {
 float sdAxisJack3D(vec3 p, float w, float r) {
     p = abs(p);
     float m = max(p.x, max(p.y, p.z)), t = min(m, w);
-    return sqrt(dot(p, p) - t * (2.0 * m - t)) - r;
+    return sqrt(max(dot(p, p) - t * (2.0 * m - t), 0.0)) - r;
 }
 
 // 3. Exact 1-sqrt 3D 12-pointed face-diagonal jack (union of 6 face-diagonal capsules)

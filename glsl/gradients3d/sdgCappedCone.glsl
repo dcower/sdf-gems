@@ -23,15 +23,16 @@ vec4 sdgCappedCone( vec3 p, float h, float r1, float r2 )
         return vec4(cy, 0.0, sy, 0.0);
 
     float qk   = q.x * kx + q.y * ky;
-    float invL = 1.0 / max(l, 1e-30);
+    vec2  er   = (x2 > 0.0) ? (p.xz / l) : vec2(1.0, 0.0);
     if( (cy <= 0.0 && wc <= 0.0) || (qk < 0.0 && qk > -m) )
     {
         float invM = inversesqrt(m);
-        return vec4(wc * invM, ky * invM * p.x * invL, -kx * invM, ky * invM * p.z * invL);
+        return vec4(wc * invM, ky * invM * er.x, -kx * invM, ky * invM * er.y);
     }
     vec2  v    = (qk >= 0.0) ? q : q + vec2(kx, ky);
     float v2   = dot(v, v), invV = inversesqrt(max(v2, 1e-30));
-    return vec4(v2 * invV, v.x * invV * p.x * invL, v.y * invV, v.x * invV * p.z * invL);
+    return vec4((v2 > 0.0) ? (v2 * invV) : 0.0,
+                (v2 > 0.0) ? vec3(v.x * invV * er.x, v.y * invV, v.x * invV * er.y) : vec3(er.x, 0.0, er.y));
 }
 
 #endif // SDF_GEMS_SDG_CAPPED_CONE_GLSL

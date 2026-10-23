@@ -11,5 +11,5 @@ float sdOctahedron( vec3 p, float s )
     float m = p.x + p.y + p.z - s, z = min(p.x, min(p.y, p.z));
     float a = max(m - 3.0*z, 0.0);
     float b = max(2.0*max(p.x, max(p.y, p.z)) + z - m - 2.0*s, 0.0);
-    return sign(m) * sqrt((2.0*m*m + a*a + 3.0*b*b) / 6.0);
+    return ((m < 0.0) ? -1.0 : 1.0) * sqrt((2.0*m*m + a*a + 3.0*b*b) / 6.0);
 }

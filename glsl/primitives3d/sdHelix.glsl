@@ -38,6 +38,9 @@
 //      precision across all pitches and radii (including r_xz = 0 where alpha = 0
 //      gives d = u in closed form!).
 
+#ifndef SDF_GEMS_SD_HELIX_GLSL
+#define SDF_GEMS_SD_HELIX_GLSL
+
 // Internal helper: solves alpha * sin(d) + d = u on d in [0, min(u, pi)]
 float _sdHelixSolveDelta( float alpha, float u )
 {
@@ -91,7 +94,7 @@ vec4 sdgHelix( vec3 p, float R, float k, float r )
     float ang   = theta + delta;
     vec3  q     = vec3(p.x - R * cos(ang), dy - k * delta, p.z - R * sin(ang));
     float l     = length(q);
-    return vec4(l - r, q / max(l, 1e-12));
+    return vec4(l - r, (l > 1e-12) ? (q / l) : vec3(cos(ang), 0.0, sin(ang)));
 }
 
 // 3. Exact Finite 3D Coil Spring (major radius R, pitch rate k = P/(2*pi), half-angle span T = pi*N_turns, wire radius r)
@@ -154,5 +157,7 @@ vec4 sdgCoilSpring( vec3 p, float R, float k, float T, float r )
 
     vec3  q = (l2_0 <= l2_1) ? q0 : q1;
     float l = sqrt(min(l2_0, l2_1));
-    return vec4(l - r, q / max(l, 1e-12));
+    return vec4(l - r, (l > 1e-12) ? (q / l) : vec3(1.0, 0.0, 0.0));
 }
+
+#endif // SDF_GEMS_SD_HELIX_GLSL

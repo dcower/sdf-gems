@@ -55,7 +55,8 @@ vec4 sdgExtrudeStairs( vec3 d2g, float z, float h, float r, float n )
     bool  m   = max(p.x, p.y) < 0.0;
     vec2  c   = max(m ? q : p, 0.0);
     float l   = length(c), g = max(u, v);
-    vec2  duv = (m && g > -l) ? ((u > v) ? vec2(1.0, 0.0) : vec2(0.0, 1.0)) : c / l;
+    vec2  duv = (m && g > -l) ? ((u > v) ? vec2(1.0, 0.0) : vec2(0.0, 1.0))
+                              : ((c.x > 0.0 && c.y > 0.0) ? (c / l) : (((m ? q.x : p.x) > (m ? q.y : p.y)) ? vec2(1.0, 0.0) : vec2(0.0, 1.0)));
     return vec4(m ? max(g, -l) : l, duv.x * d2g.yz, duv.y * sz);
 }
 

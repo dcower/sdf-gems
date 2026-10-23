@@ -73,21 +73,29 @@ void opRepPerimeter2Tap( in vec2 p, in float s, in vec2 l, out vec2 id0, out vec
         diff1 = u - id1;
     }
 
-    // Check adjacent cell on the perpendicular wall near the 90-degree corner
-    vec2 sec;
+    // Check adjacent cell on the perpendicular wall and opposite parallel wall
+    vec2 sec, opp;
     if( is_vert )
     {
         float hx = clamp(round(u.x), -l.x, l.x);
         if( id0.y == sgn.y * l.y && id0.x == hx ) hx = clamp(hx - sgn.x, -l.x, l.x);
         sec = vec2(hx, sgn.y * l.y);
+        opp = vec2(-sgn.x * l.x, id0.y);
     }
     else
     {
         float vy = clamp(round(u.y), -l.y, l.y);
         if( id0.x == sgn.x * l.x && id0.y == vy ) vy = clamp(vy - sgn.y, -l.y, l.y);
         sec = vec2(sgn.x * l.x, vy);
+        opp = vec2(id0.x, -sgn.y * l.y);
     }
     vec2 diff_sec = u - sec;
     if( dot(diff_sec, diff_sec) < dot(diff1, diff1) )
-        id1 = sec;
+    {
+        id1   = sec;
+        diff1 = diff_sec;
+    }
+    vec2 diff_opp = u - opp;
+    if( dot(diff_opp, diff_opp) < dot(diff1, diff1) )
+        id1 = opp;
 }

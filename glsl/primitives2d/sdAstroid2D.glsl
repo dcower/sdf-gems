@@ -46,15 +46,17 @@ vec3 sdgAstroid2D( in vec2 p, in float r )
         float c  = sqrt(1.0 - s * s);
         float dn = p.x * s + p.y * c - r * s * c;
         float f  = p.y * s - p.x * c + r * (1.0 - 2.0 * s * s);
-        if( p.x <= r || dn * dn + f * f < (p.x - r) * (p.x - r) + p.y * p.y )
+        if( p.x <= r || (s > 1e-5 && abs(f) < 1e-3 * r && dn * dn <= (p.x - r) * (p.x - r) + p.y * p.y) )
         {
             vec2 g = sw ? vec2(c, s) : vec2(s, c);
             return vec3(dn, sp * g);
         }
     }
 
-    vec2  v    = vec2(p.x - r, p.y);
-    float d2   = dot(v, v), invD = inversesqrt(max(d2, 1e-30));
+    vec2  v  = vec2(p.x - r, p.y);
+    float d2 = dot(v, v);
+    if( d2 <= 1e-30 ) return vec3(0.0, sw ? vec2(0.0, sp.y) : vec2(sp.x, 0.0));
+    float invD = inversesqrt(d2);
     vec2  g    = (sw ? v.yx : v) * invD;
     return vec3(d2 * invD, sp * g);
 }
@@ -72,12 +74,15 @@ vec4 sdgAstroidRevolved3D( in vec3 p, in float r )
     float A = 2.0 * r - k * ay;
     if( ay >= r && (A <= 0.0 || x2 <= 4.0 * A * (ay - r)) )
     {
-        float vy = ay - r, d2 = x2 + vy * vy, invD = inversesqrt(max(d2, 1e-30));
+        float vy = ay - r, d2 = x2 + vy * vy;
+        if( d2 <= 1e-30 ) return vec4(0.0, 0.0, sy, 0.0);
+        float invD = inversesqrt(d2);
         return vec4(d2 * invD, p.x * invD, sy * vy * invD, p.z * invD);
     }
-    float x  = sqrt(x2), invX = 1.0 / max(x, 1e-30);
-    vec3  dg = sdgAstroid2D(vec2(x, p.y), r);
-    return vec4(dg.x, dg.y * p.x * invX, dg.z, dg.y * p.z * invX);
+    float x   = sqrt(x2);
+    vec3  dg  = sdgAstroid2D(vec2(x, p.y), r);
+    vec2  dir = (x > 1e-15) ? (p.xz / x) : vec2(1.0, 0.0);
+    return vec4(dg.x, dg.y * dir.x, dg.z, dg.y * dir.y);
 }
 
 float sdAstroidRevolved3D( in vec3 p, in float r )

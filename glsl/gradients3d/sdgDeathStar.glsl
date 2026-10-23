@@ -11,6 +11,8 @@
 // ----------------------------------------------------------------------------
 // 1. sdgDeathStar(p, ra, rb, d) — 1/2-SFU Sphere Subtracted by Sphere + Gradient
 // ----------------------------------------------------------------------------
+#ifndef SDF_GEMS_HAS_SDG_DEATH_STAR
+#define SDF_GEMS_HAS_SDG_DEATH_STAR
 vec4 sdgDeathStar( vec3 p, float ra, float rb, float d )
 {
     float yz2 = dot(p.yz, p.yz), a = (ra * ra - rb * rb + d * d) / (2.0 * d);
@@ -43,10 +45,13 @@ vec4 sdgDeathStar( vec3 p, float ra, float rb, float d )
     }
     return vec4( -(ca ? ra : -rb), sgn, 0.0, 0.0 );
 }
+#endif // SDF_GEMS_HAS_SDG_DEATH_STAR
 
 // ----------------------------------------------------------------------------
 // 2. sdgLens(p, ra, rb, d) — 1/2-SFU Asymmetric Two-Sphere Optical Lens + Gradient
 // ----------------------------------------------------------------------------
+#ifndef SDF_GEMS_HAS_SDG_LENS
+#define SDF_GEMS_HAS_SDG_LENS
 vec4 sdgLens( vec3 p, float ra, float rb, float d )
 {
     float yz2 = dot(p.yz, p.yz), a = (ra * ra - rb * rb + d * d) / (2.0 * d);
@@ -78,10 +83,13 @@ vec4 sdgLens( vec3 p, float ra, float rb, float d )
     }
     return vec4( -(ca ? ra : rb), ca ? 1.0 : -1.0, 0.0, 0.0 );
 }
+#endif // SDF_GEMS_HAS_SDG_LENS
 
 // ----------------------------------------------------------------------------
 // 3. sdgVesicaSegment(p, a, b, w) — 1/2-SFU 3D Revolved Vesica / Spindle + Gradient
 // ----------------------------------------------------------------------------
+#ifndef SDF_GEMS_HAS_SDG_VESICA_SEGMENT
+#define SDF_GEMS_HAS_SDG_VESICA_SEGMENT
 vec4 sdgVesicaSegment( vec3 p, vec3 a, vec3 b, float w )
 {
     vec3  ba = b - a, pc = p - 0.5 * (a + b);
@@ -100,14 +108,17 @@ vec4 sdgVesicaSegment( vec3 p, vec3 a, vec3 b, float w )
         }
         return vec4( 0.0, normalize(ba) * ((u >= 0.0) ? 1.0 : -1.0) );
     }
-    float invX = (x2 > 1e-24) ? inversesqrt(x2) : 0.0;
+    float invX = (x2 > 1e-12 * l2) ? inversesqrt(x2) : 0.0;
     float qx   = x2 * invX;
-    vec3  er   = (x2 > 1e-24) ? (up * invX)
+    vec3  er   = (x2 > 1e-12 * l2) ? (up * invX)
                : normalize((abs(ba.x) < abs(ba.z)) ? vec3(-ba.y, ba.x, 0.0) : vec3(0.0, -ba.z, ba.y));
     vec3  wv   = pc + d * er;
     float w2   = dot(pc, pc) + d * d + 2.0 * d * qx;
     float invW = inversesqrt(max(w2, 1e-30));
-    return vec4( w2 * invW - (d + w), wv * invW );
+    float gw2  = dot(wv, wv);
+    vec3  g    = (gw2 > 0.0) ? (wv * inversesqrt(gw2)) : er;
+    return vec4( w2 * invW - (d + w), g );
 }
+#endif // SDF_GEMS_HAS_SDG_VESICA_SEGMENT
 
 #endif // SDF_GEMS_SDG_DEATH_STAR_GLSL

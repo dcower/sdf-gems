@@ -23,8 +23,15 @@ float opRevolutionLimFinalize( float d2d, float w )
     return min(max(d.x, d.y), 0.0) + length(max(d, 0.0));
 }
 
-// Optional Step 2b: Round-capped partial revolution (revolved cross-section end-caps)
-float opRevolutionArcFinalize( float d2d, float w )
+// Optional Step 2b: Round-capped partial revolution for unsigned spine d_spine >= 0 (subtract radius r outside)
+float opRevolutionArcFinalize( float d_spine, float w )
 {
-    return (w > 0.0) ? length(vec2(max(d2d, 0.0), w)) + min(d2d, 0.0) : d2d;
+    return (w > 0.0) ? length(vec2(max(d_spine, 0.0), w)) + min(d_spine, 0.0) : d_spine;
+}
+
+// Overload for signed 2D SDF d2d with cap rounding radius r (||grad d|| = 1 everywhere)
+float opRevolutionArcFinalize( float d2d, float w, float r )
+{
+    float ds = d2d + r;
+    return ((w > 0.0) ? length(vec2(max(ds, 0.0), w)) + min(ds, 0.0) : ds) - r;
 }

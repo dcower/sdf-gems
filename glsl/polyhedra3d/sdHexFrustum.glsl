@@ -155,7 +155,7 @@ float sdBipyramid( vec3 p, float n, float r, float h )
 {
     float an = 3.14159265 / n;
     float kz = tan(an);
-    float bn = mod(atan(p.x, p.z), 2.0 * an) - an;
+    float bn = mod(atan(p.x, p.z) + an, 2.0 * an) - an;
     vec2  uz = length(p.xz) * vec2(cos(bn), abs(sin(bn)));
     float u  = uz.x - r, v = uz.y - kz * r, ay = abs(p.y);
 

@@ -32,24 +32,39 @@ float sdLens( vec3 p, float ra, float rb, float d )
 }
 
 // 2. Exact 1/2-SFU 3D Optical Lens Distance + Analytical Gradient (vec4(d, grad.xyz))
+#ifndef SDF_GEMS_HAS_SDG_LENS
+#define SDF_GEMS_HAS_SDG_LENS
 vec4 sdgLens( vec3 p, float ra, float rb, float d )
 {
     float yz2 = dot(p.yz, p.yz), a = (ra * ra - rb * rb + d * d) / (2.0 * d);
     float b2  = max(ra * ra - a * a, 0.0), da = d - a, dx = d - p.x;
     if( a * abs(a) * yz2 > b2 * p.x * abs(p.x) && da * abs(da) * yz2 > b2 * dx * abs(dx) )
     {
-        float invY = inversesqrt(max(yz2, 1e-30));
-        float py   = (yz2 > 0.0) ? (yz2 * invY) : 0.0;
+        float invY = (yz2 > 0.0) ? inversesqrt(yz2) : 0.0;
+        float py   = yz2 * invY;
         vec2  er   = (yz2 > 0.0) ? (p.yz * invY) : vec2(1.0, 0.0);
-        vec2  w    = vec2(p.x - a, py - sqrt(b2));
-        float l2   = dot(w, w), invL = inversesqrt(max(l2, 1e-30));
-        return vec4(l2 * invL, vec3(w.x, w.y * er.x, w.y * er.y) * invL);
+        float b    = sqrt(b2);
+        float wy   = (py + b > 0.0) ? ((yz2 - b2) / (py + b)) : 0.0;
+        vec2  w    = vec2( p.x - a, wy );
+        float l2   = dot(w, w);
+        if( l2 > 0.0 )
+        {
+            float invL = inversesqrt(l2);
+            return vec4( l2 * invL, vec3(w.x, w.y * er.x, w.y * er.y) * invL );
+        }
+        return vec4( 0.0, 0.0, er.x, er.y );
     }
     float r  = ra - rb, m = ra * r + d * (p.x - a);
     bool  ca = (r * abs(r) * (p.x * p.x + yz2) <= m * abs(m));
-    vec3  w  = vec3(p.x - (ca ? 0.0 : d), p.yz);
-    float r2 = dot(w, w), invR = inversesqrt(max(r2, 1e-30));
-    return vec4(r2 * invR - (ca ? ra : rb), (r2 > 0.0) ? (w * invR) : vec3(1.0, 0.0, 0.0));
+    vec3  w  = vec3( p.x - (ca ? 0.0 : d), p.yz );
+    float r2 = dot(w, w);
+    if( r2 > 0.0 )
+    {
+        float invR = inversesqrt(r2);
+        return vec4( r2 * invR - (ca ? ra : rb), w * invR );
+    }
+    return vec4( -(ca ? ra : rb), ca ? 1.0 : -1.0, 0.0, 0.0 );
 }
+#endif // SDF_GEMS_HAS_SDG_LENS
 
 #endif // SDF_GEMS_SD_LENS_GLSL

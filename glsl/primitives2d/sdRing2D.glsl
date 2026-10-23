@@ -49,6 +49,8 @@ float sdArc2D( in vec2 p, in vec2 sc, in float ra, in float rb )
 }
 
 // 4. Exact 1-SFU 2D Round-Capped Circular Arc Distance & Analytical Unit Gradient
+#ifndef SDF_GEMS_HAS_SDG_ARC2D
+#define SDF_GEMS_HAS_SDG_ARC2D
 vec3 sdgArc2D( in vec2 p, in vec2 sc, in float ra, in float rb )
 {
     float sx = (p.x < 0.0) ? -1.0 : 1.0;
@@ -56,12 +58,23 @@ vec3 sdgArc2D( in vec2 p, in vec2 sc, in float ra, in float rb )
     if( sc.y * p.x > sc.x * p.y )
     {
         vec2  q  = p - sc * ra;
-        float l2 = dot(q, q), il = inversesqrt(max(l2, 1e-30));
-        return vec3(l2 * il - rb, sx * q.x * il, q.y * il);
+        float l2 = dot(q, q);
+        if( l2 > 0.0 )
+        {
+            float il = inversesqrt(l2);
+            return vec3(l2 * il - rb, sx * q.x * il, q.y * il);
+        }
+        return vec3(-rb, sx * sc.y, -sc.x);
     }
-    float l2 = dot(p, p), il = inversesqrt(max(l2, 1e-30)), l = l2 * il;
-    float sr = (l < ra) ? -1.0 : 1.0;
-    return vec3(abs(l - ra) - rb, sx * sr * p.x * il, sr * p.y * il);
+    float l2 = dot(p, p);
+    if( l2 > 0.0 )
+    {
+        float il = inversesqrt(l2), l = l2 * il;
+        float sr = (l < ra) ? -1.0 : 1.0;
+        return vec3(abs(l - ra) - rb, sx * sr * p.x * il, sr * p.y * il);
+    }
+    return vec3(ra - rb, 0.0, -1.0);
 }
+#endif // SDF_GEMS_HAS_SDG_ARC2D
 
 #endif // SDF_GEMS_SD_RING2D_GLSL

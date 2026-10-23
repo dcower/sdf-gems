@@ -12,7 +12,7 @@
 - **Category**: `primitives3d`
 - **GLSL File**: [`glsl/primitives3d/sdSteinmetz.glsl`](../../glsl/primitives3d/sdSteinmetz.glsl)
 - **Attribution**: Discovered and derived using Gemini 4 Argon (`sdf-gems`, 2026)
-- **Exactness**: **Exact Euclidean SDF & Analytical 3D Gradients** ($\|\nabla d\| = 1$, `6.57e-10` max error for `sdSteinmetz`, `1.09e-9` for `sdTricylinder`, `3.91e-7` for `sdCylinderCross3D`; **1 `sqrt`** across $100\%$ of `sdTricylinder` interior and $100\%$ of `sdCylinderCross3D` exterior)
+- **Exactness**: **Exact Euclidean SDF & Analytical 3D Gradients** ($\|\nabla d\| = 1$, `4.23e-9` max error for `sdSteinmetz` and `sdTricylinder`, `1.20e-9` for `sdCylinderCross3D`, `4.47e-12` for `sdCloisterVault`; **1 `sqrt`** across $100\%$ of `sdTricylinder` interior and $100\%$ of `sdCylinderCross3D` exterior)
 
 ---
 

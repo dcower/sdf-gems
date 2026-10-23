@@ -7,7 +7,7 @@
 // Full 360-degree revolution gradient finalize for d2g = sdgShape2D(vec2(length(p.xz) - o, p.y))
 vec4 sdgRevolutionFinalize( vec3 p, vec3 d2g )
 {
-    float l = length(p.xz);
+    float l = max(length(p.xz), 1e-20);
     return vec4(d2g.x, d2g.y * p.x / l, d2g.z, d2g.y * p.z / l);
 }
 
@@ -18,11 +18,11 @@ vec4 sdgRevolutionLimFinalize( vec3 p, vec2 sc, vec3 d2g )
     vec2  q  = vec2(abs(p.x), p.z);
     float u  = q.x * sc.x + q.y * sc.y;
     float w  = q.x * sc.y - q.y * sc.x;
-    float l  = length(q);
+    float l  = max(length(q), 1e-20);
     vec3  gw = vec3(sx * sc.y, 0.0, -sc.x);
     if( w > 0.0 ) {
         if( d2g.x <= 0.0 ) return vec4(w, gw);
-        float d  = length(vec2(d2g.x, w));
+        float d  = max(length(vec2(d2g.x, w)), 1e-20);
         vec3  gu = vec3(sx * d2g.y * sc.x, d2g.z, d2g.y * sc.y);
         return vec4(d, (d2g.x * gu + w * gw) / d);
     }

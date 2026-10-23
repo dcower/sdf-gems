@@ -1,5 +1,5 @@
 // ============================================================================
-// sdgCone, sdgConeInf, sdgRoundedCylinder & sdgRhombus — 0/1/2-SFU 3D Analytical Gradients
+// sdgCone, sdgConeInf & sdgRhombus — 0/1/2-SFU 3D Analytical Gradients
 // @author Discovered using Gemini 4 Argon (sdf-gems, 2026)
 // @source https://github.com/dcower/sdf-gems
 // @exact  Yes (`||grad d|| = 1`, 0 SFUs in cap/face Voronoi zones, NaN-free everywhere)
@@ -54,26 +54,7 @@ vec4 sdgConeInf( vec3 p, vec2 c )
     return vec4(c.y * wx + p.y * c.x, c.y * er.x, c.x, c.y * er.y);
 }
 
-// 3. Exact 0/1/2-SFU 3D Rounded Cylinder Distance + Analytical Gradient
-//    (ra = core cylinder radius, rb = rounding radius, h = core half-height)
-vec4 sdgRoundedCylinder( vec3 p, float ra, float rb, float h )
-{
-    float x2 = dot(p.xz, p.xz), ay = abs(p.y), sy = (p.y < 0.0) ? -1.0 : 1.0;
-    float dy = ay - h, rc = ra + min(dy, 0.0);
-    if( rc >= 0.0 && x2 <= rc * rc )
-        return vec4(dy - rb, 0.0, sy, 0.0);
-    float invX = inversesqrt(max(x2, 1e-30));
-    float wx   = (x2 > 0.0) ? (x2 * invX) : 0.0;
-    vec2  er   = (x2 > 0.0) ? (p.xz * invX) : vec2(1.0, 0.0);
-    float dx   = wx - ra;
-    if( dy <= 0.0 )
-        return vec4(dx - rb, er.x, 0.0, er.y);
-    float l2   = dx * dx + dy * dy;
-    float invL = inversesqrt(max(l2, 1e-30));
-    return vec4(l2 * invL - rb, (l2 > 0.0) ? (vec3(dx * er.x, sy * dy, dx * er.y) * invL) : vec3(0.0, sy, 0.0));
-}
-
-// 4. Exact 0/1/2-SFU 3D Extruded Rounded Rhombus Distance + Analytical Gradient
+// 3. Exact 0/1/2-SFU 3D Extruded Rounded Rhombus Distance + Analytical Gradient
 vec4 sdgRhombus( vec3 p, float la, float lb, float h, float ra )
 {
     vec3  s    = vec3((p.x < 0.0) ? -1.0 : 1.0, (p.y < 0.0) ? -1.0 : 1.0, (p.z < 0.0) ? -1.0 : 1.0);

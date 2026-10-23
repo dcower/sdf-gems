@@ -34,10 +34,10 @@ vec3 sdgHeart2D( in vec2 p )
         return vec3(d * 0.70710678, sx * 0.70710678, -0.70710678);
     if( s <= 0.0 )
     {
-        float l = max(length(p), 1e-12);
-        return vec3(l, sx * p.x / l, p.y / l);
+        float l = length(p);
+        return (l > 1e-12) ? vec3(l, sx * p.x / l, p.y / l) : vec3(0.0, 0.0, 1.0);
     }
     vec2  q = p - vec2(0.0, 1.0);
-    float l = max(length(q), 1e-12);
-    return vec3(-l, -sx * q.x / l, -q.y / l);
+    float l = length(q);
+    return (l > 1e-12) ? vec3(-l, -sx * q.x / l, -q.y / l) : vec3(0.0, 0.0, -1.0);
 }

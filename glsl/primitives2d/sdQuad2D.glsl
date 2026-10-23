@@ -28,7 +28,7 @@ vec3 sdgQuad2D( in vec2 p, in vec2 p0, in vec2 p1, in vec2 p2, in vec2 p3 )
     float c3 = abs(a2) - c0 - c1 - c2;
     float l0 = dot(e0, e0), l1 = dot(e1, e1), l2 = dot(e2, e2), l3 = dot(e3, e3);
 
-    if( c0 > 0.0 && c1 > 0.0 && c2 > 0.0 && c3 > 0.0 )
+    if( c0 >= 0.0 && c1 >= 0.0 && c2 >= 0.0 && c3 >= 0.0 )
     {
         float cm = c0, lm = l0; vec2 em = e0;
         if( c1 * c1 * lm < cm * cm * l1 ) { cm = c1; lm = l1; em = e1; }

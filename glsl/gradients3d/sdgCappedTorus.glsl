@@ -26,6 +26,8 @@
 //    and the medial spine circle (r_xy == ra && p.z == 0), achieving 0 NaNs
 //    everywhere in R^3.
 // ----------------------------------------------------------------------------
+#ifndef SDF_GEMS_HAS_SDG_CAPPED_TORUS
+#define SDF_GEMS_HAS_SDG_CAPPED_TORUS
 vec4 sdgCappedTorus( vec3 p, vec2 sc, float ra, float rb )
 {
     float sx  = (p.x < 0.0) ? -1.0 : 1.0;
@@ -59,5 +61,6 @@ vec4 sdgCappedTorus( vec3 p, vec2 sc, float ra, float rb )
     }
     return vec4( -rb, er.x, er.y, 0.0 );
 }
+#endif // SDF_GEMS_HAS_SDG_CAPPED_TORUS
 
 #endif // SDF_GEMS_SDG_CAPPED_TORUS_GLSL

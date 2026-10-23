@@ -73,16 +73,21 @@ vec3 sdgSuperellipse2D( in vec2 p, in float r, in float n )
     bool  sw = (p.y > p.x);
     if( sw ) p = p.yx;
 
-    float v   = p.y / max(p.x, 1e-30);
-    float t   = pow(v, 1.0 / max(n - 1.0, 1.0));
-    float nm1 = n - 1.0, nm2 = n - 2.0;
-    for( int i = 0; i < 3; i++ )
+    float nm1 = max(n - 1.0, 1.0), nm2 = max(n - 2.0, 0.0);
+    float c0  = (nm2 / nm1) * exp2(-1.0 / n);
+    float t   = (p.x > c0 * r) ? pow(p.y / max(p.x, r), 1.0 / nm1) : (p.y / r);
+    for( int i = 0; i < 4; i++ )
     {
-        float tn2 = pow(max(t, 1e-12), nm2), tn1 = tn2 * t, tn = tn1 * t;
+        float ts  = max(t, 1e-12);
+        float tn2 = pow(ts, nm2), tn1 = tn2 * ts, tn = tn1 * ts;
         float qn  = 1.0 + tn, ru = r * pow(qn, -1.0 / n);
-        float F   = p.x * tn1 - p.y + ru * t * (1.0 - tn2);
-        float dF  = nm1 * p.x * tn2 + (ru / qn) * (1.0 - nm1 * tn2 - nm2 * tn1 * tn1);
-        t = clamp(t - F / max(dF, 1e-5 * r), 0.0, 1.0);
+        float P   = 1.0 - nm1 * tn2 - nm2 * tn1 * tn1;
+        float tdP = -nm1 * nm2 * tn2 * (1.0 + 2.0 * tn);
+        float F   = p.x * tn1 - p.y + ru * ts * (1.0 - tn2);
+        float dF  = nm1 * p.x * tn2 + (ru / qn) * P;
+        float d2F = (nm1 * nm2 * p.x * tn2 + (ru / (qn * qn)) * (qn * tdP - (n + 1.0) * tn * P)) / ts;
+        float dm  = dF - 0.5 * F * d2F / max(abs(dF), 1e-6 * r);
+        t = clamp(t - F / max(abs(dm), 1e-6 * r), 0.0, 1.0);
     }
     float tn1  = pow(max(t, 0.0), nm1), tn = tn1 * t, qn = 1.0 + tn;
     float invN = inversesqrt(1.0 + tn1 * tn1);

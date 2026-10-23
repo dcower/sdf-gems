@@ -17,9 +17,11 @@ float sdHexPrism( vec3 p, vec2 h )
     return (max(d.x, min(d.y, d.z)) <= 0.0) ? max(d.y, d.z) : length(max(d, 0.0));
 }
 
+#ifndef SDF_GEMS_HAS_SDG_HEX_PRISM
+#define SDF_GEMS_HAS_SDG_HEX_PRISM
 vec4 sdgHexPrism( vec3 p, vec2 h )
 {
-    const vec3 k = vec3(-0.8660254, 0.5, 0.57735027);
+    const vec3 k = vec3(-0.86602540, 0.5, 0.57735027);
     vec3 s = vec3((p.x < 0.0) ? -1.0 : 1.0,
                   (p.y < 0.0) ? -1.0 : 1.0,
                   (p.z < 0.0) ? -1.0 : 1.0);
@@ -47,5 +49,6 @@ vec4 sdgHexPrism( vec3 p, vec2 h )
     if( rf ) g.xy -= 2.0 * dot(k.xy, g.xy) * k.xy;
     return vec4(dist, s * g);
 }
+#endif // SDF_GEMS_HAS_SDG_HEX_PRISM
 
 #endif // SDF_GEMS_SD_HEX_PRISM_GLSL

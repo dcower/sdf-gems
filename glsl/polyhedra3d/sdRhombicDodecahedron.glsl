@@ -12,5 +12,5 @@ float sdRhombicDodecahedron( vec3 p, float s )
     float y = p.x + p.y + p.z - x - z, m = x + y - s;
     float a = max(x - y + 2.0*z - s, 0.0);
     float b = max(abs(y + z - x + 0.25*s) - 0.75*s, 0.0);
-    return sign(m) * sqrt((3.0*m*m + a*a + 2.0*b*b) / 6.0);
+    return ((m < 0.0) ? -1.0 : 1.0) * sqrt((3.0*m*m + a*a + 2.0*b*b) / 6.0);
 }

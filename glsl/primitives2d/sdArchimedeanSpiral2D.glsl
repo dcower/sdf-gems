@@ -69,7 +69,8 @@ vec3 sdgArchimedeanSpiral2D( in vec2 p, in float a, in float T, in vec2 endPoint
     }
 
     float invL = inversesqrt(max(bestL2, 1e-30));
-    return vec3(bestL2 * invL - w, bestQ * invL);
+    vec2  g    = (bestL2 > 1e-30) ? (bestQ * invL) : endPointCS;
+    return vec3(bestL2 * invL - w, g);
 }
 
 float sdArchimedeanSpiral2D( in vec2 p, in float a, in float T, in vec2 endPointCS, in float w )

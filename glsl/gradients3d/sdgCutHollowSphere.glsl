@@ -33,6 +33,8 @@
 //    ux = (x2 - w2) / (sqrt(x2) + sqrt(w2)), preventing catastrophic FP32
 //    subtraction cancellation near the rim circle x2 == w2.
 // ----------------------------------------------------------------------------
+#ifndef SDF_GEMS_HAS_SDG_CUT_HOLLOW_SPHERE
+#define SDF_GEMS_HAS_SDG_CUT_HOLLOW_SPHERE
 vec4 sdgCutHollowSphere( vec3 p, float r, float h, float t )
 {
     float x2 = dot(p.xz, p.xz);
@@ -68,5 +70,6 @@ vec4 sdgCutHollowSphere( vec3 p, float r, float h, float t )
     }
     return vec4( -t, er.x, 0.0, er.y );
 }
+#endif // SDF_GEMS_HAS_SDG_CUT_HOLLOW_SPHERE
 
 #endif // SDF_GEMS_SDG_CUT_HOLLOW_SPHERE_GLSL

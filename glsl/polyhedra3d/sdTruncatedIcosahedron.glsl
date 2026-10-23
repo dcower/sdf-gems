@@ -12,8 +12,8 @@
 //   p : 3D query point
 //   r : inradius to the 12 regular pentagonal faces
 //       (hexagon inradius = sqrt((47 + 21*sqrt(5))/100) * r = 0.97415421 * r,
-//        edge length a = (9 - 3*sqrt(5))/5 * r = 0.45835921 * r,
-//        circumradius R = sqrt((58 + 18*sqrt(5))/90) * r = 1.04508497 * r)
+//        edge length a = (sqrt(5) - 1)/3 * r = 0.42965690 * r,
+//        circumradius R = 1.06453182 * r)
 // ============================================================================
 
 float sdTruncatedIcosahedron( vec3 p, float r )

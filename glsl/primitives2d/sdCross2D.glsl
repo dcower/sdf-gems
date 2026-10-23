@@ -40,11 +40,11 @@ vec3 sdgCross2D( vec2 p, vec2 b, float r )
         float v2   = dot(v, v);
         float invV = inversesqrt(max(v2, 1e-30));
         d = (ext_c ? 1.0 : -1.0) * (v2 * invV);
-        g = (ext_c ? v : vec2(-v.x, v.y)) * invV;
+        g = (v2 > 1e-30) ? (v * invV) : vec2(1.0, 0.0);
     }
     else
     {
-        bool x_win = (h > 0.0) ? (q.x > q.y) : (q.x > -w.y);
+        bool x_win = (h <= 0.0 && w.x > 0.0) || (q.x > q.y);
         d = x_win ? q.x : q.y;
         g = x_win ? vec2(1.0, 0.0) : vec2(0.0, 1.0); // 0 SFU ops!
     }

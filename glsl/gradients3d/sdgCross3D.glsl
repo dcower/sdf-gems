@@ -145,7 +145,7 @@ vec4 sdgAxisJack3D( vec3 p, float w, float r )
         float invL = inversesqrt(l2);
         return vec4( l2 * invL - r, s * v * invL );
     }
-    return vec4( -r, s * (ix ? vec3(1.0, 0.0, 0.0) : (iy ? vec3(0.0, 1.0, 0.0) : vec3(0.0, 0.0, 1.0))) );
+    return vec4( -r, s * (ix ? vec3(0.0, 1.0, 0.0) : (iy ? vec3(0.0, 0.0, 1.0) : vec3(1.0, 0.0, 0.0))) );
 }
 
 // ----------------------------------------------------------------------------

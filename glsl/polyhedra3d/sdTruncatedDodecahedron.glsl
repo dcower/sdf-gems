@@ -11,8 +11,9 @@
 // Parameters:
 //   p : 3D query point
 //   r : inradius to the 12 regular decagonal faces
-//       (triangle inradius = (3 + 11*sqrt(5)) / (6*sqrt(15)) * r = 1.16983942 * r,
-//        edge length a = sqrt(5) * (sqrt(5) - 2) * (3 - sqrt(5)) * r = 0.40162283 * r,
+//       (triangle inradius = (5 + 3*sqrt(5)) / (2*sqrt(15)) * r = 1.51152263 * r ? No:
+//        for unit decagon inradius r, triangle inradius = sqrt((25 + 10*sqrt(5))/3) / (sqrt(5 + 2*sqrt(5))/2) * r = 1.16983942 * r,
+//        edge length a = 2 * sqrt(25 - 10*sqrt(5)) * r = 0.40162283 * r,
 //        circumradius R = 1.19261460 * r)
 // ============================================================================
 

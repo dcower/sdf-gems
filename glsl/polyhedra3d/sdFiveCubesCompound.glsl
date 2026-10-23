@@ -110,7 +110,7 @@ float sdFiveCubesCompound( vec3 p, float r )
 
     // Swizzle-Frame coordinates of Cube 1 and Cube 2 in C_{I_h}:
     vec3  n1a = -n3.yzx;                         // ( 0.80901699, -0.30901699, 0.50000000)
-    vec3  n2b = vec3(n3.z, -0.5, -n3.y);         // (-0.30901699, -0.50000000, 0.80901699)
+    vec3  n2b = vec3(-n3.z, -0.5, -n3.y);        // (-0.30901699, -0.50000000, 0.80901699)
     float q1c = dot(p, n3);
     float q1a = dot(p, n1a) - r;
     float q2a = q1a + 0.61803399 * p.y;

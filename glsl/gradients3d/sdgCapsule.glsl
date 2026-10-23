@@ -25,6 +25,8 @@
 // (l2 == 0.0), sdgCapsule evaluates both the exact signed distance and unit
 // 3D normal in 1 inversesqrt total with 0 NaNs everywhere in R^3.
 // ----------------------------------------------------------------------------
+#ifndef SDF_GEMS_HAS_SDG_CAPSULE
+#define SDF_GEMS_HAS_SDG_CAPSULE
 vec4 sdgCapsule( vec3 p, vec3 a, vec3 b, float r )
 {
     vec3  pa   = p - a, ba = b - a;
@@ -45,6 +47,7 @@ vec4 sdgCapsule( vec3 p, vec3 a, vec3 b, float r )
     vec3  g  = (u2 > 0.0) ? u * inversesqrt(u2) : vec3(1.0, 0.0, 0.0);
     return vec4( -r, g );
 }
+#endif // SDF_GEMS_HAS_SDG_CAPSULE
 
 // ----------------------------------------------------------------------------
 // sdgCapsuleY(p, h, r) — Vertical Y-Axis Capsule (0 Divisions, 1 inversesqrt)

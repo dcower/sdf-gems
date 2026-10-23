@@ -22,6 +22,7 @@
 vec4 sdgChamferUnion(vec4 a, vec4 b, float r) {
     if (a.x > b.x) { vec4 t = a; a = b; b = t; }
     float c  = dot(a.yzw, b.yzw);
+    if (c < -0.95) return a;
     float ic = inversesqrt(max(2.0 + 2.0 * c, 1e-5));
     float ch = (a.x + b.x - r) * ic;
     vec3  gc = (a.yzw + b.yzw) * ic;

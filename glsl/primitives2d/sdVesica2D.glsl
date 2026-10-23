@@ -9,10 +9,10 @@
 float sdVesica2D( vec2 p, float r, float d )
 {
     p = abs(p);
-    float b2 = r * r - d * d;
-    float x  = p.x + d;
-    return (d * d * p.y * p.y > b2 * x * x)
-         ? length(vec2(p.x, p.y - sqrt(b2)))
+    float b2 = max(r * r - d * d, 0.0);
+    float u  = p.y * d, x = p.x + d;
+    return (u * abs(u) > x * abs(x) * b2)
+         ? length(vec2(p.x, p.y - sqrt(b2))) * ((d < 0.0) ? -1.0 : 1.0)
          : length(vec2(x, p.y)) - r;
 }
 
@@ -21,18 +21,21 @@ vec3 sdgVesica2D( vec2 p, float r, float d )
 {
     vec2  s  = vec2((p.x < 0.0) ? -1.0 : 1.0, (p.y < 0.0) ? -1.0 : 1.0);
     p        = abs(p);
-    float b2 = r * r - d * d;
+    float b2 = max(r * r - d * d, 0.0);
     float u  = p.y * d;
     float v  = p.x + d;
     if( u * abs(u) > v * abs(v) * b2 )
     {
-        vec2  q = vec2(p.x, p.y - sqrt(b2));
-        float l = length(q) * ((d < 0.0) ? -1.0 : 1.0);
-        return vec3(l, s * q / l);
+        float sg = (d < 0.0) ? -1.0 : 1.0;
+        vec2  q  = vec2(p.x, p.y - sqrt(b2));
+        float l  = length(q);
+        vec2  g  = (l > 1e-20) ? (sg * q / l) : vec2(0.0, sg);
+        return vec3(sg * l, s * g);
     }
     vec2  q = vec2(v, p.y);
     float l = length(q);
-    return vec3(l - r, s * q / max(l, 1e-30));
+    vec2  g = (l > 1e-20) ? (q / l) : vec2(1.0, 0.0);
+    return vec3(l - r, s * g);
 }
 
 // 3. Physical Half-Length (r) & Half-Width (w) Parameterization: 1 `sqrt` everywhere in R^2

@@ -29,6 +29,9 @@
 //      0 SFU ops in the flat cap disk zone (dx <= 0), 1 `inversesqrt` in the
 //      spherical body zone, and 2 `inversesqrt`s in the circular rim wedge.
 
+#ifndef SDF_GEMS_SDG_SOLID_ANGLE_GLSL
+#define SDF_GEMS_SDG_SOLID_ANGLE_GLSL
+
 // 1. 1/2-SFU 3D Solid Angle Distance and Unit Gradient vec4(d, grad.xyz)
 vec4 sdgSolidAngle( vec3 p, vec2 c, float ra )
 {
@@ -40,7 +43,8 @@ vec4 sdgSolidAngle( vec3 p, vec2 c, float ra )
     // Fast 1-SFU spherical cap & apex exit when qx = sqrt(x2) is not needed!
     if( u_neg || (!v_pos && r2 > ra * ra) )
     {
-        float invR = inversesqrt(max(r2, 1e-30));
+        if( r2 <= 0.0 ) return vec4(0.0, 0.0, -1.0, 0.0);
+        float invR = inversesqrt(r2);
         float rl   = r2 * invR;
         if( v_pos ) return vec4(rl, p * invR);
         float s = (u_neg && 4.0 * r2 < ra * ra) ? -1.0 : 1.0;
@@ -62,77 +66,113 @@ vec4 sdgSolidAngle( vec3 p, vec2 c, float ra )
     if( !v_pos )
     {
         float invR = inversesqrt(max(r2, 1e-30));
-        return vec4(r2 * invR - ra, p * invR);
+        return vec4(r2 * invR - ra, (r2 > 0.0) ? (p * invR) : vec3(0.0, 1.0, 0.0));
     }
 
     // 2-SFU exterior circular rim wedge (v > 0 && u > ra)
     vec2  w    = vec2(qx, y) - ra * c;
     float w2   = dot(w, w);
     float invW = inversesqrt(max(w2, 1e-30));
-    return vec4(w2 * invW, vec3(w.x * er.x, w.y, w.x * er.y) * invW);
+    return vec4(w2 * invW, (w2 > 0.0) ? (vec3(w.x * er.x, w.y, w.x * er.y) * invW) : vec3(c.x * er.x, c.y, c.x * er.y));
 }
 
 // 2. 1/2-SFU 3D Capped Torus Distance and Unit Gradient vec4(d, grad.xyz)
+#ifndef SDF_GEMS_HAS_SDG_CAPPED_TORUS
+#define SDF_GEMS_HAS_SDG_CAPPED_TORUS
 vec4 sdgCappedTorus( vec3 p, vec2 sc, float ra, float rb )
 {
     float sx = (p.x < 0.0) ? -1.0 : 1.0;
     p.x = abs(p.x);
     if( sc.y * p.x > sc.x * p.y )
     {
-        vec3  w    = vec3(p.x - ra * sc.x, p.y - ra * sc.y, p.z);
-        float w2   = dot(w, w);
-        float invW = inversesqrt(max(w2, 1e-30)); // 1 SFU op total!
-        return vec4(w2 * invW - rb, sx * w.x * invW, w.y * invW, w.z * invW);
+        vec3  w  = vec3(p.x - ra * sc.x, p.y - ra * sc.y, p.z);
+        float w2 = dot(w, w);
+        if( w2 > 0.0 )
+        {
+            float invW = inversesqrt(w2);
+            return vec4(w2 * invW - rb, sx * w.x * invW, w.y * invW, w.z * invW);
+        }
+        return vec4(-rb, sx * sc.y, -sc.x, 0.0);
     }
     float r2   = dot(p.xy, p.xy);
-    float invR = inversesqrt(max(r2, 1e-30));
-    float r_xy = (r2 > 0.0) ? (r2 * invR) : 0.0;
+    float invR = (r2 > 0.0) ? inversesqrt(r2) : 0.0;
+    float r_xy = r2 * invR;
     vec2  er   = (r2 > 0.0) ? (vec2(sx * p.x, p.y) * invR) : vec2(0.0, 1.0);
     float u    = r_xy - ra;
     float l2   = u * u + p.z * p.z;
-    float invL = inversesqrt(max(l2, 1e-30));
-    return vec4(l2 * invL - rb, vec3(u * er, p.z) * invL);
+    if( l2 > 0.0 )
+    {
+        float invL = inversesqrt(l2);
+        return vec4(l2 * invL - rb, vec3(u * er, p.z) * invL);
+    }
+    return vec4(-rb, er.x, er.y, 0.0);
 }
+#endif // SDF_GEMS_HAS_SDG_CAPPED_TORUS
 
 // 3. 0/1/2-SFU 3D Cut Sphere Distance and Unit Gradient vec4(d, grad.xyz)
+#ifndef SDF_GEMS_HAS_SDG_CUT_SPHERE
+#define SDF_GEMS_HAS_SDG_CUT_SPHERE
 vec4 sdgCutSphere( vec3 p, float r, float h )
 {
-    float x2 = dot(p.xz, p.xz), w2 = r * r - h * h, dx = x2 - w2, dy = h - p.y;
-    if( (r + h) * (r - h + 2.0 * dy) < x2 && h * abs(h) * x2 < w2 * p.y * abs(p.y) )
+    float x2 = dot(p.xz, p.xz), dy = h - p.y;
+    if( x2 <= (r + h) * (r - h + 2.0 * min(dy, 0.0)) )
+        return vec4(dy, 0.0, -1.0, 0.0);
+    float w2 = r * r - h * h;
+    if( h * abs(h) * x2 < w2 * p.y * abs(p.y) )
     {
-        float r2   = x2 + p.y * p.y;
-        float invR = inversesqrt(max(r2, 1e-30)); // 1 SFU op in spherical zone!
-        return vec4(r2 * invR - r, p * invR);
+        float r2 = x2 + p.y * p.y;
+        if( r2 > 0.0 )
+        {
+            float invR = inversesqrt(r2);
+            return vec4(r2 * invR - r, p * invR);
+        }
+        return vec4(-r, 0.0, 1.0, 0.0);
     }
-    if( dx <= 0.0 )
-        return vec4(dy, 0.0, -1.0, 0.0); // 0 SFU ops in exterior & interior flat disk cap zone!
-    float invX = inversesqrt(x2);
-    float x    = x2 * invX;
-    float ux   = dx / (x + sqrt(w2));
-    float l2   = ux * ux + dy * dy;
-    float invL = inversesqrt(max(l2, 1e-30));
-    float k_xz = ux * invX * invL;
-    return vec4(l2 * invL, p.x * k_xz, -dy * invL, p.z * k_xz);
+    float d  = x2 - w2, wx = sqrt(w2 * x2);
+    float sc = d / max(x2 + wx, 1e-30);
+    vec3  v  = vec3(sc * p.x, -dy, sc * p.z);
+    float v2 = dot(v, v);
+    if( v2 > 0.0 )
+    {
+        float invV = inversesqrt(v2);
+        return vec4(v2 * invV, v * invV);
+    }
+    return vec4(0.0, 0.0, -1.0, 0.0);
 }
+#endif // SDF_GEMS_HAS_SDG_CUT_SPHERE
 
 // 4. 1/2-SFU 3D Cut Hollow Sphere Distance and Unit Gradient vec4(d, grad.xyz)
+#ifndef SDF_GEMS_HAS_SDG_CUT_HOLLOW_SPHERE
+#define SDF_GEMS_HAS_SDG_CUT_HOLLOW_SPHERE
 vec4 sdgCutHollowSphere( vec3 p, float r, float h, float t )
 {
-    float x2 = dot(p.xz, p.xz), w2 = r * r - h * h, dx = x2 - w2, dy = p.y - h;
+    float x2 = dot(p.xz, p.xz), w2 = r * r - h * h;
     if( h * abs(h) * x2 >= w2 * p.y * abs(p.y) )
     {
-        float r2   = x2 + p.y * p.y;
-        float invR = inversesqrt(max(r2, 1e-30)); // 1 SFU op!
-        float u    = r2 * invR - r;
-        float su   = (u < 0.0) ? -1.0 : 1.0;
-        return vec4(abs(u) - t, (su * invR) * p);
+        float r2 = x2 + p.y * p.y;
+        if( r2 > 0.0 )
+        {
+            float invR = inversesqrt(r2);
+            float u    = r2 * invR - r;
+            float su   = (u < 0.0) ? -1.0 : 1.0;
+            return vec4(abs(u) - t, (su * invR) * p);
+        }
+        return vec4(r - t, 0.0, (h >= 0.0) ? -1.0 : 1.0, 0.0);
     }
-    float invX = inversesqrt(max(x2, 1e-30));
-    float x    = (x2 > 0.0) ? (x2 * invX) : 0.0;
+    float invX = (x2 > 0.0) ? inversesqrt(x2) : 0.0;
+    float x    = x2 * invX;
     vec2  er   = (x2 > 0.0) ? (p.xz * invX) : vec2(1.0, 0.0);
     float w    = sqrt(w2);
-    float ux   = (x2 > 0.0) ? (dx / (x + w)) : -w;
+    float ux   = (x2 > 0.0) ? ((x2 - w2) / (x + w)) : -w;
+    float dy   = p.y - h;
     float l2   = ux * ux + dy * dy;
-    float invL = inversesqrt(max(l2, 1e-30));
-    return vec4(l2 * invL - t, vec3(ux * er.x, dy, ux * er.y) * invL);
+    if( l2 > 0.0 )
+    {
+        float invL = inversesqrt(l2);
+        return vec4(l2 * invL - t, vec3(ux * er.x, dy, ux * er.y) * invL);
+    }
+    return vec4(-t, er.x, 0.0, er.y);
 }
+#endif // SDF_GEMS_HAS_SDG_CUT_HOLLOW_SPHERE
+
+#endif // SDF_GEMS_SDG_SOLID_ANGLE_GLSL

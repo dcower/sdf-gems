@@ -18,6 +18,8 @@ float sdCutSphere( vec3 p, float r, float h )
     return sqrt(d * d / (x2 + w2 + 2.0 * sqrt(w2 * x2)) + dy * dy);
 }
 
+#ifndef SDF_GEMS_HAS_SDG_CUT_SPHERE
+#define SDF_GEMS_HAS_SDG_CUT_SPHERE
 vec4 sdgCutSphere( vec3 p, float r, float h )
 {
     float x2 = dot(p.xz, p.xz), dy = h - p.y;
@@ -26,14 +28,25 @@ vec4 sdgCutSphere( vec3 p, float r, float h )
     float w2 = r * r - h * h;
     if( h * abs(h) * x2 < w2 * p.y * abs(p.y) )
     {
-        float r2 = x2 + p.y * p.y, invR = inversesqrt(max(r2, 1e-30));
-        return vec4(r2 * invR - r, p * invR);
+        float r2 = x2 + p.y * p.y;
+        if( r2 > 0.0 )
+        {
+            float invR = inversesqrt(r2);
+            return vec4(r2 * invR - r, p * invR);
+        }
+        return vec4(-r, 0.0, 1.0, 0.0);
     }
     float d  = x2 - w2, wx = sqrt(w2 * x2);
     float sc = d / max(x2 + wx, 1e-30);
     vec3  v  = vec3(sc * p.x, -dy, sc * p.z);
-    float v2 = dot(v, v), invV = inversesqrt(max(v2, 1e-30));
-    return vec4(v2 * invV, v * invV);
+    float v2 = dot(v, v);
+    if( v2 > 0.0 )
+    {
+        float invV = inversesqrt(v2);
+        return vec4(v2 * invV, v * invV);
+    }
+    return vec4(0.0, 0.0, -1.0, 0.0);
 }
+#endif // SDF_GEMS_HAS_SDG_CUT_SPHERE
 
 #endif // SDF_GEMS_SD_CUT_SPHERE_GLSL

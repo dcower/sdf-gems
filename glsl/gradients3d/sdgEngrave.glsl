@@ -4,6 +4,9 @@
 // @exact  Yes (`||grad d|| = 1` across all oblique intersection angles theta, max error `4.44e-16`)
 // ============================================================================
 
+#ifndef SDF_GEMS_SDG_ENGRAVE_GLSL
+#define SDF_GEMS_SDG_ENGRAVE_GLSL
+
 // 1. Angle-Exact V-Groove Engraving with Analytical 3D Gradient
 vec4 sdgEngrave( in vec4 a, in vec4 b, in float r )
 {
@@ -17,16 +20,16 @@ vec4 sdgEngrave( in vec4 a, in vec4 b, in float r )
         gv = (u > p) ? 0.0 : -0.70710678 * sv;
     } else if( s < -r ) {
         float l = length(vec2(u + r, y));
-        d  = -l;
-        gu = -(u + r) / l;
-        gv = -v / l;
+        d  = max(u, -l);
+        gu = (u > -l) ? 1.0 : -(u + r) / max(l, 1e-20);
+        gv = (u > -l) ? 0.0 : -v / max(l, 1e-20);
     } else if( y >= r ) {
         d = u; gu = 1.0; gv = 0.0;
     } else {
         float l = length(vec2(u, r - y));
         d  = l;
-        gu = u / l;
-        gv = -(r - y) * sv / l;
+        gu = u / max(l, 1e-20);
+        gv = -(r - y) * sv / max(l, 1e-20);
     }
     gv *= is;
     return vec4(d, (gu - c * gv) * a.yzw + gv * b.yzw);
@@ -58,5 +61,8 @@ vec4 sdgPipe( in vec4 a, in vec4 b, in float r )
 {
     float c  = dot(a.yzw, b.yzw), s2 = max(1.0 - c * c, 1e-5);
     float h  = b.x - c * a.x, l = sqrt(a.x * a.x + h * h / s2);
-    return vec4(l - r, ((a.x - c * h / s2) * a.yzw + (h / s2) * b.yzw) / max(l, 1e-12));
+    vec3  g  = (l > 1e-12) ? (((a.x - c * h / s2) * a.yzw + (h / s2) * b.yzw) / l) : a.yzw;
+    return vec4(l - r, g);
 }
+
+#endif // SDF_GEMS_SDG_ENGRAVE_GLSL

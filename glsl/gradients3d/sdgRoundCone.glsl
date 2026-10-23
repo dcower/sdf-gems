@@ -14,10 +14,18 @@
 vec4 sdgRoundCone(vec3 p, float r1, float r2, float h) {
     float b  = (r1 - r2) / h, a2 = 1.0 - b * b;
     float x2 = dot(p.xz, p.xz), y = p.y, z = y - h, s = b * abs(b) * x2;
-    if (a2 * y * abs(y) < s) { float w = sqrt(x2 + y * y); return vec4(w - r1, p / max(w, 1e-12)); }
-    if (a2 * z * abs(z) > s) { float w = sqrt(x2 + z * z); return vec4(w - r2, vec3(p.x, z, p.z) / max(w, 1e-12)); }
-    float w = max(sqrt(a2 * x2), 1e-12);
-    return vec4(w + b * y - r1, a2 * p.x / w, b, a2 * p.z / w);
+    if (a2 * y * abs(y) < s) {
+        float w2 = x2 + y * y, w = sqrt(w2);
+        return vec4(w - r1, (w2 > 0.0) ? (p / w) : vec3(0.0, -1.0, 0.0));
+    }
+    if (a2 * z * abs(z) > s) {
+        float w2 = x2 + z * z, w = sqrt(w2);
+        return vec4(w - r2, (w2 > 0.0) ? (vec3(p.x, z, p.z) / w) : vec3(0.0, 1.0, 0.0));
+    }
+    float w  = sqrt(a2 * x2);
+    vec2  er = (x2 > 0.0) ? (p.xz * inversesqrt(x2)) : vec2(1.0, 0.0);
+    float a  = sqrt(max(a2, 0.0));
+    return vec4(w + b * y - r1, a * er.x, b, a * er.y);
 }
 
 // 2. Exact 1-Sqrt O(L^2) Scale-Safe Arbitrary-Segment Round Cone with Analytical 3D Gradient
@@ -29,10 +37,18 @@ vec4 sdgRoundConeSeg(vec3 p, vec3 a, vec3 b, float r1, float r2) {
     float y  = dot(pa, ba) * il2, z = y - 1.0;
     vec3  u  = pa - ba * y;
     float x2 = dot(u, u), s = sign(rr) * b2 * x2;
-    if (sign(y) * a2 * (y * y * l2) < s) { float w = max(length(pa), 1e-12); return vec4(w - r1, pa / w); }
-    if (sign(z) * a2 * (z * z * l2) > s) { float w = max(length(pb), 1e-12); return vec4(w - r2, pb / w); }
-    float w = max(sqrt(a2 * x2), 1e-12);
-    return vec4(w + y * rr - r1, (rr * il2) * ba + (a2 / w) * u);
+    if (sign(y) * a2 * (y * y * l2) < s) {
+        float w2 = dot(pa, pa), w = sqrt(w2);
+        return vec4(w - r1, (w2 > 0.0) ? (pa / w) : (-ba * sqrt(il2)));
+    }
+    if (sign(z) * a2 * (z * z * l2) > s) {
+        float w2 = dot(pb, pb), w = sqrt(w2);
+        return vec4(w - r2, (w2 > 0.0) ? (pb / w) : (ba * sqrt(il2)));
+    }
+    float w  = sqrt(max(a2 * x2, 0.0));
+    vec3  er = (x2 > 1e-20 * l2) ? (u * inversesqrt(x2))
+             : normalize((abs(ba.x) < abs(ba.z)) ? vec3(-ba.y, ba.x, 0.0) : vec3(0.0, -ba.z, ba.y));
+    return vec4(w + y * rr - r1, (rr * il2) * ba + sqrt(max(a2, 0.0)) * er);
 }
 
 #endif // SDF_GEMS_SDG_ROUND_CONE_GLSL

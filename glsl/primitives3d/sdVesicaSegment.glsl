@@ -25,6 +25,8 @@ float sdVesicaSegment( vec3 p, vec3 a, vec3 b, float w )
 }
 
 // 2. Exact 1-to-2 SFU 3D Revolved Vesica / Spindle Distance + Analytical Gradient (vec4(d, grad.xyz))
+#ifndef SDF_GEMS_HAS_SDG_VESICA_SEGMENT
+#define SDF_GEMS_HAS_SDG_VESICA_SEGMENT
 vec4 sdgVesicaSegment( vec3 p, vec3 a, vec3 b, float w )
 {
     vec3  ba = b - a, pc = p - 0.5 * (a + b);
@@ -34,18 +36,26 @@ vec4 sdgVesicaSegment( vec3 p, vec3 a, vec3 b, float w )
     float x2 = dot(up, up), z = d * (2.0 * abs(u) - l2);
     if( z > 0.0 && l2 * l2 * x2 < z * z )
     {
-        vec3  vt   = pc - ba * ((u >= 0.0) ? 0.5 : -0.5);
-        float r2   = dot(vt, vt), invR = inversesqrt(max(r2, 1e-30));
-        return vec4(r2 * invR, (r2 > 0.0) ? (vt * invR) : vec3(0.0, 1.0, 0.0));
+        vec3  vt = pc - ba * ((u >= 0.0) ? 0.5 : -0.5);
+        float r2 = dot(vt, vt);
+        if( r2 > 0.0 )
+        {
+            float invR = inversesqrt(r2);
+            return vec4( r2 * invR, vt * invR );
+        }
+        return vec4( 0.0, normalize(ba) * ((u >= 0.0) ? 1.0 : -1.0) );
     }
-    float invX = inversesqrt(max(x2, 1e-24));
-    float qx   = (x2 > 1e-24) ? (x2 * invX) : 0.0;
-    vec3  er   = (x2 > 1e-24) ? (up * invX)
+    float invX = (x2 > 1e-12 * l2) ? inversesqrt(x2) : 0.0;
+    float qx   = x2 * invX;
+    vec3  er   = (x2 > 1e-12 * l2) ? (up * invX)
                : normalize((abs(ba.x) < abs(ba.z)) ? vec3(-ba.y, ba.x, 0.0) : vec3(0.0, -ba.z, ba.y));
     vec3  wv   = pc + d * er;
     float w2   = dot(pc, pc) + d * d + 2.0 * d * qx;
     float invW = inversesqrt(max(w2, 1e-30));
-    return vec4(w2 * invW - (d + w), wv * invW);
+    float gw2  = dot(wv, wv);
+    vec3  g    = (gw2 > 0.0) ? (wv * inversesqrt(gw2)) : er;
+    return vec4( w2 * invW - (d + w), g );
 }
+#endif // SDF_GEMS_HAS_SDG_VESICA_SEGMENT
 
 #endif // SDF_GEMS_SD_VESICA_SEGMENT_GLSL

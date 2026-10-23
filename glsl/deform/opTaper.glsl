@@ -32,7 +32,7 @@ vec4 opTaperBound( in vec3 p, in float k, in float rMax, in float hMax )
 {
     float s    = max(1.0 + k * p.y, 1e-4);
     vec2  qxz  = p.xz / s;
-    float sMin = max(1.0 - abs(k) * min(abs(p.y), hMax), 1e-4);
+    float sMin = max(1.0 - abs(k) * max(abs(p.y), hMax), 1e-4);
     float qr   = max(length(qxz), rMax);
     float kr   = k * qr;
     float sm   = 0.5 * (sqrt((sMin + 1.0) * (sMin + 1.0) + kr * kr)

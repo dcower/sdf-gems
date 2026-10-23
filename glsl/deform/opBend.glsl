@@ -11,12 +11,15 @@
 // 1. Exact atan-Free Circular Arch Bend + Straight Tangent Legs
 vec3 opBendArch( in vec3 p, in float R, in float alpha, in vec2 cs )
 {
-    float sx = (p.x < 0.0) ? -1.0 : 1.0;
-    vec2  w  = vec2( abs(p.x), R + p.y );
-    float u  = w.x * cs.x - w.y * cs.y;
-    float v  = w.x * cs.y + w.y * cs.x;
-    return vec3( sx * max(R * alpha + u, 0.0),
-                 (u <= 0.0) ? length(w) - R : v - R,
+    float sx  = (p.x < 0.0) ? -1.0 : 1.0;
+    vec2  w   = vec2( abs(p.x), R + p.y );
+    float u   = w.x * cs.x - w.y * cs.y;
+    float v   = w.x * cs.y + w.y * cs.x;
+    float rho = length(w);
+    float qx  = (u <= 0.0) ? (R * alpha * (2.0 + cs.x) * w.x) / max(cs.y * (2.0 * rho + w.y), 1e-30)
+                           : R * alpha + u;
+    return vec3( sx * qx,
+                 (u <= 0.0) ? rho - R : v - R,
                  p.z );
 }
 
@@ -35,17 +38,18 @@ vec4 sdgBendArchFinalize( in vec3 p, in float R, in float alpha, in vec2 cs, in 
     float gqx = sx * dg.y, gqy = dg.z;
     if( u <= 0.0 )
     {
-        float rho  = max(length(w), 1e-6);
-        vec2  er   = w / rho;
+        float rho  = length(w);
+        vec2  er   = (rho > 1e-12) ? (w / rho) : vec2(0.0, 1.0);
+        rho        = max(rho, 1e-6);
         vec2  et   = vec2(er.y, -er.x);
-        float gt   = (R * alpha + u > 0.0) ? (gqx * (R / rho)) : 0.0;
+        float gt   = gqx * (R / rho);
         vec3  g    = vec3(sx * (gt * et.x + gqy * er.x), gt * et.y + gqy * er.y, dg.w);
         float invG = inversesqrt(max(dot(g, g), 1e-30));
         return vec4(dg.x * invG, g * invG);
     }
-    float gt = (R * alpha + u > 0.0) ? gqx : 0.0;
-    vec3  g  = vec3(sx * (gt * cs.x + gqy * cs.y), -gt * cs.y + gqy * cs.x, dg.w);
-    return vec4(dg.x, normalize(g));
+    vec3  g    = vec3(sx * (gqx * cs.x + gqy * cs.y), -gqx * cs.y + gqy * cs.x, dg.w);
+    float invG = inversesqrt(max(dot(g, g), 1e-30));
+    return vec4(dg.x * invG, g * invG);
 }
 
 // 3. Standard Inigo Quilez Cheap Bend + First-Order Eikonal-Exact Jacobian Normalization:
