@@ -88,6 +88,7 @@
 #include "glsl/polyhedra3d/sdRhombicTriacontahedron.glsl"
 #include "glsl/polyhedra3d/sdRhombicosidodecahedron.glsl"
 #include "glsl/polyhedra3d/sdRhombicuboctahedron.glsl"
+#include "glsl/polyhedra3d/sdSnubCube.glsl"
 #include "glsl/polyhedra3d/sdSquareAntiprism.glsl"
 #include "glsl/polyhedra3d/sdStellaOctangula.glsl"
 #include "glsl/polyhedra3d/sdTetrahedron.glsl"
