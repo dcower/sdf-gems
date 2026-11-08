@@ -6,6 +6,7 @@ Provides:
   - render_slice_3d(fn_3d, ...)         : 2D cross-section slice of a 3D SDF along any plane (u, v)
   - render_2d_sdf(fn_2d, ...)           : 2D SDF isoline & zero-set preview
   - render_eikonal_error_map(fn, ...)   : Visualizes Eikonal deviation (||grad d|| - 1)
+  - render_error_heatmap(fn, gt, ...)   : log10 |fn - gt| slice heatmap with colorbar (preferred before/after view)
   - combine_panels(images, titles=None) : Horizontally concatenates PIL images with optional titles
 
 Run via UV:
@@ -205,6 +206,63 @@ def render_eikonal_error_map(fn_2d, bounds=(-1.15, 1.15), res=320, label=None):
         draw.rounded_rectangle([8, 8, 8 + text_w, 26], radius=4, fill=(15, 20, 28, 195))
         draw.text((15, 11), label, fill=(240, 244, 248, 255))
     return pil_img
+
+
+def render_error_heatmap(
+    fn_3d,
+    gt_3d,
+    axis_u=(1.0, 0.0, 0.0),
+    axis_v=(0.0, 1.0, 0.0),
+    origin=(0.0, 0.0, 0.0),
+    bounds=(-1.15, 1.15),
+    res=320,
+    log_range=(-8.0, -0.5),
+    colorbar=True,
+    label=None,
+):
+    """
+    Renders log10 |fn - gt| on a planar slice (magma colormap) with the true zero set in cyan.
+    Use this for before/after comparisons: unlike an eikonal map, it also exposes SDFs whose
+    gradient has unit length but whose value is wrong (e.g. max() of exact distances).
+    Returns a `PIL.Image` (with a labelled colorbar strip underneath when `colorbar=True`).
+    """
+    from matplotlib import cm
+
+    au = np.array(axis_u, dtype=np.float64)
+    au /= np.linalg.norm(au)
+    av = np.array(axis_v, dtype=np.float64)
+    av /= np.linalg.norm(av)
+    lin = np.linspace(bounds[0], bounds[1], res)
+    uu, vv = np.meshgrid(lin, -lin)
+    p = (np.array(origin, dtype=np.float64)[None, None, :] + uu[..., None] * au + vv[..., None] * av).reshape(-1, 3)
+    gt = np.asarray(gt_3d(p), dtype=np.float64).reshape(res, res)
+    err = np.abs(np.asarray(fn_3d(p), dtype=np.float64).reshape(res, res) - gt)
+    lo, hi = log_range
+    t = np.clip((np.log10(np.maximum(err, 10.0**lo)) - lo) / (hi - lo), 0.0, 1.0)
+    col = cm.magma(t)[..., :3]
+    px = (bounds[1] - bounds[0]) / res * 1.6
+    z = np.exp(-((gt / px) ** 2))[..., None]
+    col = col * (1.0 - z) + z * np.array([0.3, 0.9, 1.0])
+    img = Image.fromarray((np.clip(col, 0, 1) * 255).astype(np.uint8))
+    draw = ImageDraw.Draw(img, "RGBA")
+    txt = (label + "  " if label else "") + f"max {err.max():.1e}"
+    draw.rounded_rectangle([8, 8, 8 + len(txt) * 6 + 14, 26], radius=4, fill=(15, 20, 28, 195))
+    draw.text((15, 11), txt, fill=(240, 244, 248, 255))
+    if not colorbar:
+        return img
+    bar = Image.new("RGB", (res, 30), (20, 22, 28))
+    d = ImageDraw.Draw(bar)
+    x0, x1 = 8, res - 8
+    for x in range(x0, x1):
+        c = cm.magma((x - x0) / (x1 - x0))[:3]
+        d.line([(x, 4), (x, 13)], fill=tuple(int(255 * v) for v in c))
+    for e in range(int(np.ceil(lo)), int(np.floor(hi)) + 1, 2):
+        x = x0 + (e - lo) / (hi - lo) * (x1 - x0)
+        d.text((x - 10, 16), f"1e{e}", fill=(230, 230, 230))
+    out = Image.new("RGB", (res, res + 30))
+    out.paste(img, (0, 0))
+    out.paste(bar, (0, res))
+    return out
 
 
 def combine_panels(images):
