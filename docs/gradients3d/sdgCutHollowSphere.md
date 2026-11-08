@@ -27,7 +27,7 @@ in order to branch on the normal-cone boundary $h q_x < w q_y$.
 Observe two crucial algebraic properties:
 1. Since $q_x = \|\mathbf{p}_{xz}\| \ge 0$ and $w = \sqrt{r^2 - h^2} > 0$, applying the monotone signed-square map $\phi(u) = u |u|$ transforms the sector boundary $h q_x \le w p_y$ into an exact polynomial test with **0 `sqrt`s**:
    $$h |h| (p_x^2 + p_z^2) \ge (r^2 - h^2)\, p_y |p_y|.$$
-2. Inside the spherical shell sector ($h |h| x_2 \ge w^2 p_y |p_y|$, covering **$65.4\%$ of $\[-2, 2]^3$**), the closest point lies on the sphere of radius $r$ centered at the origin. Neither the signed distance $\bigl|\|\mathbf{p}\| - r\bigr| - t$ nor the unit 3D gradient $\operatorname{sign}(\|\mathbf{p}\| - r) \frac{\mathbf{p}}{\|\mathbf{p}\|}$ depends on $\|\mathbf{p}_{xz}\|$ or $w = \sqrt{r^2 - h^2}$!
+2. Inside the spherical shell sector ($h |h| x_2 \ge w^2 p_y |p_y|$, covering **$65.4\%$ of $\[-2, 2]^3$**), the closest point lies on the sphere of radius $r$ centered at the origin. Neither the signed distance $\bigl|\|\mathbf{p}\| - r\bigr| - t$ nor the unit 3D gradient $\mathrm{sign}(\|\mathbf{p}\| - r) \frac{\mathbf{p}}{\|\mathbf{p}\|}$ depends on $\|\mathbf{p}_{xz}\|$ or $w = \sqrt{r^2 - h^2}$!
    Thus, a **single `inversesqrt(dot(p, p))`** computes both the exact distance and the exact 3D unit normal across $65.4\%$ of space — a **$3\times$ SFU reduction** over standard `sdCutHollowSphere`!
 
 ### 2. Cancellation-Free Conjugate Rim Offset

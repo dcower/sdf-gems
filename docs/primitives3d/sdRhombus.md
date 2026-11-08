@@ -24,7 +24,7 @@
    In the folded first octant $p = |p| \ge 0$:
    - If $l_a(p_x - l_a) > l_b p_z$, the closest 2D rhombus point is $(l_a, 0)$ at horizontal distance $\|(p_x - l_a, p_z)\| - r_a$ (**1 `sqrt`, 0 divisions**).
    - If $l_b(p_z - l_b) > l_a p_x$, the closest 2D rhombus point is $(0, l_b)$ at horizontal distance $\|(p_x, p_z - l_b)\| - r_a$ (**1 `sqrt`, 0 divisions**).
-   - Otherwise (**100% of the rhombus interior and all 4 slanted wall strips**), the horizontal signed distance is linear: $(l_b p_x + l_a p_z - l_a l_b)\operatorname{inversesqrt}(l_a^2 + l_b^2) - r_a$ (**0 per-pixel `sqrt`s** for constant $l_a, l_b$!).
+   - Otherwise (**100% of the rhombus interior and all 4 slanted wall strips**), the horizontal signed distance is linear: $(l_b p_x + l_a p_z - l_a l_b)\mathrm{inversesqrt}(l_a^2 + l_b^2) - r_a$ (**0 per-pixel `sqrt`s** for constant $l_a, l_b$!).
 
 ---
 

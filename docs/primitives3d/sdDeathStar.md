@@ -30,7 +30,7 @@ Combining three algebraic theorems reduces this to **1 `sqrt` across $88\%$–$9
    With $y_{z2} = p_y^2 + p_z^2$, $b_2 = \max(r_a^2 - a^2, 0)$, $d_a = d - a$, and $d_x = d - p_x$, the rim-wedge condition $p_x b - \|p_{yz}\| a > d\max(b - \|p_{yz}\|, 0)$ is equivalent to:
    $$b_2\, p_x|p_x| > a|a|\, y_{z2} \quad \text{and} \quad d_a|d_a|\, y_{z2} > b_2\, d_x|d_x|.$$
 2. **Confocal Ellipse Bisector (`0` `sqrt`s):**
-   Outside the rim wedge, the main sphere $(0,0,0; r_a)$ dominates the crater sphere $(d,0,0; r_b)$ if and only if $R^2(p_x^2 + y_{z2}) \ge m^2$, where $R = r_a + r_b$ and $m = \operatorname{clamp}(r_a R + d(p_x - a), 0, R^2)$.
+   Outside the rim wedge, the main sphere $(0,0,0; r_a)$ dominates the crater sphere $(d,0,0; r_b)$ if and only if $R^2(p_x^2 + y_{z2}) \ge m^2$, where $R = r_a + r_b$ and $m = \mathrm{clamp}(r_a R + d(p_x - a), 0, R^2)$.
 3. **Axis-Center Radial Collapse (`1` `sqrt` total):**
    Because both sphere centers $(0,0,0)$ and $(d,0,0)$ lie on the $x$-axis, the 3D distance to the winning sphere is simply $\sqrt{(p_x - c_x)^2 + y_{z2}}\cdot(\pm 1) \mp r_c$ — requiring **only 1 `sqrt` total** (and **1 `inversesqrt`** for both distance and 3D gradient in `sdgDeathStar`)!
 

@@ -37,7 +37,7 @@ $$\mathbf{v} = \frac{x(\lambda)}{r^2} = \left(\frac{p_x}{r_x^2 + \lambda},\; \fr
 
 1. **Strict Non-Vanishing**: Since $x(\lambda) \in \mathcal{E}$, $\|\mathbf{v}\|_2 = \sqrt{\sum_{i=1}^3 \frac{x_i^2}{r_i^4}} \in \left[\frac{1}{\max_i r_i}, \frac{1}{\min_i r_i}\right] > 0$ everywhere (and $\|\mathbf{v}_n\|_2 = \sqrt{4k^2 x^2 + 1} \ge 1$ on the parabola). Neither $\mathbf{v}$ nor $\mathbf{v}_n$ ever vanishes or subtracts $p - x$!
 2. **Exact Unit Gradient**: Because $p - x(\lambda) = \lambda \mathbf{v}$ is collinear with $\mathbf{v}$ everywhere, the exact outward unit gradient is:
-   $$\hat{\mathbf{n}} = \frac{\mathbf{v}}{\|\mathbf{v}\|_2} = \mathbf{v}\,\operatorname{inversesqrt}(\langle \mathbf{v}, \mathbf{v} \rangle), \qquad \nabla d(p) = \operatorname{sign}_{\ne 0}(p) \odot \hat{\mathbf{n}}.$$
+   $$\hat{\mathbf{n}} = \frac{\mathbf{v}}{\|\mathbf{v}\|_2} = \mathbf{v}\,\mathrm{inversesqrt}(\langle \mathbf{v}, \mathbf{v} \rangle), \qquad \nabla d(p) = \mathrm{sign}_{\ne 0}(p) \odot \hat{\mathbf{n}}.$$
 3. **Signed Distance via Co-Normal Dot Product (0 Extra `sqrt`s)**: Since $p - x = d(p)\,\hat{\mathbf{n}}$, projecting $p - x$ onto $\hat{\mathbf{n}}$ gives the signed distance directly:
    $$d(p) = \langle p - x,\, \hat{\mathbf{n}} \rangle = \frac{\langle p, \mathbf{v} \rangle - \|r \odot \mathbf{v}\|_2}{\|\mathbf{v}\|_2},$$
    which **replaces** `length(p - x)` and the implicit sign test with `inversesqrt(dot(v, v))` — requiring **zero extra `sqrt`s** beyond the scalar SDF!

@@ -18,7 +18,7 @@ When extruding any such 2D primitive along $z \in [-h_z, h_z]$ into a 3D prism, 
 
 ## 2. Theorem (Universal 1-`sqrt` 3D Extrusion)
 
-Let any 2D SDF compute an unsigned squared Euclidean distance $d_2 \ge 0$ and an outside sign $s_{\text{out}}$ ($s_{\text{out}} > 0$ outside the 2D shape, $s_{\text{out}} \le 0$ inside, so $d_{2\text{D}} = \operatorname{sign}(s_{\text{out}})\sqrt{d_2}$). Let $q_z = |p_z| - h_z$ and $m = \max(q_z, 0)$.
+Let any 2D SDF compute an unsigned squared Euclidean distance $d_2 \ge 0$ and an outside sign $s_{\text{out}}$ ($s_{\text{out}} > 0$ outside the 2D shape, $s_{\text{out}} \le 0$ inside, so $d_{2\text{D}} = \mathrm{sign}(s_{\text{out}})\sqrt{d_2}$). Let $q_z = |p_z| - h_z$ and $m = \max(q_z, 0)$.
 
 1. **Outside the 2D Cross-Section ($s_{\text{out}} > 0$)**:
    Since $d_{2\text{D}} = +\sqrt{d_2} \ge 0$, we have $\min(\max(d_{2\text{D}}, q_z), 0) = 0$ and $\max(d_{2\text{D}}, 0)^2 = (\sqrt{d_2})^2 = d_2$. Thus the 3D distance is:

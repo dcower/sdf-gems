@@ -35,7 +35,7 @@ Whenever $p$ lies in the polyhedron interior ($d_m := \max(d_1, d_2, d_3) \le 0$
 
 ### 2. 2D Octagon Chain Unification Theorem
 Outside the triangular face Voronoi region, all 5 remaining exterior regions (the axial square $F_1$, diagonal square $F_2$, both edges $E_1, E_2$, and vertex $\mathbf{v}_0$) decouple into $z$-clamping at $(\sqrt{2} - 1)s$ and a 2D clipped octagon chain in $(x, y)$ with a **single clamped parameter**:
-$$t = \operatorname{clamp}\!\big(\tfrac{1}{2}(x + y - \sqrt{2}s),\; 0,\; \max(y - (\sqrt{2} - 1)s, 0)\big),$$
+$$t = \mathrm{clamp}\!\big(\tfrac{1}{2}(x + y - \sqrt{2}s),\; 0,\; \max(y - (\sqrt{2} - 1)s, 0)\big),$$
 giving the exact 3D Euclidean difference vector and analytical gradient in 1 `length` / `inversesqrt`:
 $$\mathbf{v} = \big(\max(t, x - s),\; t,\; \max(z - (\sqrt{2} - 1)s, 0)\big), \qquad d(p) = \|\mathbf{v}\|_2, \qquad \nabla d = \frac{\mathbf{v}}{\|\mathbf{v}\|_2}.$$
 

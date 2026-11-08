@@ -16,7 +16,7 @@
 ## Mathematical Overview
 
 Inside the 2D polygonal cross-section ($d_{\text{2D}} \le 0$), the distance to the polygon edges is purely linear, so both the 3D prism interior ($w_z \le 0$) and the exterior flat-cap Voronoi zones ($w_z > 0$) require **0 `sqrt`s** and return exact unit normals. Outside the 2D cross-section ($d_{\text{2D}} > 0$), the 2D displacement vector $v_2 = (u_x, u_y)$ in the folded fundamental sector combines with $w_{z+} = \max(|p_z| - h_y, 0)$ under a **single 3D `sqrt`**:
-$$d = \sqrt{u_x^2 + u_y^2 + w_{z+}^2}, \qquad (g_2, g_z) = \frac{1}{d}\big(u_x, u_y, \operatorname{sign}(p_z) w_{z+}\big),$$
+$$d = \sqrt{u_x^2 + u_y^2 + w_{z+}^2}, \qquad (g_2, g_z) = \frac{1}{d}\big(u_x, u_y, \mathrm{sign}(p_z) w_{z+}\big),$$
 which is unfolded by reversing the 2D Householder reflections.
 
 ---

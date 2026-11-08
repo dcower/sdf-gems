@@ -39,8 +39,8 @@ Since $J_{26}$ is convex, its exact interior signed distance ($d_f \le 0$) is si
 ### 2. The 4-Square Edge-Cover Theorem
 
 Observe that every edge of the 4 equilateral triangular faces is shared with one of the 4 sloped square faces $S_\pm$. Consequently, **the 4 sloped square faces contain $100\%$ of the 14 edges and 8 vertices of $J_{26}$**. In the folded chamber, any exterior point ($d_f > 0$) achieves its exact 3D Euclidean distance on one of the two sloped $2a \times 2a$ squares $S_+$ or $S_-$:
-$$\mathbf{v}_+ = \bigl(\max(d_{S_+}, 0),\; \operatorname{clamp}(u_{S_+}, 0, 2a) - u_{S_+},\; \max(y - a, 0)\bigr),$$
-$$\mathbf{v}_- = \bigl(\max(x - a, 0),\; d_{S_-},\; \operatorname{clamp}(u_{S_-}, 0, 2a) - u_{S_-}\bigr),$$
+$$\mathbf{v}_+ = \bigl(\max(d_{S_+}, 0),\; \mathrm{clamp}(u_{S_+}, 0, 2a) - u_{S_+},\; \max(y - a, 0)\bigr),$$
+$$\mathbf{v}_- = \bigl(\max(x - a, 0),\; d_{S_-},\; \mathrm{clamp}(u_{S_-}, 0, 2a) - u_{S_-}\bigr),$$
 where $u_{S_+} = -c_{60}(x - a) + s_{60} z$ and $u_{S_-} = -c_{60}(y - a) - s_{60} z$, yielding $d(\mathbf{p}) = \sqrt{\min(\|\mathbf{v}_+\|^2, \|\mathbf{v}_-\|^2)}$ in **1 `sqrt`**.
 
 ---

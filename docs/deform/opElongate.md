@@ -23,8 +23,8 @@ For an octant-symmetric 3D primitive $S_0$ with SDF $f_0$ and gradient $\mathbf{
 1. **Interior Core Exactness**:
    Whereas 1D clamping `p - clamp(p, -h, h)` collapses to constant $f_0(0)$ with $\nabla d \equiv 0$ inside the central core $B_{\mathbf{h}} = \{g \le 0\}$, `opElongate` adds `min(g, 0.0) + f_0(q_+)` so that $\|\nabla d\|_2 \equiv 1$ inside $B_{\mathbf{h}}$.
 2. **Crease-Safe Chain-Rule Gradient Finalizer (`sdgElongateFinalize`)**:
-   - **Inside the core box ($g \le 0$)**: $\mathbf{q}_+ \equiv 0$ is constant ($\frac{\partial \mathbf{q}_+}{\partial p} = 0$), so $d(p) = f_0(0) + g$ and $\nabla_p d(p) = \operatorname{sign}_{\ne 0}(p) \odot \mathbf{e}_{\arg\max(\mathbf{q})}$ with $\|\nabla_p d\|_2 \equiv 1$ and **0 `sqrt`s**.
-   - **Outside the core box ($g > 0$)**: Since $\frac{\partial q_{+,i}}{\partial p_i} = \operatorname{sign}(p_i)\,\mathbf{1}_{q_i > 0}$, masking any non-zero coordinate-plane crease derivative of $\mathbf{g}_0(\mathbf{q}_+)$ by $\mathbf{1}_{q_i > 0}$ and re-normalizing eliminates spurious sign-flip jumps across $p_i = 0$ inside the elongated slabs.
+   - **Inside the core box ($g \le 0$)**: $\mathbf{q}_+ \equiv 0$ is constant ($\frac{\partial \mathbf{q}_+}{\partial p} = 0$), so $d(p) = f_0(0) + g$ and $\nabla_p d(p) = \mathrm{sign}_{\ne 0}(p) \odot \mathbf{e}_{\arg\max(\mathbf{q})}$ with $\|\nabla_p d\|_2 \equiv 1$ and **0 `sqrt`s**.
+   - **Outside the core box ($g > 0$)**: Since $\frac{\partial q_{+,i}}{\partial p_i} = \mathrm{sign}(p_i)\,\mathbf{1}_{q_i > 0}$, masking any non-zero coordinate-plane crease derivative of $\mathbf{g}_0(\mathbf{q}_+)$ by $\mathbf{1}_{q_i > 0}$ and re-normalizing eliminates spurious sign-flip jumps across $p_i = 0$ inside the elongated slabs.
 
 ---
 

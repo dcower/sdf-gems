@@ -28,7 +28,7 @@ Mercury Demogroup's (`hg_sdf`) `fOpUnionColumns` and `fOpDifferenceColumns` join
    - Folding by symmetry $x = \min(a, b), \, y = \max(a, b)$ guarantees $p_y = (y - x)\sqrt{0.5} \ge 0$, and indexing via $w = \frac{p_y}{2 R} + \frac{n - 2}{2}$ unifies all even and odd $n \ge 2$ without `pR45` or `mod(n, 2)`.
 
 ### Exact 1-`sqrt` Clamped Column & Cusp Formulation
-By clamping the column index $k = \min(\operatorname{round}(w), n - 2)$ and evaluating the exact interior evolute/cusp Voronoi boundary between the concave circular arcs and the $n - 2$ inter-column cusps $V_j = (0, (2j - (n - 1))R)$ plus the top ray cusp $V_{\text{top}} = (0, r - 1.22905745 R)$, `opUnionColumns` and `opSubtractionColumns` achieve **100% exact Euclidean distance across all of $\mathbb{R}^2$ (`< 1.33e-15` max error) in a single `sqrt` with zero discontinuities**.
+By clamping the column index $k = \min(\mathrm{round}(w), n - 2)$ and evaluating the exact interior evolute/cusp Voronoi boundary between the concave circular arcs and the $n - 2$ inter-column cusps $V_j = (0, (2j - (n - 1))R)$ plus the top ray cusp $V_{\text{top}} = (0, r - 1.22905745 R)$, `opUnionColumns` and `opSubtractionColumns` achieve **100% exact Euclidean distance across all of $\mathbb{R}^2$ (`< 1.33e-15` max error) in a single `sqrt` with zero discontinuities**.
 
 ![Columned Booleans Comparison](../images/comparisons/columns_comparison.png)
 

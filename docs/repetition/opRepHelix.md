@@ -22,7 +22,7 @@ Repeating a 3D primitive at discrete helical lattice sites $C_k = \bigl(R \cos(k
    - Naive axial repetition (`k = round(y / dy)`) slices space by horizontal planes $y = \text{const}$, slicing through every helical step.
 2. **Closed-Form Parabolic Helical Projection & Turn-Discriminant Bifurcation Theorem**:
    Minimizing $E(t) = (r_{xz} - R)^2 + 2 R r_{xz}(1 - \cos(t - \theta)) + k_p^2(t - y_k)^2$ on turn $n_m$ ($t_m = \theta + 2\pi n_m$, $u_m = y_k - t_m$) yields $\alpha \sin d + d = |u_m|$ with $\alpha = R r_{xz}/k_p^2$. Using the parabolic identity $\sin d \approx \frac{4}{\pi^2} d(\pi - d)$ on $[0, \pi]$ gives the closed-form root (**0 `sin`/`cos` calls, 0 Newton iterations**):
-   $$d_m = \operatorname{clamp}\!\left(\frac{2 |u_m|}{b + \sqrt{\max(0, \Delta_m)}}, \, 0, \, \min(|u_m|, \pi)\right), \qquad \beta = \frac{2}{\pi}\alpha, \quad b = 1 + 2\beta, \quad \Delta_m = b^2 - \frac{8}{\pi}\beta |u_m|.$$
+   $$d_m = \mathrm{clamp}\!\left(\frac{2 |u_m|}{b + \sqrt{\max(0, \Delta_m)}}, \, 0, \, \min(|u_m|, \pi)\right), \qquad \beta = \frac{2}{\pi}\alpha, \quad b = 1 + 2\beta, \quad \Delta_m = b^2 - \frac{8}{\pi}\beta |u_m|.$$
    When $\Delta_1 > 0$ on the adjacent turn $n_1$, $(k_2, k_3)$ brackets the cross-turn neighbor directly above/below $p$; when $\Delta_1 \le 0$ (near $r_{xz} \to 0$), $(k_2, k_3)$ automatically expands along the helix to $(k_0 - 1, k_1 + 1)$. Ranking the 4 candidates by reduced energy $\tilde{E}(k) = (p_y - k \Delta y)^2 - 2 R (p_x \cos(k\Delta\theta) + p_z \sin(k\Delta\theta))$ achieves **`0.00e+00` error** across all of $\mathbb{R}^3$.
 
 | Configuration $(R, P, N)$ | Naive Angular Error | Naive Axial Error | `opRepHelix` (1-Tap Sym) | `opRepHelixLim` (1-Tap) | `opRepHelix2Tap` (Asym) | `opRepHelix4Tap` (Asym) |

@@ -18,10 +18,10 @@ Previously, hexagonal frustums and bipyramids were evaluated as 8-to-12-plane ha
 
 Folding `p.xz` into the $30^\circ$ dihedral $D_6$ Weyl sector $0 \le v \le k_z u$ ($k_z = \tan 30^\circ = \frac{1}{\sqrt{3}}$) reduces all 6 trapezoidal side faces and 2 hexagonal caps to a single slanted face and two flat caps. Setting $r_m = \frac{r_1 + r_2}{2}$, $s = \frac{r_1 - r_2}{2}$, $m^2 = h^2 + s^2$, and $q = (u - r_m,\; p_y,\; v - k_z r_m)$:
 1. **0-`sqrt` Interior, Cap Prism, & Slanted-Face Prism Early Exit ($54.8\%$ of space)**:
-   Let $d_s = \frac{h q_x + s q_y}{\sqrt{m^2}}$, $d_c = |q_y| - h$, and $u_1 = \operatorname{clamp}(\frac{h q_y - s q_x}{m^2}, -1, 1)$. Whenever $\max(d_s, d_c) \le 0$ (interior), or $d_c > 0 \;\land\; u \le r_{\text{cap}}$ (top/bottom hexagonal cap prism), or $d_s > 0 \;\land\; |h q_y - s q_x| < m^2 \;\land\; q_z + k_z s u_1 \le 0$ (slanted trapezoidal face prism), the exact signed distance is $\max(d_s, d_c)$ with **0 per-pixel `sqrt`s**.
+   Let $d_s = \frac{h q_x + s q_y}{\sqrt{m^2}}$, $d_c = |q_y| - h$, and $u_1 = \mathrm{clamp}(\frac{h q_y - s q_x}{m^2}, -1, 1)$. Whenever $\max(d_s, d_c) \le 0$ (interior), or $d_c > 0 \;\land\; u \le r_{\text{cap}}$ (top/bottom hexagonal cap prism), or $d_s > 0 \;\land\; |h q_y - s q_x| < m^2 \;\land\; q_z + k_z s u_1 \le 0$ (slanted trapezoidal face prism), the exact signed distance is $\max(d_s, d_c)$ with **0 per-pixel `sqrt`s**.
 2. **Unified Rim & Lateral Edge Projection**:
    Because $1 + k_z^2 = 1 + \frac{1}{3} = \frac{4}{3}$, the lateral edge parameter is:
-   $$u_2 = \operatorname{clamp}\left(\frac{h q_y - s(q_x + k_z q_z)}{m^2 + \frac{1}{3}s^2}, -1, 1\right),$$
+   $$u_2 = \mathrm{clamp}\left(\frac{h q_y - s(q_x + k_z q_z)}{m^2 + \frac{1}{3}s^2}, -1, 1\right),$$
    requiring a single `sqrt(min(dot(v1, v1), dot(v2, v2)))` outside the face prisms.
 
 ### 2. Theorem: Equatorial-Folded Bipyramid (`sdHexBipyramid`, `sdgHexBipyramid`, `sdBipyramid`)

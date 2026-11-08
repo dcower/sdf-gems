@@ -29,7 +29,7 @@ Consequently:
 - **Exterior ($d_{\text{log}} > 0$)**: The tangent approximation $d_{\text{naive}} = d_{\text{log}} \frac{r}{s}$ **strictly overestimates** the true Euclidean distance whenever the closest surface lies closer to the origin (up to **$+25.7\%$ overstep** for $n = 6$), causing sphere-tracing rays to step through surfaces!
 - **Interior ($d_{\text{log}} < 0$)**: The shortest Euclidean escape path from the interior of a cell to its boundary is also inward toward the origin, giving $-r(1 - e^{-|d_{\text{log}}| / s})$.
 - Combining both regimes gives the **Exact Conformal Exponential Metric**:
-  $$d_{\text{exact}} = \operatorname{sign}(d_{\text{log}})\, r \left(1 - e^{-|d_{\text{log}}| / s}\right),$$
+  $$d_{\text{exact}} = \mathrm{sign}(d_{\text{log}})\, r \left(1 - e^{-|d_{\text{log}}| / s}\right),$$
   which satisfies $\|\nabla_{\mathbf{p}} d_{\text{exact}}\| \le 1$ everywhere in $\mathbb{R}^2 \setminus \{\mathbf{0}\}$ with **$0.00\%$ overstep**.
 
 ---
@@ -44,9 +44,9 @@ By restricting the complex multiplier to a **Gaussian integer** divided by $2\pi
 $$\alpha + i\beta = \frac{n + i k}{2\pi}, \qquad (n, k) \in \mathbb{Z}^2,$$
 we obtain:
 $$\mathbf{w} = \frac{1}{2\pi}\begin{pmatrix} n & -k \\ k & n \end{pmatrix} \begin{pmatrix} \ln r \\ \theta \end{pmatrix}, \qquad s = \frac{\sqrt{n^2 + k^2}}{2\pi}.$$
-Across $\theta \to \theta + 2\pi$, the coordinate shifts by the **exact integer lattice vector** $\Delta\mathbf{w} = (-k, n) \in \mathbb{Z}^2$, so the folded local coordinate $\mathbf{q} = \mathbf{w} - \operatorname{round}(\mathbf{w})$ has **$0.0$ discontinuity** across $\theta = \pm\pi$!
+Across $\theta \to \theta + 2\pi$, the coordinate shifts by the **exact integer lattice vector** $\Delta\mathbf{w} = (-k, n) \in \mathbb{Z}^2$, so the folded local coordinate $\mathbf{q} = \mathbf{w} - \mathrm{round}(\mathbf{w})$ has **$0.0$ discontinuity** across $\theta = \pm\pi$!
 
-Furthermore, because the integer index $\mathbf{i} = \operatorname{round}(\mathbf{w})$ shifts by $(-k, n)$ across the branch cut, reducing $\mathbf{i}$ modulo the branch-cut period vector $(-k, n)$ via:
+Furthermore, because the integer index $\mathbf{i} = \mathrm{round}(\mathbf{w})$ shifts by $(-k, n)$ across the branch cut, reducing $\mathbf{i}$ modulo the branch-cut period vector $(-k, n)$ via:
 $$m = \lfloor i_y / n \rfloor, \qquad \mathbf{id} = \bigl(i_x + k m,\; i_y - n m\bigr)$$
 produces a **canonical 2D cell ID** that is also $100\%$ invariant across $\theta = \pm\pi$. Choosing consecutive Fibonacci numbers $(n, k) \in \{(8, 5), (13, 8), (21, 13), (34, 21)\}$ generates exact conformal golden-ratio phyllotaxis (sunflower and pinecone parastichy) lattices in a single branchless pass.
 

@@ -32,7 +32,7 @@ We solve both problems simultaneously:
    \end{aligned}$$
    And in the conical mantle region, $a q_x = \sqrt{a^2 x_2}$ fuses the two square roots into one, reducing vertical `sdRoundCone` from **3 `sqrt`s to 1 `sqrt` everywhere in $\mathbb{R}^3$** (and 2D [`sdUnevenCapsule2D`](../primitives2d/sdUnevenCapsule2D.md) from **2 `sqrt`s to 1 `sqrt`**).
 2. **$O(L^2)$ Scale-Safe Arbitrary-Segment `sdRoundConeSeg`**:
-   Using the already-computed `il2 = 1.0 / l2` to normalize $y = \operatorname{dot}(p_a, b_a) \cdot \mathit{il}_2 \sim O(1)$ and $b^2 = (r_1 - r_2)^2 \cdot \mathit{il}_2 \sim O(1)$ keeps $x_2 = \|p_a - y b_a\|^2$, $y_2 = y^2 l_2$, $z_2 = (y-1)^2 l_2$, and $s = \operatorname{sign}(r_1 - r_2) b^2 x_2$ strictly at **$O(L^2)$** — eliminating all $O(L^8)$ overflow while saving **7 scalar multiplications**.
+   Using the already-computed `il2 = 1.0 / l2` to normalize $y = \mathrm{dot}(p_a, b_a) \cdot \mathit{il}_2 \sim O(1)$ and $b^2 = (r_1 - r_2)^2 \cdot \mathit{il}_2 \sim O(1)$ keeps $x_2 = \|p_a - y b_a\|^2$, $y_2 = y^2 l_2$, $z_2 = (y-1)^2 l_2$, and $s = \mathrm{sign}(r_1 - r_2) b^2 x_2$ strictly at **$O(L^2)$** — eliminating all $O(L^8)$ overflow while saving **7 scalar multiplications**.
 
 ---
 

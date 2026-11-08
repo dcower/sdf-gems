@@ -27,7 +27,7 @@ returning the exact signed distance $m / \sqrt{11}$ with **0 `sqrt`s** across 10
 ### 2. Theorem: Pythagorean Weyl-Basis Decomposition (`sdTriakisTetrahedronBranchless`)
 
 Because the orthogonal frames $\{N,\; 2N + 11 W_1,\; (-1, -1, 4)\}$ and $\{N,\; 2N + 11 W_3,\; (0, 3, -3)\}$ have **identical rational squared norms** $(11, 198, 18) = 198 / (18, 1, 11)$, the exact 3D Euclidean distance everywhere in $\mathbb{R}^3$ decomposes into a single Pythagorean sum:
-$$d(p) = \operatorname{sgn}(m) \sqrt{\frac{18 m^2 + a^2 + 11 b^2}{198}},$$
+$$d(p) = \mathrm{sgn}(m) \sqrt{\frac{18 m^2 + a^2 + 11 b^2}{198}},$$
 where $a = \max(2m - 11\min(x - y, y + z), 0)$ and $b$ is the 1D tangential edge excess along the active edge ($x - y \le y + z$).
 
 ---

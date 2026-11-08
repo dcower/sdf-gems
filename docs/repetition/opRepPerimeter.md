@@ -37,8 +37,8 @@ This fails in two ways:
 ### 2. Un-Mirrored 1-Tap `opRepPerimeter` & Corner-Aware 2-Tap `opRepPerimeter2Tap`
 
 Instead of folding `p`, `opRepPerimeter` evaluates the signed wall offset $\mathbf{d} = |p/s| - \mathbf{l}$ directly:
-- When $d_x \ge d_y$ (vertical-wall Voronoi region): $\text{id} = (\operatorname{sign}(p_x) l_x,\; \operatorname{clamp}(\operatorname{round}(p_y/s), -l_y, l_y))$.
-- When $d_x < d_y$ (horizontal-wall Voronoi region): $\text{id} = (\operatorname{clamp}(\operatorname{round}(p_x/s), -l_x, l_x),\; \operatorname{sign}(p_y) l_y)$.
+- When $d_x \ge d_y$ (vertical-wall Voronoi region): $\text{id} = (\mathrm{sign}(p_x) l_x,\; \mathrm{clamp}(\mathrm{round}(p_y/s), -l_y, l_y))$.
+- When $d_x < d_y$ (horizontal-wall Voronoi region): $\text{id} = (\mathrm{clamp}(\mathrm{round}(p_x/s), -l_x, l_x),\; \mathrm{sign}(p_y) l_y)$.
 
 It returns the pure translation $p - s \cdot \text{id}$ with **`0.0` error** for all aspect ratios $l_x, l_y$, and `opRepPerimeter2Tap` extends this to a corner-aware 2-tap operator for arbitrary asymmetric/rotated primitives (`0.0` error everywhere).
 

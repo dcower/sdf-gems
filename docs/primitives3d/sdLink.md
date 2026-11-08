@@ -21,7 +21,7 @@ Across the entire middle slab $|p_y| \le l_e$, $q_y = \max(|p_y| - l_e, 0) = 0$,
 
 ### 2. Screw-Folded + Squared-Dominance Infinite 3D Chain (`sdChain`)
 An infinite interlocking chain along the $y$-axis with pitch $s$ alternates $xy$-links at $y = 2ks$ and $zy$-links at $y = (2k+1)s$. Evaluating `min(sdLink(q0), sdLink(q1))` directly requires **4 `sqrt`s**.
-1. **Screw-Reflection Fundamental Domain**: Folding $u_y = |p_y - 2s\,\operatorname{round}(p_y/(2s))| \in [0, s]$ and applying the glide/screw reflection $(x, u_y, z) \mapsto (z, s - u_y, x)$ when $u_y > 0.5s$ maps every point into $u_y \in [0, 0.5s]$, where Link 0 is always axially closer than Link 1:
+1. **Screw-Reflection Fundamental Domain**: Folding $u_y = |p_y - 2s\,\mathrm{round}(p_y/(2s))| \in [0, s]$ and applying the glide/screw reflection $(x, u_y, z) \mapsto (z, s - u_y, x)$ when $u_y > 0.5s$ maps every point into $u_y \in [0, 0.5s]$, where Link 0 is always axially closer than Link 1:
    $$q_0 = \max(u_y - l_e, \, 0) \;\le\; q_1 = \max(s - u_y - l_e, \, 0).$$
 2. **Exact `sqrt`-Free Squared-Dominance Inequality**: Comparing Link 0's squared tube-centerline distance $A = (w_0 - r_1)^2 + z^2$ against Link 1's $B = (w_1 - r_1)^2 + x^2$ cancels $x^2 + z^2 + r_1^2$ identically:
    $$A \le B \iff 2r_1 w_1 \le 2r_1 w_0 + q_1^2 - q_0^2.$$

@@ -20,7 +20,7 @@ Parameterize a 3D circular helix of major radius $R > 0$, axial pitch $P = 2\pi 
 
 $$\mathbf{H}(t) = \big(R\cos t,\; k t,\; R\sin t\big).$$
 
-For a query point $\mathbf{p} = (x, y, z) \in \mathbb{R}^3$, let $r_{xz} = \sqrt{x^2 + z^2}$, $\theta = \operatorname{atan2}(z, x) \in [-\pi, \pi]$, and $\Delta y = \operatorname{mod}(y - k\theta + \pi k, 2\pi k) - \pi k$. Standard Shadertoy helix approximations evaluate either:
+For a query point $\mathbf{p} = (x, y, z) \in \mathbb{R}^3$, let $r_{xz} = \sqrt{x^2 + z^2}$, $\theta = \mathrm{atan2}(z, x) \in [-\pi, \pi]$, and $\Delta y = \mathrm{mod}(y - k\theta + \pi k, 2\pi k) - \pi k$. Standard Shadertoy helix approximations evaluate either:
 - **Unscaled `mod` (`Naive1`):** $d_1(\mathbf{p}) = \sqrt{(r_{xz} - R)^2 + \Delta y^2} - r$, or
 - **Pitch-cosine scaled (`Naive2`):** $d_2(\mathbf{p}) = \sqrt{(r_{xz} - R)^2 + \frac{R^2}{R^2 + k^2}\Delta y^2} - r$.
 
@@ -33,7 +33,7 @@ Both suffer from three mathematical defects:
 
 ### 2. Single-Turn Global Optimality & Zero-Cost 3rd-Order Householder Solver
 
-Writing $t = \theta + 2\pi n + \operatorname{sign}(\Delta y)\,d$ with $d \ge 0$, define the dimensionless parameters:
+Writing $t = \theta + 2\pi n + \mathrm{sign}(\Delta y)\,d$ with $d \ge 0$, define the dimensionless parameters:
 
 $$\alpha = \frac{R r_{xz}}{k^2} \ge 0, \qquad u = \frac{|\Delta y|}{k} \in [0, \pi].$$
 

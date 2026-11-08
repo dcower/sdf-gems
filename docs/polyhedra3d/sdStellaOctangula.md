@@ -6,7 +6,7 @@
 
 Kepler's **Stella Octangula** (the regular stellated octahedron, or compound of two dual regular tetrahedra $S = T_+ \cup T_-$) is a non-convex polyhedron bounded by **24 visible outer equilateral triangles**, **36 edges** (24 convex outer ridges and 12 re-entrant concave valley seams), and **14 vertices** (8 outer tetrahedral spikes and 6 concave valley vertices on the core octahedron).
 
-Previously, evaluating the Stella Octangula via naive CSG union $\min(\operatorname{sd}_{T_+}(p), \operatorname{sd}_{T_-}(p))$ required **2 `sqrt`s** and produced a **broken interior distance field** ($12.1\%$ error inside the core octahedron $T_+ \cap T_-$ due to buried internal faces). Using **Sorted $O_h$ Weyl Chamber Folding**, we prove that $T_- \cap \mathcal{C}_{O_h} \subset T_+ \cap \mathcal{C}_{O_h}$, collapsing the entire 24-triangle non-convex solid to **a single active half-space $x + y - z \le s$** with **0 `sqrt`s** in the face prism and **1 `sqrt`** in the outer ridge and unclamped inward valley seam.
+Previously, evaluating the Stella Octangula via naive CSG union $\min(\mathrm{sd}_{T_+}(p), \mathrm{sd}_{T_-}(p))$ required **2 `sqrt`s** and produced a **broken interior distance field** ($12.1\%$ error inside the core octahedron $T_+ \cap T_-$ due to buried internal faces). Using **Sorted $O_h$ Weyl Chamber Folding**, we prove that $T_- \cap \mathcal{C}_{O_h} \subset T_+ \cap \mathcal{C}_{O_h}$, collapsing the entire 24-triangle non-convex solid to **a single active half-space $x + y - z \le s$** with **0 `sqrt`s** in the face prism and **1 `sqrt`** in the outer ridge and unclamped inward valley seam.
 
 ---
 

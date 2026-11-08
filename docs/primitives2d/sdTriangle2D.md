@@ -19,7 +19,7 @@
 ## Mathematical Overview
 
 ### 1. Barycentric Partition of Unity ($c_0 + c_1 + c_2 \equiv A$)
-Let $\mathbf{e}_0 = p_1 - p_0$, $\mathbf{e}_1 = p_2 - p_1$, $\mathbf{e}_2 = p_0 - p_2$, and $\mathbf{v}_i = p - p_i$. Defining the signed oriented area $A = s(\mathbf{e}_0 \times \mathbf{e}_2) = |\mathbf{e}_0 \times \mathbf{e}_2| > 0$ (where $s = \operatorname{sign}(e_{0x} e_{2y} - e_{0y} e_{2x})$) and the three signed edge cross products:
+Let $\mathbf{e}_0 = p_1 - p_0$, $\mathbf{e}_1 = p_2 - p_1$, $\mathbf{e}_2 = p_0 - p_2$, and $\mathbf{v}_i = p - p_i$. Defining the signed oriented area $A = s(\mathbf{e}_0 \times \mathbf{e}_2) = |\mathbf{e}_0 \times \mathbf{e}_2| > 0$ (where $s = \mathrm{sign}(e_{0x} e_{2y} - e_{0y} e_{2x})$) and the three signed edge cross products:
 $$c_0(p) = s(v_{0x} e_{0y} - v_{0y} e_{0x}), \quad c_1(p) = s(v_{1x} e_{1y} - v_{1y} e_{1x}), \quad c_2(p) = s(v_{2x} e_{2y} - v_{2y} e_{2x}),$$
 the sum of twice the signed triangle areas from $p$ to the three edges equals twice the triangle area for **every** point $p \in \mathbb{R}^2$:
 $$c_0(p) + c_1(p) + c_2(p) \equiv A.$$
@@ -30,7 +30,7 @@ In Inigo Quilez's `sdTriangle` ([Shadertoy `XsXSz4`](https://www.shadertoy.com/v
 
 Because all interior angles of a triangle are strictly less than $\pi$, no vertex can ever be the closest boundary point to an interior point ($c_0, c_1, c_2 > 0$). The signed distance to edge $i$ in the interior is $-c_i / \|\mathbf{e}_i\|_2$. Instead of dividing three times to compare $c_i^2 / l_i$ (where $l_i = \|\mathbf{e}_i\|_2^2$), we compare edges via **exact cross-multiplication**:
 $$\frac{c_1^2}{l_1} < \frac{c_0^2}{l_0} \iff c_1^2 l_0 < c_0^2 l_1, \qquad \frac{c_2^2}{l_2} < \frac{c_m^2}{l_m} \iff c_2^2 l_m < c_m^2 l_2,$$
-selecting the winning interior edge $(c_m, l_m, \mathbf{e}_m)$ with **0 divisions (`RCP`) and 0 `clamp`s**, followed by a **single `inversesqrt(l_m)`** that simultaneously yields the exact signed distance $d = -c_m \operatorname{inversesqrt}(l_m)$ and exact unit outward normal $\nabla d = s(-e_{my}, e_{mx}) \operatorname{inversesqrt}(l_m)$!
+selecting the winning interior edge $(c_m, l_m, \mathbf{e}_m)$ with **0 divisions (`RCP`) and 0 `clamp`s**, followed by a **single `inversesqrt(l_m)`** that simultaneously yields the exact signed distance $d = -c_m \mathrm{inversesqrt}(l_m)$ and exact unit outward normal $\nabla d = s(-e_{my}, e_{mx}) \mathrm{inversesqrt}(l_m)$!
 
 ### 3. Supporting-Half-Space Exterior Edge Pruning (`1.07` Avg Edges)
 In the exterior ($\min(c_0, c_1, c_2) \le 0$), convexity guarantees that the closest point on the triangle lies on an edge $\mathbf{e}_i$ with $c_i \le 0$. Since $c_0 + c_1 + c_2 = A > 0$, at most **2** edges can have $c_i \le 0$ simultaneously, reducing average exterior edge evaluations from **`3.00` down to `1.07`** and computing the exact distance and gradient from the winning displacement vector $\mathbf{d}_m$ with a **single `inversesqrt`**.

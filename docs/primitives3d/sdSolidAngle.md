@@ -25,7 +25,7 @@ and returns `max(l, m * sign(c.y*q.x - c.x*q.y))`.
 By rotating $q$ into the orthonormal cone-ray basis $(u, v) = (q \cdot c, \; c_y q_x - c_x q_y)$ (where $c = (\sin\alpha, \cos\alpha)$ has $\|c\| = 1$), the second and third `length()` calls **never need to be evaluated simultaneously**:
 
 1. **Exterior Triangle-Inequality Dominance ($v > 0$)**:
-   Let $t = \operatorname{clamp}(u, 0, r_a) \in [0, r_a]$. By the triangle inequality in $\mathbb{R}^2$:
+   Let $t = \mathrm{clamp}(u, 0, r_a) \in [0, r_a]$. By the triangle inequality in $\mathbb{R}^2$:
    $$\|q\| = \|(q - t c) + t c\| \le \|q - t c\| + t \le m + r_a \implies \boxed{l = \|q\| - r_a \le m \quad \text{identically for all } q \in \mathbb{R}^2.}$$
    Thus, across the entire exterior of the cone ($v > 0$), $\max(l, +m) = m = \sqrt{(u - t)^2 + v^2}$, making the radial `sqrt` $\|q\|$ completely redundant.
 2. **Interior Orthonormal Decoupling ($v \le 0$)**:

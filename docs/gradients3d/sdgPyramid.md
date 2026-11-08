@@ -23,7 +23,7 @@ Expanding the Euclidean norms reveals that these two algebraic quantities are **
 
 $$\frac{a + q_z^2}{m_2} \equiv \|\mathbf{v}_A\|_2^2, \qquad \mathbf{v}_A = \big(u_x,\; p_y,\; \max(u_y, 0)\big),$$
 
-$$\frac{b + q_z^2}{m_2} \equiv \|\mathbf{v}_B\|_2^2, \qquad \mathbf{v}_B = \big(u_x + \tfrac{1}{2}t,\; p_y - h t,\; u_y + \tfrac{1}{2}t\big), \quad t = \operatorname{clamp}\!\left(\frac{q_y - \frac{1}{2}u_y}{m_2 + \frac{1}{4}}, 0, 1\right).$$
+$$\frac{b + q_z^2}{m_2} \equiv \|\mathbf{v}_B\|_2^2, \qquad \mathbf{v}_B = \big(u_x + \tfrac{1}{2}t,\; p_y - h t,\; u_y + \tfrac{1}{2}t\big), \quad t = \mathrm{clamp}\!\left(\frac{q_y - \frac{1}{2}u_y}{m_2 + \frac{1}{4}}, 0, 1\right).$$
 
 ### 2. Three-Zone 0/1-SFU Decomposition
 

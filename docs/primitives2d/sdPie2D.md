@@ -19,10 +19,10 @@
 ## Mathematical Overview
 
 ### 1. Orthonormal Sector-Dominance & Exterior 0-`sqrt` Strip
-After folding $p_x \leftarrow |p_x|$ with sx $= \operatorname{sign}(x)$, rotating into the orthonormal ray basis of the sector edge $c = (\sin\theta, \cos\theta)$ gives:
+After folding $p_x \leftarrow |p_x|$ with sx $= \mathrm{sign}(x)$, rotating into the orthonormal ray basis of the sector edge $c = (\sin\theta, \cos\theta)$ gives:
 $$u = p \cdot c = c_x |p_x| + c_y p_y, \qquad v = c_y |p_x| - c_x p_y,$$
 with $\|p\|_2^2 = u^2 + v^2$.
-- **Outside the sector ($v > 0$):** By the triangle inequality, $\|p\|_2 - r \le \sqrt{(u - \operatorname{clamp}(u, 0, r))^2 + v^2}$ holds identically. Moreover, whenever $0 < u < r$ (the entire exterior normal strip of the radial edge!), $\operatorname{clamp}(u, 0, r) = u$, so the exact exterior Euclidean distance is simply the linear coordinate **`v` (`0` `sqrt`s)** and the exact gradient is $(\operatorname{sx}\, c_y, -c_x)$!
+- **Outside the sector ($v > 0$):** By the triangle inequality, $\|p\|_2 - r \le \sqrt{(u - \mathrm{clamp}(u, 0, r))^2 + v^2}$ holds identically. Moreover, whenever $0 < u < r$ (the entire exterior normal strip of the radial edge!), $\mathrm{clamp}(u, 0, r) = u$, so the exact exterior Euclidean distance is simply the linear coordinate **`v` (`0` `sqrt`s)** and the exact gradient is $(\mathrm{sx}\, c_y, -c_x)$!
 
 ### 2. The Parabolic $v^2$-Cancellation Theorem (Interior 0-`sqrt` Wedge)
 Inside the sector ($v \le 0$) for $u \ge 0$, the closest boundary point is either the radial edge at signed distance $v \le 0$ or the circular rim at signed distance $\sqrt{u^2 + v^2} - r$. Comparing the two:

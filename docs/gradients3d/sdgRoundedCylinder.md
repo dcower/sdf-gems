@@ -25,7 +25,7 @@ $$w_x \le \min(w_y, 0) \iff l \le r + \min(w_y, 0).$$
 Defining $r_c = r + \min(w_y, 0)$, this condition is tested in **0 `sqrt`s** via squared radius $r_2 = p_x^2 + p_z^2$:
 $$r_c \ge 0 \quad \text{and} \quad p_x^2 + p_z^2 \le r_c^2.$$
 Throughout this entire exterior cylinder and interior paraboloid:
-$$d(\mathbf{p}) = w_y - r_b, \qquad \nabla d(\mathbf{p}) = \bigl(0,\; \operatorname{sign}(p_y),\; 0\bigr),$$
+$$d(\mathbf{p}) = w_y - r_b, \qquad \nabla d(\mathbf{p}) = \bigl(0,\; \mathrm{sign}(p_y),\; 0\bigr),$$
 which requires **0 `sqrt` / 0 `inversesqrt` calls** — we never even need to compute $\sqrt{p_x^2 + p_z^2}$!
 
 ### 2. 1-SFU Cylindrical Wall & 2-SFU Toroidal Rim

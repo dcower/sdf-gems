@@ -22,7 +22,7 @@ Computes the exact 3D Euclidean SDF and analytical unit gradient `vec4(d, grad.x
 1. **0-`sqrt` Three-Zone Euclidean Decomposition**:
    After folding $p_{xz} = |p_{xz}|$ into $p_x \ge p_z \ge 0$, let $b_m = \frac{1}{2}(b_1 + b_2)$, $k = \frac{1}{2}(b_1 - b_2)$, $q = p - (b_m, 0, b_m)$, and $m_2 = h^2 + k^2$. In the entire interior ($\max(d_s, d_c) \le 0$), the exterior top/bottom cap prisms ($d_c > 0 \;\land\; p_x \le b_{\text{cap}}$), and the exterior slanted-face normal prism ($d_s > 0 \;\land\; |h q_y - k q_x| \le m_2 \;\land\; q_z + k u_1 \le 0$), the exact signed distance and unit gradient are purely linear (**0 per-pixel `sqrt`s**; `35.6%` of $[-2, 2]^3$).
 2. **Tangential Hip-Edge Pruning ($q_z + k u_1 \le 0$)**:
-   Let $u_1 = \operatorname{clamp}((h q_y - k q_x)/m_2, -1, 1)$ minimize $(q_x + k u)^2 + (q_y - h u)^2$ on $[-1, 1]$. Whenever $q_z + k u_1 \le 0$, $\max(q_z + k u_1, 0) = 0$, so for every $u_2 \in [-1, 1]$:
+   Let $u_1 = \mathrm{clamp}((h q_y - k q_x)/m_2, -1, 1)$ minimize $(q_x + k u)^2 + (q_y - h u)^2$ on $[-1, 1]$. Whenever $q_z + k u_1 \le 0$, $\max(q_z + k u_1, 0) = 0$, so for every $u_2 \in [-1, 1]$:
    $$d_1 = (q_x + k u_1)^2 + (q_y - h u_1)^2 \le (q_x + k u_2)^2 + (q_y - h u_2)^2 + (q_z + k u_2)^2 = d_2.$$
    Thus the corner hip edge $u_2$ is **100% dominated ($d_1 \le d_2$ identically, `0.0` difference)** whenever $q_z + k u_1 \le 0$ and never needs to be evaluated.
 

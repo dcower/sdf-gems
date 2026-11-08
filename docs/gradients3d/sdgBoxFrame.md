@@ -16,7 +16,7 @@ By combining our **Closest-Strut Reduction** with a new **Interior Longitudinal 
 
 ### Theorem: Closest-Strut Longitudinal Invariance for `sdgBoxFrame`
 
-Let $\mathbf{w} = |p| - \mathbf{b}$, $\mathbf{u} = \mathbf{w} + e$, $\mathbf{s}_q = \operatorname{sign}_{\ne 0}(\mathbf{u})$, and $\mathbf{q} = |\mathbf{u}| - e = ||p| - \mathbf{b} + e| - e$. Let $i^* = \arg\min_{i \in \{x, y, z\}} w_i$ be the axis of the minimum component $w_{\min} = \min(w_x, \min(w_y, w_z))$.
+Let $\mathbf{w} = |p| - \mathbf{b}$, $\mathbf{u} = \mathbf{w} + e$, $\mathbf{s}_q = \mathrm{sign}_{\ne 0}(\mathbf{u})$, and $\mathbf{q} = |\mathbf{u}| - e = ||p| - \mathbf{b} + e| - e$. Let $i^* = \arg\min_{i \in \{x, y, z\}} w_i$ be the axis of the minimum component $w_{\min} = \min(w_x, \min(w_y, w_z))$.
 
 1. **Closest-Beam Reduction (1 Strut instead of 3)**:
    The closest of the three wireframe struts in the first octant is always the strut parallel to axis $i^*$, whose local box coordinates $\mathbf{c}$ replace the $i^*$-th component of $\mathbf{q}$ with $w_{i^*}$ (and replace the $i^*$-th fold sign of $\mathbf{s}_q$ with $+1$).

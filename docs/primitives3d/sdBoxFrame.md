@@ -26,7 +26,7 @@ We prove that **all three beams never need to be evaluated**: the closest beam a
    - its remaining two coordinates $u = (\max(a, p_z), \, \max(p_x, p_y)) \in \mathbb{R}^2$.
 2. **Closest-Beam Dominance Theorem**:
    For $e > 0$, the transverse bar distance $q(t) = |t + e| - e$ satisfies $q(t) \ge t$ everywhere, with strict inequality $q(t) > t \iff t < -e$, on which $q(t) = -t - 2e$ is **strictly decreasing** in $t$ while $t$ is **strictly increasing** in $t$. Because the 3D box SDF is symmetric and coordinate-wise non-decreasing, replacing $q(p_i)$ with $p_i$ achieves the maximum reduction when $p_i$ is minimal:
-   $$\min_{i \in \{x,y,z\}} \operatorname{sdBox}(p_i, q(p_j), q(p_k)) \equiv \operatorname{sdBox}\big(\min(a, p_z), \; q(u_x), \; q(u_y)\big).$$
+   $$\min_{i \in \{x,y,z\}} \mathrm{sdBox}(p_i, q(p_j), q(p_k)) \equiv \mathrm{sdBox}\big(\min(a, p_z), \; q(u_x), \; q(u_y)\big).$$
 3. **Interior Longitudinal Elimination**:
    Because $q(t) = |t + e| - e \ge -e$ for all $t \in \mathbb{R}$ and $q(t) = t$ for $t \ge -e$, the minimum coordinate $s = \min(a, p_z)$ satisfies $s \le \max(q(u_x), q(u_y))$ **identically across all of $\mathbb{R}^3$**, eliminating $s$ from the interior term $\min(\max(q_x, q_y), 0.0)$.
 4. **Companion Cylindrical-Edge Wireframe (`sdBoxEdges`)**:

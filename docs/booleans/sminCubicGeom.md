@@ -22,11 +22,11 @@ In his classification of smooth-minimum functions ([`smin`](https://iquilezles.o
 ## 2. Mathematical Derivation ($\ell_3$ Lamé Corner Fillet)
 
 Set the corner support radius $R = \frac{k}{1 - 2^{-1/3}} \approx 4.84732210\,k$ (normalized so that at $a = b = k$, the zero-level surface passes through $(k, k)$), and define $u = \max(R - (a, b), 0)$:
-$$\operatorname{sminCubicGeom}(a, b, k) = \max\big(R, \min(a, b)\big) - \big(u_x^3 + u_y^3\big)^{1/3}.$$
+$$\mathrm{sminCubicGeom}(a, b, k) = \max\big(R, \min(a, b)\big) - \big(u_x^3 + u_y^3\big)^{1/3}.$$
 
 ### Proof of the 5 Simultaneous Properties
 1. **Strict Corner-Locality & Rigidity (`1.11e-16` error)**:
-   Whenever $a \ge R$ or $b \ge R$, at least one component of $u$ is $0$, so $(u_x^3 + u_y^3)^{1/3} = \max(u_x, u_y) = R - \min(a, b)$ and $\operatorname{sminCubicGeom}(a, b, k) \equiv \min(a, b)$ identically.
+   Whenever $a \ge R$ or $b \ge R$, at least one component of $u$ is $0$, so $(u_x^3 + u_y^3)^{1/3} = \max(u_x, u_y) = R - \min(a, b)$ and $\mathrm{sminCubicGeom}(a, b, k) \equiv \min(a, b)$ identically.
 2. **$C^2$ ($G^2$ Curvature Continuity) at $a = R, b = R$ and $C^\infty$ across $a = b$**:
    Expanding near $u_x \to 0^+$ ($a \to R^-$) for $u_y > 0$:
    $$(u_x^3 + u_y^3)^{1/3} = u_y\left(1 + \frac{u_x^3}{u_y^3}\right)^{1/3} = u_y + \frac{u_x^3}{3u_y^2} - \frac{u_x^6}{9u_y^5} + \cdots$$

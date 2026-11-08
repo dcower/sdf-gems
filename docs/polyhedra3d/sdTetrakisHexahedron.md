@@ -32,7 +32,7 @@ $$d(p) = \frac{2x + y - 2s}{\sqrt{5}} \qquad (\text{0 }\texttt{sqrt}\text{s!}).$
 
 ### 2. Catalan Wedge-Bisector Unification & Pythagorean Weyl-Basis Form
 In the exterior edge/vertex region ($m > 5\min(x - y, y - z)$), the homogeneous bisector $x + z \le 2y$ ($w_1 \le w_2$) 100% separates the Voronoi region of the cube-like edge $E_1$ from the pyramid hip edge $E_2$, so **only one edge is ever evaluated**! Furthermore, because $\|(2,1,0)\|^2 = 5$, $\|(2,-4,5)\|^2 = 45$, and $\|(-1,2,2)\|^2 = 9$ form an orthogonal rational frame with integer weights $(9, 1, 5)/45$, the squared distance admits a branchless 6-line Pythagorean Weyl-basis form:
-$$d(p) = \operatorname{sign}(m)\sqrt{\frac{9m^2 + a^2 + 5b^2}{45}}.$$
+$$d(p) = \mathrm{sign}(m)\sqrt{\frac{9m^2 + a^2 + 5b^2}{45}}.$$
 
 ---
 

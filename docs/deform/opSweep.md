@@ -36,7 +36,7 @@ $$\nabla_{\mathbf{p}} f(\mathbf{p}) = \big(g_u \, \partial_x d_{\text{spine}},\;
 ### 2. Finite-Segment & Orthonormal Cap-Plane Circular-Arc Sweeps (`opSweepSegment*`, `opSweepArc*`, `sdgSweep*`)
 
 - **Revolved-Spine Arc Sweep (`opSweepArcSpine`, `sdgSweepArcSpine`)**: Generalizes `sdCappedTorus` from circular tubes to **any** $u$-symmetric 2D profile swept along a circular arc of radius $r_a$ and half-angle $\theta$, revolving the 2D profile around the two arc endpoints in the cap zone.
-- **Orthonormal Cap-Plane Arc Sweep (`opSweepArc`, `opSweepArcFlat`, `opSweepArcRound`, `sdgSweepArcFlat`, `sdgSweepArcRound`)**: In the exterior cap half-space $w = q_x sc_y - q_y sc_x > 0$ of a circular arc, the triad $\mathbf{e}_u = (\operatorname{sgn}(p_x) sc_x, 0, sc_y)$, $\mathbf{e}_v = (0, 1, 0)$, $\mathbf{e}_w = (\operatorname{sgn}(p_x) sc_y, 0, -sc_x)$ is strictly orthonormal in $\mathbb{R}^3$, enabling flat and rounded end-caps on **asymmetric** 2D profiles with $\|\nabla_{\mathbf{p}} d\| \equiv 1$.
+- **Orthonormal Cap-Plane Arc Sweep (`opSweepArc`, `opSweepArcFlat`, `opSweepArcRound`, `sdgSweepArcFlat`, `sdgSweepArcRound`)**: In the exterior cap half-space $w = q_x sc_y - q_y sc_x > 0$ of a circular arc, the triad $\mathbf{e}_u = (\mathrm{sgn}(p_x) sc_x, 0, sc_y)$, $\mathbf{e}_v = (0, 1, 0)$, $\mathbf{e}_w = (\mathrm{sgn}(p_x) sc_y, 0, -sc_x)$ is strictly orthonormal in $\mathbb{R}^3$, enabling flat and rounded end-caps on **asymmetric** 2D profiles with $\|\nabla_{\mathbf{p}} d\| \equiv 1$.
 
 ### Numerical Verification Summary (20,000 Random 3D Points in $[-2, 2]^3$)
 

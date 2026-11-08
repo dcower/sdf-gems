@@ -22,7 +22,7 @@ Because the vertex wedge lies strictly in the 2D exterior ($p_x \ge p_y \ge 0$),
 
 ### 2. Round-Free, Clamp-Free Orthogonal Decomposition of `sdCoolS2D`
 
-In IQ's `sdfCoolS(vec2 p)` (`distfunctions2d`), line 2540 evaluates `rex = p.x - min(round(p.x/0.4), 0.4)`. Because $p_x \ge 0$ after symmetry folding, `round(p.x/0.4)` is a non-negative integer $\{0, 1, 2, \dots\}$, so `min(round(p.x/0.4), 0.4)` is `0.0` for $p_x < 0.2$ and `0.4` for $p_x \ge 0.2$. Thus $|rex| \equiv ||p_x - 0.2| - 0.2|$ (**eliminating `round`, division by `0.4`, and `min`**). Furthermore, $|p_y - \operatorname{clamp}(p_y, 0, 0.4)| \equiv m_y := \max(|p_y - 0.2| - 0.2, 0)$, and the sign expression `2*p.x + aby + abs(aby + 0.4) - 0.4` simplifies algebraically to `2*(p.x + my - 0.4)`.
+In IQ's `sdfCoolS(vec2 p)` (`distfunctions2d`), line 2540 evaluates `rex = p.x - min(round(p.x/0.4), 0.4)`. Because $p_x \ge 0$ after symmetry folding, `round(p.x/0.4)` is a non-negative integer $\{0, 1, 2, \dots\}$, so `min(round(p.x/0.4), 0.4)` is `0.0` for $p_x < 0.2$ and `0.4` for $p_x \ge 0.2$. Thus $|rex| \equiv ||p_x - 0.2| - 0.2|$ (**eliminating `round`, division by `0.4`, and `min`**). Furthermore, $|p_y - \mathrm{clamp}(p_y, 0, 0.4)| \equiv m_y := \max(|p_y - 0.2| - 0.2, 0)$, and the sign expression `2*p.x + aby + abs(aby + 0.4) - 0.4` simplifies algebraically to `2*(p.x + my - 0.4)`.
 
 ---
 

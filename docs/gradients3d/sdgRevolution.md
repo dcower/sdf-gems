@@ -16,8 +16,8 @@
 ## Mathematical Overview
 
 Lifts any 2D SDF+gradient `d2g = vec3(d, gx, gy)` into an exact 3D `vec4(d, gx, gy, gz)` under full $360^\circ$ revolution (`sdgRevolutionFinalize`) or limited-angle partial revolution (`sdgRevolutionLimFinalize`, paired with [`opRevolutionLim`](../deform/opRevolutionLim.md)):
-- **Inside the angular sector ($w \le 0$)**: The radial coordinate $l = \|p_{xz}\|_2$ has gradient $\nabla l = (p_x / l, 0, p_z / l) \perp \hat{y}$, so the mantle gradient is $(g_x p_x / l, g_y, g_x p_z / l)$ (or the flat end-cap normal $g_w = (\operatorname{sign}(p_x)\cos\theta, 0, -\sin\theta)$ when the interior end-cap is active).
-- **Outside the angular sector ($w > 0$)**: The in-plane cap tangent $(\operatorname{sign}(p_x)\sin\theta, 0, \cos\theta)$, the vertical axis $(0, 1, 0)$, and the outward cap normal $g_w = (\operatorname{sign}(p_x)\cos\theta, 0, -\sin\theta)$ form a **3D orthonormal triad**, so the exterior cap-rim gradient is $(d_{2\text{D}}\,g_u + w\,g_w) / \sqrt{d_{2\text{D}}^2 + w^2}$ with exact unit norm $\|\nabla d\|_2 = 1$ (`3.33e-16` max Eikonal deviation).
+- **Inside the angular sector ($w \le 0$)**: The radial coordinate $l = \|p_{xz}\|_2$ has gradient $\nabla l = (p_x / l, 0, p_z / l) \perp \hat{y}$, so the mantle gradient is $(g_x p_x / l, g_y, g_x p_z / l)$ (or the flat end-cap normal $g_w = (\mathrm{sign}(p_x)\cos\theta, 0, -\sin\theta)$ when the interior end-cap is active).
+- **Outside the angular sector ($w > 0$)**: The in-plane cap tangent $(\mathrm{sign}(p_x)\sin\theta, 0, \cos\theta)$, the vertical axis $(0, 1, 0)$, and the outward cap normal $g_w = (\mathrm{sign}(p_x)\cos\theta, 0, -\sin\theta)$ form a **3D orthonormal triad**, so the exterior cap-rim gradient is $(d_{2\text{D}}\,g_u + w\,g_w) / \sqrt{d_{2\text{D}}^2 + w^2}$ with exact unit norm $\|\nabla d\|_2 = 1$ (`3.33e-16` max Eikonal deviation).
 
 ---
 

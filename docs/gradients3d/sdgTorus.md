@@ -21,7 +21,7 @@
 1. **Eliminating IQ's 3rd `sqrt` and `0.0 / 0.0 = NaN` Singularities:**
    In Inigo Quilez's [`sdgTorus`](https://iquilezles.org/articles/distgradfunctions3d/), `normalize(p * vec3(h - ra, h, h - ra))` invokes a 3rd `sqrt` and produces **`NaN`** on the symmetry axis $p_{xz} = \mathbf{0}$ ($h = 0$) and on the medial core circle ($h = r_a, p_y = 0 \implies k = 0$). By factoring the radial unit vector $\mathbf{e}_r = p_{xz} / \|p_{xz}\|_2$ (with safe fallback $(1, 0)$ at $p_{xz} = \mathbf{0}$) and minor-circle vector $(u, p_y) = (h - r_a, p_y)$, the 3D unit gradient is $\nabla d = (u e_{rx}, p_y, u e_{rz}) / \sqrt{u^2 + p_y^2}$ using only **2 `inversesqrt`s** and **`0` `NaN`s** anywhere in $\mathbb{R}^3$.
 2. **All-Regime Self-Intersecting Apple Torus ($r_a < r_b$):**
-   Inside the polar dimple-cusp cone $b_2 x_2 < r_a^2 (|p_y| - b)^2$ ($|p_y| < b = \sqrt{r_b^2 - r_a^2}$), `sdgTorus` returns both the exact interior distance and exact unit gradient toward the polar dimple cusp $(0, \operatorname{sign}(p_y) b, 0)$ using **1 per-pixel `inversesqrt`**.
+   Inside the polar dimple-cusp cone $b_2 x_2 < r_a^2 (|p_y| - b)^2$ ($|p_y| < b = \sqrt{r_b^2 - r_a^2}$), `sdgTorus` returns both the exact interior distance and exact unit gradient toward the polar dimple cusp $(0, \mathrm{sign}(p_y) b, 0)$ using **1 per-pixel `inversesqrt`**.
 
 ---
 

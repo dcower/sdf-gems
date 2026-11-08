@@ -18,7 +18,7 @@
 
 ### 1. Eliminating the `sqrt` + Division Pair & Medial Spine `NaN`
 
-For a 3D capsule with spine endpoints $\mathbf{a}, \mathbf{b} \in \mathbb{R}^3$ and radius $r > 0$, let $\mathbf{v} = (\mathbf{p} - \mathbf{a}) - (\mathbf{b} - \mathbf{a})\operatorname{clamp}\!\left(\frac{\langle \mathbf{p} - \mathbf{a}, \mathbf{b} - \mathbf{a}\rangle}{\|\mathbf{b} - \mathbf{a}\|^2}, 0, 1\right)$ be the shortest offset vector from the medial spine segment to $\mathbf{p}$, with squared length $l^2 = \|\mathbf{v}\|^2$.
+For a 3D capsule with spine endpoints $\mathbf{a}, \mathbf{b} \in \mathbb{R}^3$ and radius $r > 0$, let $\mathbf{v} = (\mathbf{p} - \mathbf{a}) - (\mathbf{b} - \mathbf{a})\mathrm{clamp}\!\left(\frac{\langle \mathbf{p} - \mathbf{a}, \mathbf{b} - \mathbf{a}\rangle}{\|\mathbf{b} - \mathbf{a}\|^2}, 0, 1\right)$ be the shortest offset vector from the medial spine segment to $\mathbf{p}$, with squared length $l^2 = \|\mathbf{v}\|^2$.
 
 Inigo Quilez's `sdgSegment` (`distgradfunctions3d`) computes:
 ```glsl

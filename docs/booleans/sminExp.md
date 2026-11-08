@@ -31,7 +31,7 @@ $$r = 2^{-a/k} + 2^{-b/k}, \qquad d = -k \log_2(r)$$
 
 Factoring out $2^{-\min(a,b)/k}$ from $2^{-a/k} + 2^{-b/k} = 2^{-\min(a,b)/k}\!\left(1 + 2^{-|a - b|/k}\right)$ yields the **1-`exp2` Shift-Stabilized LogSumExp Smooth Minimum**:
 
-$$\operatorname{sminExp}(a, b, k) = \min(a, b) - k \log_2\!\left(1 + 2^{-|a - b|/k}\right)$$
+$$\mathrm{sminExp}(a, b, k) = \min(a, b) - k \log_2\!\left(1 + 2^{-|a - b|/k}\right)$$
 
 1. **$50\%$ Fewer `exp2` Calls**: Evaluates only **1 `exp2` + 1 `log2`** (2 SFU instructions instead of 3).
 2. **$100\%$ Overflow- and Underflow-Free across all of FP32 and FP16**: Because $-|a - b|/k \le 0$ for all $a, b \in \mathbb{R}$ and $k > 0$, $e = 2^{-|a - b|/k} \in (0, 1]$ never overflows, and $1 + e \in [1, 2]$ keeps `log2` inside the benign octave $[1, 2]$.
@@ -42,7 +42,7 @@ $$\operatorname{sminExp}(a, b, k) = \min(a, b) - k \log_2\!\left(1 + 2^{-|a - b|
 
 - **Seam-Safe `sminSigmoid`**: IQ's `a + (b - a) / (1.0 - exp2((b - a) / (k * ln 2)))` divides `0.0 / 0.0 = NaN` on the entire medial bisector $a = b$ and overflows when $b - a \gg k$. Factoring out $\min(a,b)$ with $z = |a - b|/k \ge 0$, $e = 2^{-z / \ln 2} \in (0, 1]$, and Taylor fallback $1 - \frac{1}{2}z$ for $z \le 10^{-3}$ eliminates all `NaN`s and overflows.
 - **Conjugate-Stabilized `sminRoot`**: IQ's $\frac{1}{2}\!\left(a + b - \sqrt{(b - a)^2 + 4 k^2}\right)$ suffers $100\%$ catastrophic mantissa cancellation of $\min(a, b)$ when $|a - b| \gg k$. Multiplying by the conjugate transforms it into:
-  $$\operatorname{sminRoot}(a, b, k) = \min(a, b) - \frac{2 k^2}{|a - b| + \sqrt{|a - b|^2 + 4 k^2}}$$
+  $$\mathrm{sminRoot}(a, b, k) = \min(a, b) - \frac{2 k^2}{|a - b| + \sqrt{|a - b|^2 + 4 k^2}}$$
   which achieves `1.45e-13` error at $a = 10^{-5}, b = 10^3, k = 0.01$ and shares $s = \sqrt{|a - b|^2 + 4 k^2}$ with its analytical 3D gradient `sdgSmoothRoot`.
 
 ### Numerical Verification Summary ($k = 0.05$, $[-20, 20]^2$ Grid, $160{,}801$ Points)

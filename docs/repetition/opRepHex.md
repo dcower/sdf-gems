@@ -20,9 +20,9 @@ The 2D hexagonal lattice $A_2$ (which achieves the optimal 2D circle packing den
 Standard Shadertoy hexagonal tilings evaluate two `mod`/`round` operations and compare two squared Euclidean distances (`dot(a, a) < dot(b, b)`).
 
 ### 1-`round` Linear-Norm Voronoi Theorem
-Map $p$ into normalized sublattice coordinates $u = p / (s k)$, snap to the nearest $L_0$ lattice site $i = \operatorname{round}(u)$, and let $d = u - i \in [-\tfrac{1}{2}, \tfrac{1}{2}]^2$:
-1. Inside the fundamental rectangle $d \in [-\tfrac{1}{2}, \tfrac{1}{2}]^2$, the nearest $L_1$ site is **always** $i + 0.5\operatorname{sign}(d)$, eliminating the second `round()` call.
-2. Expanding the Euclidean Voronoi comparison $\|(d - 0.5\operatorname{sign}(d)) \odot k\|_2^2 < \|d \odot k\|_2^2$ cancels the quadratic terms $d_x^2 + 3 d_y^2$ identically:
+Map $p$ into normalized sublattice coordinates $u = p / (s k)$, snap to the nearest $L_0$ lattice site $i = \mathrm{round}(u)$, and let $d = u - i \in [-\tfrac{1}{2}, \tfrac{1}{2}]^2$:
+1. Inside the fundamental rectangle $d \in [-\tfrac{1}{2}, \tfrac{1}{2}]^2$, the nearest $L_1$ site is **always** $i + 0.5\mathrm{sign}(d)$, eliminating the second `round()` call.
+2. Expanding the Euclidean Voronoi comparison $\|(d - 0.5\mathrm{sign}(d)) \odot k\|_2^2 < \|d \odot k\|_2^2$ cancels the quadratic terms $d_x^2 + 3 d_y^2$ identically:
    $$\bigl(|d_x| - \tfrac{1}{2}\bigr)^2 + 3\bigl(|d_y| - \tfrac{1}{2}\bigr)^2 < d_x^2 + 3 d_y^2 \iff -|d_x| + \tfrac{1}{4} - 3|d_y| + \tfrac{3}{4} < 0 \iff |d_x| + 3|d_y| > 1.$$
    This replaces both `dot2` calls with the linear inequality $|d_x| + 3|d_y| > 1$ (the 2D $A_2$ counterpart of [`opRepBCC`](opRepBCC.md)'s $|r_x| + |r_y| + |r_z| > 0.75$).
 

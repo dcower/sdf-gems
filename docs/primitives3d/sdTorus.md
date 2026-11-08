@@ -28,7 +28,7 @@ standard `sdTorus` measures distance to the **internal phantom lemon/spindle she
 ### 2. Squared-Radius Polar-Cone Test & 1-`sqrt` Exact Interior
 Squaring the polar cusp cone inequality eliminates $\sqrt{p_x^2 + p_z^2}$ completely:
 $$(r^2 - R^2)(p_x^2 + p_z^2) < R^2 (b - |p_y|)^2 \quad \text{with } b - |p_y| > 0.$$
-Whenever $p$ lies in this polar cone, the closest point on the outer torus boundary is the polar dimple cusp $(0, \operatorname{sign}(p_y) b, 0)$, and its exact signed Euclidean distance is:
+Whenever $p$ lies in this polar cone, the closest point on the outer torus boundary is the polar dimple cusp $(0, \mathrm{sign}(p_y) b, 0)$, and its exact signed Euclidean distance is:
 $$d(p) = -\sqrt{p_x^2 + p_z^2 + (b - |p_y|)^2},$$
 which uses **only 1 per-pixel `sqrt`** (`sqrt(b2)` is a uniform constant when $t$ is uniform) and achieves $4.44 \times 10^{-16}$ max error across all $R \gtrless r$.
 

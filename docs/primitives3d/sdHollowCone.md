@@ -31,7 +31,7 @@ Let $r_2 = p_x^2 + p_z^2$, $w_y = |p_y| - h$, and $\tau = t + \min(w_y, 0)$. The
 
 $$\tau \ge 0 \quad \text{and} \quad \max(r - \tau, 0)^2 \le r_2 \le (r + \tau)^2$$
 
-Inside this annular rim-Voronoi region, the exact 3D Euclidean distance is $d = w_y = |p_y| - h$ and the exact 3D unit gradient is $\nabla d = (0, \operatorname{sign}(p_y), 0)$ — requiring **ZERO `sqrt`s** (without even evaluating `length(p.xz)`!). Outside the rim-Voronoi zone, evaluating $\rho = \sqrt{r_2}$ (**1st `sqrt`**) and $w_x = |\rho - r| - t$ requires **only 1 `sqrt`** across the entire inner bore, outer barrel wall, and wall interior ($w_y \le 0$, $44.6\%$ of space).
+Inside this annular rim-Voronoi region, the exact 3D Euclidean distance is $d = w_y = |p_y| - h$ and the exact 3D unit gradient is $\nabla d = (0, \mathrm{sign}(p_y), 0)$ — requiring **ZERO `sqrt`s** (without even evaluating `length(p.xz)`!). Outside the rim-Voronoi zone, evaluating $\rho = \sqrt{r_2}$ (**1st `sqrt`**) and $w_x = |\rho - r| - t$ requires **only 1 `sqrt`** across the entire inner bore, outer barrel wall, and wall interior ($w_y \le 0$, $44.6\%$ of space).
 
 ### 2. Conformal Midpoint-Fold & 1-`sqrt` Box Quadrant Theorem (`sdHollowCone`, `sdHollowConeRound`, `sdgHollowCone`)
 

@@ -25,7 +25,7 @@ In the sorted octahedral Weyl chamber $\mathcal{C}_{O_h} = \{p_x \ge p_y \ge p_z
 $$N = \frac{(1 + 2\sqrt{2},\; 1 + \sqrt{2},\; 1)}{\sqrt{13 + 6\sqrt{2}}} = (0.82594259,\; 0.52084106,\; 0.21573952).$$
 Because $N$ makes the **exact same inner product** $k = (13 + 6\sqrt{2})^{-1/2} = 0.21573952$ with all three chamber mirror walls $w_1 = \frac{(1,-1,0)}{\sqrt{2}}$, $w_2 = \frac{(0,1,-1)}{\sqrt{2}}$, and $w_3 = (0,0,1)$:
 1. The exact 0-`sqrt` face-prism condition is $m \le \min(3.96848604\min(p_x - p_y, p_y - p_z),\; 5.61228668\, p_z)$.
-2. Outside the face prism, $\operatorname{argmin}(p_x - p_y,\; p_y - p_z,\; \sqrt{2}\, p_z)$ **100% partitions the three edges** without comparing squared distances!
+2. Outside the face prism, $\mathrm{argmin}(p_x - p_y,\; p_y - p_z,\; \sqrt{2}\, p_z)$ **100% partitions the three edges** without comparing squared distances!
 
 ---
 

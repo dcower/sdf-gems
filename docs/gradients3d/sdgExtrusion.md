@@ -17,8 +17,8 @@
 
 Inigo Quilez's 3D and 2D gradient articles note that any 2D SDF+gradient `d2g = vec3(u, gx, gy)` with $g_x^2 + g_y^2 = 1$ can be lifted into 3D via extrusion, but never formulate the 3D analytical gradient operators.
 
-By the **Orthogonal Profile Chain Rule**, given $u = d_{2\text{D}}(p_{xy})$ with $\nabla_{xy} u = (g_x, g_y)$ and $v = |z| - h$ with $\partial_z v = s_z = \operatorname{sign}(z)$, any 2D corner profile $f(u, v)$ with unit partial-derivative vector $(\partial_u f, \partial_v f)$ lifts to an exact 3D `vec4(d, grad.xyz)`:
-$$\operatorname{sdg}(p) = \bigl(f(u, v), \; (\partial_u f)\,g_x, \; (\partial_u f)\,g_y, \; (\partial_v f)\,s_z\bigr), \qquad \|\nabla_{x,y,z} f\|_2^2 = (\partial_u f)^2(g_x^2 + g_y^2) + (\partial_v f)^2 s_z^2 = 1.$$
+By the **Orthogonal Profile Chain Rule**, given $u = d_{2\text{D}}(p_{xy})$ with $\nabla_{xy} u = (g_x, g_y)$ and $v = |z| - h$ with $\partial_z v = s_z = \mathrm{sign}(z)$, any 2D corner profile $f(u, v)$ with unit partial-derivative vector $(\partial_u f, \partial_v f)$ lifts to an exact 3D `vec4(d, grad.xyz)`:
+$$\mathrm{sdg}(p) = \bigl(f(u, v), \; (\partial_u f)\,g_x, \; (\partial_u f)\,g_y, \; (\partial_v f)\,s_z\bigr), \qquad \|\nabla_{x,y,z} f\|_2^2 = (\partial_u f)^2(g_x^2 + g_y^2) + (\partial_v f)^2 s_z^2 = 1.$$
 
 This file provides seven exact 2D-to-3D gradient extrusion operators:
 1. **`sdgExtrusion(d2g, z, h)`**: Sharp linear extrusion.

@@ -32,7 +32,7 @@ $$p_c = \frac{\mathit{ik}\left(h - y_0 - \frac{1}{2}\mathit{ik}\right)}{3}, \qqu
 1. **Singularity-Free Depressed Cubic Root**:
    Let $\Delta = q_c^2 - p_c^3$.
    - When $\Delta \ge 0$, Cardano's formula gives $r = (q_c + \sqrt{\Delta})^{1/3}$ and $u^* = \max(r + p_c / r, 0)$ (guarded when $r = 0$ at the focal center of curvature $u_0 = 0, y_0 = h - \frac{1}{2}\mathit{ik}$ to avoid `0.0 / 0.0 = NaN`).
-   - When $\Delta < 0$ ($p_c > 0$), Viète's trigonometric formula selects the unique positive root $u^* = 2\sqrt{p_c}\cos\!\left(\frac{1}{3}\arccos\!\left(\operatorname{clamp}\!\left(\frac{q_c}{p_c\sqrt{p_c}}, -1, 1\right)\right)\right)$.
+   - When $\Delta < 0$ ($p_c > 0$), Viète's trigonometric formula selects the unique positive root $u^* = 2\sqrt{p_c}\cos\!\left(\frac{1}{3}\arccos\!\left(\mathrm{clamp}\!\left(\frac{q_c}{p_c\sqrt{p_c}}, -1, 1\right)\right)\right)$.
 
 2. **Clamped Mantle & Base Disk Projection**:
    Clamping $u = \min(u^*, w)$ gives the exact closest point on the parabolic mantle, with squared distance $d_{\text{mantle}}^2 = (u_0 - u)^2 + (y_0 - (h - u^2/\mathit{ik}))^2$.

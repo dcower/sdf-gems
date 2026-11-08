@@ -19,8 +19,8 @@ By the **Orthogonal SDF Composition Theorem**, since $u = d_{2\text{D}}(p_{xy})$
 
 ### Exterior & Interior Simplification to 1 `sqrt`
 Using the outward/inward step corner duality (see [`opUnionStairs`](../booleans/opUnionStairs.md)) for **intersection** ($u \le 0 \wedge v \le 0$ with $n$ stepped corner notches):
-- The $n$ convex outward step noses lie at $(-j_0, -(r - s - j_0))$ where $j_0 = \operatorname{clamp}(\lfloor w \rfloor, 0, n-1) s$ and $w = \frac{v - u + r}{2 s}$.
-- The $n-1$ concave inward step corners lie at $(-k_1, -(r - k_1))$ where $k_1 = \operatorname{clamp}(\operatorname{round}(w), 1, n-1) s$.
+- The $n$ convex outward step noses lie at $(-j_0, -(r - s - j_0))$ where $j_0 = \mathrm{clamp}(\lfloor w \rfloor, 0, n-1) s$ and $w = \frac{v - u + r}{2 s}$.
+- The $n-1$ concave inward step corners lie at $(-k_1, -(r - k_1))$ where $k_1 = \mathrm{clamp}(\mathrm{round}(w), 1, n-1) s$.
 - A point $(u, v)$ lies outside the stepped profile iff $\max(p_x, p_y) \ge 0$ where $p = (u + j_0, v + r - s - j_0)$. Because $\max(p_x, p_y) \ge 0$ holds across the entire exterior branch, $\min(\max(p_x, p_y), 0) \equiv 0$ vanishes identically outside, reducing the entire 9-line operator to a single `length(max(m ? q : p, 0.0))` call (`4.44e-16` max error).
 
 ---

@@ -22,7 +22,7 @@ Inigo Quilez's classic 2D Quadratic Bézier distance function `sdBezier(pos, A, 
 ### 1. Theorem: Dual-Regime Cancellation-Free 1-`cbrt` Cardano Formula
 
 In the single-real-root regime $h = q^2 + 4p^3 \ge 0$ of $y^3 + 3py + q = 0$, define the dominant cube root:
-$$s = -\operatorname{sign}(q)\left(\frac{|q| + \sqrt{h}}{2}\right)^{1/3}, \qquad v = -\frac{p}{s}.$$
+$$s = -\mathrm{sign}(q)\left(\frac{|q| + \sqrt{h}}{2}\right)^{1/3}, \qquad v = -\frac{p}{s}.$$
 Because $|q| + \sqrt{h} \ge 0$ always adds two non-negative numbers, $s$ requires only **1 `cbrt` (`pow`)** and has zero subtractive cancellation as $p \to 0$. To sum $y = s + v$ without cancellation across the entire $(p, q)$ plane:
 - **When $p \le 0$**: Since $-p \ge 0$, $s$ and $v = -p/s$ have the **same sign**, so $y = s + v$ is a cancellation-free addition.
 - **When $p > 0$**: $s$ and $v = -p/s$ have **opposite signs**, and for $4p^3 \gg q^2$ both approach $\pm\sqrt{p}$. Using the exact cubic factorization $s^3 + v^3 = (s + v)(s^2 - sv + v^2)$ together with $s^3 + v^3 = -q$ and $-sv = p$ gives:
@@ -37,7 +37,7 @@ is **100% free of subtractive cancellation across the entire $(p, q)$ plane** wh
 
 When $\|b\|^2 \le 10^{-3}\|a\|^2$, the unscaled stationarity cubic:
 $$f(t) = c_0 + c_1 t + c_2 t^2 + c_3 t^3 = 0, \qquad c_0 = d \cdot a, \quad c_1 = 2\|a\|^2 + d \cdot b, \quad c_2 = 3(a \cdot b), \quad c_3 = \|b\|^2$$
-is a weakly perturbed linear equation. Starting from the exact line-segment projection $t_0 = \operatorname{clamp}\!\big(-c_0 / (2\|a\|^2), 0, 1\big)$, a single Newton step $t = \operatorname{clamp}\!\big(t_0 - f(t_0)/f'(t_0), 0, 1\big)$ achieves $O(\|b\|^4/\|a\|^4) \le 10^{-12} \ll \epsilon_{\text{FP32}}$ accuracy and smoothly reduces to the exact line segment at $b = 0$ with **0 `cbrt`s and 0 `NaN`s**.
+is a weakly perturbed linear equation. Starting from the exact line-segment projection $t_0 = \mathrm{clamp}\!\big(-c_0 / (2\|a\|^2), 0, 1\big)$, a single Newton step $t = \mathrm{clamp}\!\big(t_0 - f(t_0)/f'(t_0), 0, 1\big)$ achieves $O(\|b\|^4/\|a\|^4) \le 10^{-12} \ll \epsilon_{\text{FP32}}$ accuracy and smoothly reduces to the exact line segment at $b = 0$ with **0 `cbrt`s and 0 `NaN`s**.
 
 ---
 

@@ -16,7 +16,7 @@ Using **$T_d$ Parity-Sorted Weyl Chamber Folding**, we derive the first **100% e
 
 ### 1. Theorem: $T_d$ Parity-Sorted Weyl Chamber $\mathcal{C} = \{x \ge y \ge |z|\}$
 
-The full tetrahedral group $T_d \subset O(3)$ of order 24 consists of all 6 coordinate permutations combined with the 4 even-parity sign flips $(\epsilon_x, \epsilon_y, \epsilon_z) \in \{-1, +1\}^3$ with $\epsilon_x \epsilon_y \epsilon_z = +1$. Setting $\sigma = \operatorname{sgn}(p_x p_y p_z) \in \{-1, +1\}$, sorting $|p|$ into descending order $x \ge y \ge z \ge 0$ (3 compare-swaps), and setting $z \leftarrow \sigma z$ is an exact orthogonal transformation in $T_d$ that maps all of $\mathbb{R}^3$ into the single fundamental Weyl chamber:
+The full tetrahedral group $T_d \subset O(3)$ of order 24 consists of all 6 coordinate permutations combined with the 4 even-parity sign flips $(\epsilon_x, \epsilon_y, \epsilon_z) \in \{-1, +1\}^3$ with $\epsilon_x \epsilon_y \epsilon_z = +1$. Setting $\sigma = \mathrm{sgn}(p_x p_y p_z) \in \{-1, +1\}$, sorting $|p|$ into descending order $x \ge y \ge z \ge 0$ (3 compare-swaps), and setting $z \leftarrow \sigma z$ is an exact orthogonal transformation in $T_d$ that maps all of $\mathbb{R}^3$ into the single fundamental Weyl chamber:
 $$\mathcal{C} = \big\{(x, y, z) \in \mathbb{R}^3 : x \ge y \ge |z|\big\},$$
 bounded by the three mirror walls $W_1: x - y = 0$, $W_2: y - z = 0$, and $W_3: y + z = 0$.
 

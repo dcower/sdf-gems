@@ -32,7 +32,7 @@ $$\sigma_{\max}(J) = \max\!\left(\frac{1}{s}, \; \frac{\sqrt{(s + 1)^2 + k^2 q_r
 ### 3. First-Order Eikonal-Exact Chain-Rule Pullback (`sdgTaperFinalize`)
 Given `vec4 dg = sdgPrimitive(q)` with distance $d_q = \text{dg.x}$ and gradient $\mathbf{g}_q = \text{dg.yzw}$, the exact chain-rule gradient in $p$-space is:
 $$\mathbf{g}_p = J(p)^T \mathbf{g}_q = \left(\frac{g_{qx}}{s}, \; g_{qy} - \frac{k}{s}(q_x g_{qx} + q_z g_{qz}), \; \frac{g_{qz}}{s}\right).$$
-Normalizing $(d_q, \mathbf{g}_p)$ by $\|\mathbf{g}_p\|_2^{-1} = \operatorname{inversesqrt}(\|\mathbf{g}_p\|_2^2)$ restores **$\|\nabla d\| = 1.000$ on the tapered surface** and reduces mean distance error by **$12\times$** over naive tapering!
+Normalizing $(d_q, \mathbf{g}_p)$ by $\|\mathbf{g}_p\|_2^{-1} = \mathrm{inversesqrt}(\|\mathbf{g}_p\|_2^2)$ restores **$\|\nabla d\| = 1.000$ on the tapered surface** and reduces mean distance error by **$12\times$** over naive tapering!
 
 ---
 

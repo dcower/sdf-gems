@@ -19,9 +19,9 @@
 Uses the 3 vertices of the containing equilateral Delaunay triangle of the 2D hexagonal lattice $A_2$, cutting 2D neighbor-corrected repetition for arbitrary asymmetric/rotated primitives from 4 taps to **3 taps (`1.33x` speedup)** while increasing circle-packing density from $78.5\%$ to $90.7\%$.
 
 ### 1-`round` $u$-Space Delaunay Reduction
-In normalized sublattice coordinates $u = p / (s k)$ with $k = (1, \sqrt{3})$, $i_0 = \operatorname{round}(u)$, and $d = u - i_0 \in [-\tfrac{1}{2}, \tfrac{1}{2}]^2$:
-1. For **every** point in $d \in [-\tfrac{1}{2}, \tfrac{1}{2}]^2$, **both** $c_0 = i_0 k$ and $c_1 = (i_0 + 0.5\operatorname{sign}(d)) k$ are vertices of the enclosing Delaunay equilateral triangle — so we **never** need to evaluate a Voronoi distance comparison (`dot2`) to decide which of the two is closer!
-2. Furthermore, in $u$-space the $60^\circ$ Delaunay edge connecting $i_0$ and $i_0 + 0.5\operatorname{sign}(d)$ is the $45^\circ$ diagonal $|d_x| = |d_y|$, so the third Delaunay vertex $c_2$ is simply $(i_0 + (\operatorname{sg}_x, 0)) k$ when $|d_x| > |d_y|$ and $(i_0 + (-0.5\operatorname{sg}_x, 0.5\operatorname{sg}_y)) k$ otherwise (`100.0%` Delaunay containment in `1` `round` and `0` `dot2` calls).
+In normalized sublattice coordinates $u = p / (s k)$ with $k = (1, \sqrt{3})$, $i_0 = \mathrm{round}(u)$, and $d = u - i_0 \in [-\tfrac{1}{2}, \tfrac{1}{2}]^2$:
+1. For **every** point in $d \in [-\tfrac{1}{2}, \tfrac{1}{2}]^2$, **both** $c_0 = i_0 k$ and $c_1 = (i_0 + 0.5\mathrm{sign}(d)) k$ are vertices of the enclosing Delaunay equilateral triangle — so we **never** need to evaluate a Voronoi distance comparison (`dot2`) to decide which of the two is closer!
+2. Furthermore, in $u$-space the $60^\circ$ Delaunay edge connecting $i_0$ and $i_0 + 0.5\mathrm{sign}(d)$ is the $45^\circ$ diagonal $|d_x| = |d_y|$, so the third Delaunay vertex $c_2$ is simply $(i_0 + (\mathrm{sg}_x, 0)) k$ when $|d_x| > |d_y|$ and $(i_0 + (-0.5\mathrm{sg}_x, 0.5\mathrm{sg}_y)) k$ otherwise (`100.0%` Delaunay containment in `1` `round` and `0` `dot2` calls).
 
 ![Before vs After Comparison](../images/comparisons/hex3_repetition_2d.png)
 

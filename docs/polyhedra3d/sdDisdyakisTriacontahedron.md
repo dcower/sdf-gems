@@ -25,7 +25,7 @@ Because the icosahedral reflection group $I_h$ has order **120** and the 180 edg
 $$N = \frac{(1,\; 1,\; 4\phi + 1)}{\sqrt{31 + 12\sqrt{5}}} = (0.13149609,\; 0.13149609,\; 0.98255664).$$
 By the **Equi-Dihedral Incircle Theorem**, $N$ makes the **exact same inner product** $k = (31 + 12\sqrt{5})^{-1/2} = 0.13149609$ with all three chamber mirror walls $w_1 = (1,0,0)$, $w_2 = (0,1,0)$, and $w_3 = n_3$. Consequently:
 1. The exact 0-`sqrt` face-prism condition is simply $d_f \le \frac{1}{k}\min(p_x, p_y, p \cdot n_3) = 7.60478900\min(p_x, p_y, p \cdot n_3)$.
-2. Outside the face prism, $\operatorname{argmin}(p_x, p_y, p \cdot n_3)$ **100% partitions the three edges** without ever comparing squared distances!
+2. Outside the face prism, $\mathrm{argmin}(p_x, p_y, p \cdot n_3)$ **100% partitions the three edges** without ever comparing squared distances!
 
 ---
 

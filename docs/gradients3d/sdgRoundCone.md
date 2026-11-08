@@ -17,7 +17,7 @@
    - Using the signed-square tangent-cone boundaries $a_2 y |y| < b|b| x_2$ (bottom sphere) and $a_2 (y - h)|y - h| > b|b| x_2$ (top sphere), we classify the spherical caps **before** taking any square root.
    - In the conical mantle, setting $w = \sqrt{a_2 x_2} = \sqrt{1 - b^2}\|p_{xz}\|_2$ yields both the radial distance term $w$ and the horizontal gradient $\frac{a_2 p_{xz}}{w} = \sqrt{1 - b^2}\frac{p_{xz}}{\|p_{xz}\|_2}$ without ever computing $a = \sqrt{1 - b^2}$. Thus `sdgRoundCone` uses **only `1` `sqrt` everywhere in $\mathbb{R}^3$**.
 2. **1-`sqrt` $O(L^2)$ Scale-Safe `sdgRoundConeSeg`**:
-   Replaces IQ's $O(L^8)$ discriminator `sign(z)*a2*z2 > sign(rr)*rr*rr*x2` (which overflows FP16 for $\|b - a\|_2 \ge 4$) and catastrophic-cancellation `sqrt(il2*(x2+z2))` with normalized projection $y = \operatorname{dot}(p_a, b_a)/L^2$ and orthogonal residual $u = p_a - y b_a$, using **only `1` `sqrt` everywhere in $\mathbb{R}^3$**.
+   Replaces IQ's $O(L^8)$ discriminator `sign(z)*a2*z2 > sign(rr)*rr*rr*x2` (which overflows FP16 for $\|b - a\|_2 \ge 4$) and catastrophic-cancellation `sqrt(il2*(x2+z2))` with normalized projection $y = \mathrm{dot}(p_a, b_a)/L^2$ and orthogonal residual $u = p_a - y b_a$, using **only `1` `sqrt` everywhere in $\mathbb{R}^3$**.
 
 *(For `sdgTorus`, see [`sdgTorus.md`](sdgTorus.md) and [`glsl/gradients3d/sdgTorus.glsl`](../../glsl/gradients3d/sdgTorus.glsl).)*
 

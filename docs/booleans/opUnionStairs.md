@@ -14,7 +14,7 @@
 
 ## Mathematical Overview & Dual Step-Corner Clamping Theorem
 
-Mercury Demogroup's baseline `opUnionStairs(a, b, r, n)` rotates $(a, b - r)$ by $45^\circ$, applies an **unbounded periodic sawtooth** $d = \operatorname{mod}(u - a + s, 2s) - s$, and evaluates:
+Mercury Demogroup's baseline `opUnionStairs(a, b, r, n)` rotates $(a, b - r)$ by $45^\circ$, applies an **unbounded periodic sawtooth** $d = \mathrm{mod}(u - a + s, 2s) - s$, and evaluates:
 $$\frac{1}{2}\big(u + a + |d|\big) = \frac{1}{2}\big(\Delta x + \Delta y + |\Delta x - \Delta y|\big) \equiv \max(\Delta x, \Delta y).$$
 This baseline suffers from two major geometric flaws even when $\nabla a \perp \nabla b$:
 1. **$\ell_\infty$ Chebyshev Step Corners ($29.3\%$ Exterior Error)**:
@@ -28,8 +28,8 @@ An $n$-tier staircase with step size $s = r / n$ has:
 - $n$ **inward (concave) step corners** at $I_j = \big(j_0, \, r - s - j_0\big)$ where $j_0 = j s$ for $j \in \{0, \dots, n - 1\}$, separated by the $45^\circ$ Voronoi bisectors through the outward corners.
 
 Setting the normalized $45^\circ$ coordinate $w = \frac{a - b + r}{2 s}$:
-1. The nearest outward step corner has $k_1 = \operatorname{clamp}(\operatorname{round}(w), \, 1, \, n - 1) \cdot s$ with local offset $q = (a - k_1, \, b - r + k_1)$.
-2. The nearest inward step corner has $j_0 = \operatorname{clamp}(\lfloor w \rfloor, \, 0, \, n - 1) \cdot s$ with local offset $i = (j_0 - a, \, r - s - j_0 - b)$.
+1. The nearest outward step corner has $k_1 = \mathrm{clamp}(\mathrm{round}(w), \, 1, \, n - 1) \cdot s$ with local offset $q = (a - k_1, \, b - r + k_1)$.
+2. The nearest inward step corner has $j_0 = \mathrm{clamp}(\lfloor w \rfloor, \, 0, \, n - 1) \cdot s$ with local offset $i = (j_0 - a, \, r - s - j_0 - b)$.
 3. A point lies in the exterior iff $e = \min(\min(a, b), \max(q_x, q_y)) > 0$. Selecting `max(e ? q : i, 0.0)` evaluates **a single `length()` (`sqrt`) call** across both exterior and interior, achieving **`4.44e-16` max error** across all $n \ge 2$.
 
 ---

@@ -18,7 +18,7 @@
 
 ### 1. Direct 1-SFU Cap Vector vs. IQ's Expanded Law-of-Cosines Radical
 
-Inigo Quilez's `sdCappedTorus(p, sc, ra, rb)` (`distfunctions`) folds $p_x \leftarrow |p_x|$ with $s_x = \operatorname{sign}(p_x)$ and writes:
+Inigo Quilez's `sdCappedTorus(p, sc, ra, rb)` (`distfunctions`) folds $p_x \leftarrow |p_x|$ with $s_x = \mathrm{sign}(p_x)$ and writes:
 ```glsl
 float k = (sc.y*p.x > sc.x*p.y) ? dot(p.xy, sc) : length(p.xy);
 return sqrt( dot(p,p) + ra*ra - 2.0*ra*k ) - rb;
