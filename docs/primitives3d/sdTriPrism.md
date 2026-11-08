@@ -1,6 +1,6 @@
 # `sdTriPrism` — Exact 1-Sqrt 3D Equilateral Triangular Prism
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdTriPrism](../images/primitives3d/sdTriPrism.png) | ![sdTriPrism slice 1](../images/primitives3d/sdTriPrism_slice.png) | ![sdTriPrism slice 2](../images/primitives3d/sdTriPrism_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdTriPrism.glsl`](../../glsl/primitives3d/sdTriPrism.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, upgraded from plane bound) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, upgraded from plane bound) |
 
 ---
 
 ## Mathematical Overview
 
-Folds $p_{xy}$ into the fundamental dihedral sector of an equilateral triangle and uses the Fundamental Sector Interior Dominance Theorem to evaluate the exact 3D Euclidean distance in a single `sqrt`.
+Folds $`p_{xy}`$ into the fundamental dihedral sector of an equilateral triangle and uses the Fundamental Sector Interior Dominance Theorem to evaluate the exact 3D Euclidean distance in a single `sqrt`.
 
 ---
 

@@ -1,6 +1,6 @@
 # `sdSquareBucket` — Exact 1-Sqrt 3D Open-Topped Tapered Square Bucket / Hopper
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdSquareBucket](../images/primitives3d/sdSquareBucket.png) | ![sdSquareBucket slice 1](../images/primitives3d/sdSquareBucket_slice.png) | ![sdSquareBucket slice 2](../images/primitives3d/sdSquareBucket_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://github.com/dcower/sdf-gems](https://github.com/dcower/sdf-gems) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdSquareBucket.glsl`](../../glsl/primitives3d/sdSquareBucket.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`) |
 
 ---
 
 ## Mathematical Overview
 
-Computes the exact 3D Euclidean SDF of a four-walled tapered square bucket with closed bottom cap $y = -h$ and open top $y = +h$ in a **single `sqrt`**.
+Computes the exact 3D Euclidean SDF of a four-walled tapered square bucket with closed bottom cap $`y = -h`$ and open top $`y = +h`$ in a **single `sqrt`**.
 
 ---
 

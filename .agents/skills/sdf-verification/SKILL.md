@@ -16,6 +16,7 @@ Follow this checklist whenever creating, upgrading, or auditing any SDF or opera
 | `tools/gpu_eval.py` | `gpu_eval` / `gpu_fn` run the **literal** `.glsl` on the GPU (OpenGL 4.1, FP32). `glsl_args(...)` formats numbers safely. `uv run tools/gpu_eval.py --new <file> --call "<vec4 expr of P>"` performs the single-translation-unit compile in forward, reverse and new-file-first order. |
 | `tools/ground_truth.py` | Independent FP64 ground truth: `polygon_sdf`, `polyline_distance`, `convex_hull_sdf`, `point_triangle_distance`, `implicit_boundary_cloud` + `cloud_sdf`. |
 | `tools/sdf_checks.py` | `probe_points`, `check_finite`, `compare_gt`, `seam_pair_test`, `eikonal_fd`, `check_sdg`, `self_projection`, `lipschitz_pairs`, `surface_zero`, `exactness_certificate`. |
+| `tools/lint_math.py` | GitHub-safe math in Markdown: `--fix` converts to `` $`...`$ `` / ```` ```math ````, `--render` renders every formula with MathJax 3 + KaTeX, `--github` verifies against GitHub's own renderer (60 requests/hour unauthenticated). Also enforced by `tools/update_umbrella.py`. |
 | `tools/render_sdf.py` | `render_3d_sdf`, `render_slice_3d`, `render_2d_sdf`, `render_error_heatmap`, `render_eikonal_error_map`, `raymarch_stats`, `combine_panels`. |
 
 Wrap the literal shader with `gpu_fn(["glsl/<cat>/<name>.glsl"], "vec4(sdFoo(p, 1.0))")` and pass that callable to the
@@ -68,5 +69,11 @@ Use `tools/render_sdf.py` via `uv run` to generate documentation visuals, prefer
 4. **Inspect with `read_file`**:
    - Call `read_file` on **every** generated `.png` before staging or committing. Reject and re-render any image that is clipped, blank, overly zoomed, or uses the wrong aspect ratio, or whose before/after does not make the improvement obvious.
 
-## 4. Parallel Discovery with Subagents
+## 4. Documentation Math (GitHub)
+- Inline math is `` $`...`$ ``, display math is a ```` ```math ```` block; inside a list item use `` $`\displaystyle ...`$ `` on its own line (GitHub skips ```math blocks nested in lists when the page has inline math).
+- Never write bare `$...`` $` / `$ ``$...$$`: GitHub consumes backslash escapes before MathJax (`\%` becomes a comment that deletes the rest of the formula, `\\` collapses matrix rows, `\{`/`\|`/`\,` vanish) and pairs `*` / `[...]` across formulas.
+- In table rows, no unescaped `|` in math (use `\Vert`, `\vert`) or in code spans (write `\|`).
+- Before committing docs: `uv run tools/lint_math.py --render` (offline, MathJax + KaTeX); for large doc changes also `--github`.
+
+## 5. Parallel Discovery with Subagents
 For batches of independent primitives, start from [`subagent_brief.md`](subagent_brief.md). Subagents only create new files. The parent agent re-verifies each result independently, adds the README row and the `sdf_gems.glsl` include (relative to `HEAD`, so in-progress files from other subagents are not swept in), runs the compile check, views every image, and makes one commit per primitive. Subagents attribute work to the model they are, and ask the parent when unsure of their model name.

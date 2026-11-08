@@ -1,4 +1,4 @@
-# `sminQuadratic` — $C^1$ Quadratic Polynomial Smooth Minimum, Material Blend & 3D Gradient
+# `sminQuadratic` — $`C^1`$ Quadratic Polynomial Smooth Minimum, Material Blend & 3D Gradient
 
 ![sminQuadratic](../images/booleans/sminQuadratic.png)
 
@@ -8,13 +8,13 @@
 | **Source** | [https://iquilezles.org/articles/smin/](https://iquilezles.org/articles/smin/) |
 | **Category** | `booleans` |
 | **GLSL File** | [`glsl/booleans/sminQuadratic.glsl`](../../glsl/booleans/sminQuadratic.glsl) |
-| **Exact Euclidean SDF?** | Conservative (`||grad|| <= 1`, $C^1$ continuous) |
+| **Exact Euclidean SDF?** | Conservative (`\|\|grad\|\| <= 1`, $`C^1`$ continuous) |
 
 ---
 
 ## Mathematical Overview
 
-$C^1$ quadratic Closest-Distance (CD) polynomial smooth minimum (`sminQuadratic`), smooth maximum (`smaxQuadratic`), smooth subtraction (`opSmoothSubtractionQuadratic`), material blend weight (`sminQuadraticBlend`), and analytical 3D gradient (`sdgSmoothQuadratic`, `2.80e-9` max central-FD error).
+$`C^1`$ quadratic Closest-Distance (CD) polynomial smooth minimum (`sminQuadratic`), smooth maximum (`smaxQuadratic`), smooth subtraction (`opSmoothSubtractionQuadratic`), material blend weight (`sminQuadraticBlend`), and analytical 3D gradient (`sdgSmoothQuadratic`, `2.80e-9` max central-FD error).
 
 ---
 

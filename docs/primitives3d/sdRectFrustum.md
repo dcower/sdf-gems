@@ -1,6 +1,6 @@
 # `sdRectFrustum` & `sdgRectFrustum` — Exact 0/1-Sqrt 3D Rectangular & Hip-Roof Frustum & Gradient
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdRectFrustum](../images/primitives3d/sdRectFrustum.png) | ![sdRectFrustum slice 1](../images/primitives3d/sdRectFrustum_slice.png) | ![sdRectFrustum slice 2](../images/primitives3d/sdRectFrustum_slice2.png) |
 
@@ -10,7 +10,7 @@
 | **Source** | [https://github.com/dcower/sdf-gems](https://github.com/dcower/sdf-gems) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdRectFrustum.glsl`](../../glsl/primitives3d/sdRectFrustum.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1` everywhere in $\mathbb{R}^3$; `0` per-pixel `sqrt`s in interior, caps, and slanted faces) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1` everywhere in $`\mathbb{R}^3`$; `0` per-pixel `sqrt`s in interior, caps, and slanted faces) |
 
 ---
 
@@ -18,7 +18,7 @@
 
 ![0/1-Sqrt Frustums & Barrels with Tangential Hip-Edge Pruning](../images/comparisons/frustum_barrel_solid_angle_comparison.png)
 
-Unifies rectangular boxes, rectangular pyramids, keycap frustums, and hip roofs into a **0/1-`sqrt` exact 3D Euclidean SDF (`sdRectFrustum`) and analytical gradient (`sdgRectFrustum`)**, using the **Tangential Hip-Edge Pruning Theorem** so the corner hip edge $u_e$ is evaluated only in the exterior corner wedge where both $q_z + k_y u_x > 0$ and $q_x + k_x u_z > 0$.
+Unifies rectangular boxes, rectangular pyramids, keycap frustums, and hip roofs into a **0/1-`sqrt` exact 3D Euclidean SDF (`sdRectFrustum`) and analytical gradient (`sdgRectFrustum`)**, using the **Tangential Hip-Edge Pruning Theorem** so the corner hip edge $`u_e`$ is evaluated only in the exterior corner wedge where both $`q_z + k_y u_x > 0`$ and $`q_x + k_x u_z > 0`$.
 
 ---
 

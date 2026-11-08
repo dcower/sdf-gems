@@ -7,6 +7,8 @@ Maintenance & audit script for `sdf-gems`.
    under `docs/<category>/<name>.md`.
 3. Audits all Markdown image references in `README.md` and `docs/**/*.md` to verify that every
    referenced PNG exists on disk.
+4. Lints all Markdown math for GitHub-safe syntax via `tools/lint_math.py` (inline $`...`$, display ```math;
+   no `|` inside table-row math or table-row code spans).
 
 Run via UV:
   uv run tools/update_umbrella.py
@@ -59,6 +61,14 @@ def main():
             if not os.path.exists(full_img):
                 missing_images.append((md, rel_img, full_img))
 
+    sys.path.insert(0, os.path.join(repo_root, "tools"))
+    from lint_math import lint as lint_math
+
+    math_problems = []
+    for md in md_files:
+        with open(md) as f:
+            math_problems += [(md, ln, msg) for ln, msg, _ in lint_math(f.read())]
+
     print(f"Updated sdf_gems.glsl with {len(ordered_glsl)} GLSL headers.")
     print(f"Audited {len(md_files)} Markdown files.")
     if missing_docs:
@@ -67,7 +77,12 @@ def main():
     if missing_images:
         print("ERROR: Missing image files:", missing_images)
         sys.exit(1)
-    print("Audit passed: 0 missing docs, 0 broken image links.")
+    if math_problems:
+        for md, ln, msg in math_problems[:50]:
+            print(f"ERROR: {md}:{ln}: {msg}")
+        print(f"ERROR: {len(math_problems)} math problem(s); run `uv run tools/lint_math.py --fix`.")
+        sys.exit(1)
+    print("Audit passed: 0 missing docs, 0 broken image links, 0 math problems.")
 
 
 if __name__ == "__main__":

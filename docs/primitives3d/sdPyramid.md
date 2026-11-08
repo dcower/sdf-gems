@@ -1,6 +1,6 @@
 # `sdPyramid` — Exact 3D Square Pyramid (Base-Face Bug Fixed)
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdPyramid](../images/primitives3d/sdPyramid.png) | ![sdPyramid slice 1](../images/primitives3d/sdPyramid_slice.png) | ![sdPyramid slice 2](../images/primitives3d/sdPyramid_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdPyramid.glsl`](../../glsl/primitives3d/sdPyramid.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1` everywhere in R^3) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1` everywhere in R^3) |
 
 ---
 
 ## Mathematical Overview
 
-Projects $p$ onto the 4 slanted triangular faces, slanted edges, AND the square base face $[-0.5, 0.5]^2 \times \{0\}$ before taking a single `sqrt`.
+Projects $`p`$ onto the 4 slanted triangular faces, slanted edges, AND the square base face $`[-0.5, 0.5]^2 \times \{0\}`$ before taking a single `sqrt`.
 
 ---
 

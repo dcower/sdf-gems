@@ -1,6 +1,6 @@
 # `sdBarrel`, `sdgBarrel`, `sdBarrel2D` & `sdgBarrel2D` — Exact 0/1/2-Sqrt 3D & 2D Barrels and Spools
 
-| 3D Surface ($f(p) = 0$) | 2D Cross-Section Slice |
+| 3D Surface ($`f(p) = 0`$) | 2D Cross-Section Slice |
 | :---: | :---: |
 | ![sdBarrel](../images/primitives3d/sdBarrel.png) | ![sdBarrel slice](../images/primitives3d/sdBarrel_slice.png) |
 
@@ -10,7 +10,7 @@
 | **Source** | [https://github.com/dcower/sdf-gems](https://github.com/dcower/sdf-gems) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdBarrel.glsl`](../../glsl/primitives3d/sdBarrel.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1` everywhere; `0` `sqrt`s in flat-cap cylinder, `1/2` `sqrt`s in walls/rim) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1` everywhere; `0` `sqrt`s in flat-cap cylinder, `1/2` `sqrt`s in walls/rim) |
 
 ---
 
@@ -18,7 +18,7 @@
 
 ![0/1-Sqrt Frustums & Barrels with Tangential Hip-Edge Pruning](../images/comparisons/frustum_barrel_solid_angle_comparison.png)
 
-Revolves a circular arc passing through $(r_1, \pm h)$ and $(r_2, 0)$ with flat horizontal caps. Using the signed sagitta $b = r_2 - r_1$, a single formula handles both **convex barrels ($r_2 > r_1$)** and **concave spools/hourglasses ($r_2 < r_1$)**. Furthermore, via the **0-`sqrt` Flat-Cap Cylinder Exit** ($x_2 \le r_1^2 \;\land\; (q_y \ge h \;\lor\; s_b(h^2 x_2 - w|w|) \le 0)$ where $w = h x_c + d q_y$), both `sdBarrel` and `sdgBarrel` evaluate with **0 `sqrt`s / 0 SFU operations** across the exterior and interior flat-cap cylinder, while unifying the meridian arc and rim circle into a single 2D `length` / `inversesqrt`.
+Revolves a circular arc passing through $`(r_1, \pm h)`$ and $`(r_2, 0)`$ with flat horizontal caps. Using the signed sagitta $`b = r_2 - r_1`$, a single formula handles both **convex barrels ($`r_2 > r_1`$)** and **concave spools/hourglasses ($`r_2 < r_1`$)**. Furthermore, via the **0-`sqrt` Flat-Cap Cylinder Exit** ($`x_2 \le r_1^2 \;\land\; (q_y \ge h \;\lor\; s_b(h^2 x_2 - w|w|) \le 0)`$ where $`w = h x_c + d q_y`$), both `sdBarrel` and `sdgBarrel` evaluate with **0 `sqrt`s / 0 SFU operations** across the exterior and interior flat-cap cylinder, while unifying the meridian arc and rim circle into a single 2D `length` / `inversesqrt`.
 
 ![3D Gallery of Curved & Frustum Primitives](../images/comparisons/front5_primitives_3d.png)
 

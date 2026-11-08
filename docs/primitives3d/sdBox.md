@@ -1,6 +1,6 @@
 # `sdBox` — Exact 0/1-`sqrt` 3D Axis-Aligned Box (0-`sqrt` Interior & 6 Face Prisms)
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdBox](../images/primitives3d/sdBox.png) | ![sdBox slice 1](../images/primitives3d/sdBox_slice.png) | ![sdBox slice 2](../images/primitives3d/sdBox_slice2.png) |
 
@@ -10,7 +10,7 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdBox.glsl`](../../glsl/primitives3d/sdBox.glsl) |
-| **Exact Euclidean SDF?** | **Yes** ($\|\nabla d\| = 1$, `0` `sqrt`s in interior + all 6 exterior face prisms [$64.9\%$ of space], `1` in edges/corners) |
+| **Exact Euclidean SDF?** | **Yes** ($`\Vert \nabla d\Vert = 1`$, `0` `sqrt`s in interior + all 6 exterior face prisms [$`64.9\%`$ of space], `1` in edges/corners) |
 
 ---
 
@@ -22,11 +22,13 @@
 
 ## Mathematical Overview
 
-For $\mathbf{q} = |\mathbf{p}| - \mathbf{b}$, let $q_{\text{med}} = \max(\min(q_x, q_y), \min(\max(q_x, q_y), q_z))$ be the second-largest component of $\mathbf{q}$. Whenever $q_{\text{med}} \le 0$ (meaning **at most ONE** component of $\mathbf{q}$ is positive, covering **100% of the box interior AND all 6 infinite exterior face prisms**), the exact Euclidean distance is identically:
+For $`\mathbf{q} = |\mathbf{p}| - \mathbf{b}`$, let $`q_{\text{med}} = \max(\min(q_x, q_y), \min(\max(q_x, q_y), q_z))`$ be the second-largest component of $`\mathbf{q}`$. Whenever $`q_{\text{med}} \le 0`$ (meaning **at most ONE** component of $`\mathbf{q}`$ is positive, covering **100% of the box interior AND all 6 infinite exterior face prisms**), the exact Euclidean distance is identically:
 
-$$\|\max(\mathbf{q}, \mathbf{0})\| + \min(q_{\max}, 0) \equiv \max(q_x, \max(q_y, q_z))$$
+```math
+\|\max(\mathbf{q}, \mathbf{0})\| + \min(q_{\max}, 0) \equiv \max(q_x, \max(q_y, q_z))
+```
 
-with **ZERO `sqrt`s**, evaluating `length(max(q, 0.0))` only in the 12 exterior edge and 8 corner wedges ($q_{\text{med}} > 0$).
+with **ZERO `sqrt`s**, evaluating `length(max(q, 0.0))` only in the 12 exterior edge and 8 corner wedges ($`q_{\text{med}} > 0`$).
 
 ---
 

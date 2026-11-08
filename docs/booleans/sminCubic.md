@@ -1,4 +1,4 @@
-# `sminCubic` — $C^2$ Cubic & $C^2$-Symmetric Quartic Smooth Minimums, Material Blend & 3D Gradients
+# `sminCubic` — $`C^2`$ Cubic & $`C^2`$-Symmetric Quartic Smooth Minimums, Material Blend & 3D Gradients
 
 ![sminCubic](../images/booleans/sminCubic.png)
 
@@ -8,14 +8,14 @@
 | **Source** | [https://iquilezles.org/articles/smin/](https://iquilezles.org/articles/smin/) |
 | **Category** | `booleans` |
 | **GLSL File** | [`glsl/booleans/sminCubic.glsl`](../../glsl/booleans/sminCubic.glsl) |
-| **Exact Euclidean SDF?** | Conservative (`||grad|| <= 1`, $C^2$ at blend boundaries; `sminQuartic` is $C^\infty$ across $a = b$) |
+| **Exact Euclidean SDF?** | Conservative (`\|\|grad\|\| <= 1`, $`C^2`$ at blend boundaries; `sminQuartic` is $`C^\infty`$ across $`a = b`$) |
 
 ---
 
 ## Mathematical Overview
 
-- **`sminCubic`, `sminCubicBlend`, `sdgSmoothCubic`**: $C^2$ cubic Closest-Distance (CD) polynomial smooth minimum with material blend weight and analytical 3D gradient (`2.74e-9` max central-FD error).
-- **`sminQuartic`, `smaxQuartic`, `sdgSmoothQuartic`**: $C^2$-continuous quartic polynomial smooth minimum $h^3(4 - h) k / 16$ on $k_{\text{span}} = \frac{16}{3} k$. Because $h^3(4 - h) = 1 - 6 u^2 + 8 u^3 - 3 u^4$ (with $u = 1 - h = |a - b| / k_{\text{span}}$) has zero linear and cubic terms at $u = 0$, it eliminates the $|a - b|^3$ third-derivative cusp of `sminCubic` along the medial seam $a = b$.
+- **`sminCubic`, `sminCubicBlend`, `sdgSmoothCubic`**: $`C^2`$ cubic Closest-Distance (CD) polynomial smooth minimum with material blend weight and analytical 3D gradient (`2.74e-9` max central-FD error).
+- **`sminQuartic`, `smaxQuartic`, `sdgSmoothQuartic`**: $`C^2`$-continuous quartic polynomial smooth minimum $`h^3(4 - h) k / 16`$ on $`k_{\text{span}} = \frac{16}{3} k`$. Because $`h^3(4 - h) = 1 - 6 u^2 + 8 u^3 - 3 u^4`$ (with $`u = 1 - h = |a - b| / k_{\text{span}}`$) has zero linear and cubic terms at $`u = 0`$, it eliminates the $`|a - b|^3`$ third-derivative cusp of `sminCubic` along the medial seam $`a = b`$.
 
 ---
 

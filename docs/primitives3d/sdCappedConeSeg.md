@@ -1,6 +1,6 @@
 # `sdCappedConeSeg` — Exact 3D Arbitrary-Segment Capped Cone (Axis-NaN Fixed)
 
-| 3D Surface ($f(p) = 0$) | 2D Cross-Section Slice |
+| 3D Surface ($`f(p) = 0`$) | 2D Cross-Section Slice |
 | :---: | :---: |
 | ![sdCappedConeSeg](../images/primitives3d/sdCappedConeSeg.png) | ![sdCappedConeSeg slice](../images/primitives3d/sdCappedConeSeg_slice.png) |
 
@@ -10,7 +10,7 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdCappedConeSeg.glsl`](../../glsl/primitives3d/sdCappedConeSeg.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, 0% NaN rate) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, 0% NaN rate) |
 
 ---
 

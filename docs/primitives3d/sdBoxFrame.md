@@ -1,6 +1,6 @@
 # `sdBoxFrame` — Exact 1-Sqrt 3D Wireframe Box Frame (Closest-Beam Reduction)
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdBoxFrame](../images/primitives3d/sdBoxFrame.png) | ![sdBoxFrame slice 1](../images/primitives3d/sdBoxFrame_slice.png) | ![sdBoxFrame slice 2](../images/primitives3d/sdBoxFrame_slice2.png) |
 
@@ -10,7 +10,7 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdBoxFrame.glsl`](../../glsl/primitives3d/sdBoxFrame.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, `1` `sqrt` down from `3`, `0.0` mathematical difference) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, `1` `sqrt` down from `3`, `0.0` mathematical difference) |
 
 ---
 
@@ -18,19 +18,19 @@
 
 Inigo Quilez's baseline `sdBoxFrame` evaluates **three separate 3D box SDFs** (one for each axis-aligned beam in the positive octant) and takes their minimum, requiring **3 `length()` (`sqrt`) calls** and **23 scalar `min`/`max` calls**.
 
-We prove that **all three beams never need to be evaluated**: the closest beam at any point $p_0 \in \mathbb{R}^3$ is **identically the single beam along the coordinate axis with the smallest shifted coordinate $s = \min(p_x, p_y, p_z)$** ($p = |p_0| - b$).
+We prove that **all three beams never need to be evaluated**: the closest beam at any point $`p_0 \in \mathbb{R}^3`$ is **identically the single beam along the coordinate axis with the smallest shifted coordinate $`s = \min(p_x, p_y, p_z)`$** ($`p = |p_0| - b`$).
 
 1. **2-Step Tournament Minimum Partition**:
-   Let $a = \min(p_x, p_y)$. Then with **only 4 scalar `min`/`max` comparisons and zero arithmetic**, the multiset $\{p_x, p_y, p_z\}$ partitions bit-exactly into:
-   - its global minimum $s = \min(a, p_z) = \min(p_x, p_y, p_z)$, and
-   - its remaining two coordinates $u = (\max(a, p_z), \, \max(p_x, p_y)) \in \mathbb{R}^2$.
+   Let $`a = \min(p_x, p_y)`$. Then with **only 4 scalar `min`/`max` comparisons and zero arithmetic**, the multiset $`\{p_x, p_y, p_z\}`$ partitions bit-exactly into:
+   - its global minimum $`s = \min(a, p_z) = \min(p_x, p_y, p_z)`$, and
+   - its remaining two coordinates $`u = (\max(a, p_z), \, \max(p_x, p_y)) \in \mathbb{R}^2`$.
 2. **Closest-Beam Dominance Theorem**:
-   For $e > 0$, the transverse bar distance $q(t) = |t + e| - e$ satisfies $q(t) \ge t$ everywhere, with strict inequality $q(t) > t \iff t < -e$, on which $q(t) = -t - 2e$ is **strictly decreasing** in $t$ while $t$ is **strictly increasing** in $t$. Because the 3D box SDF is symmetric and coordinate-wise non-decreasing, replacing $q(p_i)$ with $p_i$ achieves the maximum reduction when $p_i$ is minimal:
-   $$\min_{i \in \{x,y,z\}} \mathrm{sdBox}(p_i, q(p_j), q(p_k)) \equiv \mathrm{sdBox}\big(\min(a, p_z), \; q(u_x), \; q(u_y)\big).$$
+   For $`e > 0`$, the transverse bar distance $`q(t) = |t + e| - e`$ satisfies $`q(t) \ge t`$ everywhere, with strict inequality $`q(t) > t \iff t < -e`$, on which $`q(t) = -t - 2e`$ is **strictly decreasing** in $`t`$ while $`t`$ is **strictly increasing** in $`t`$. Because the 3D box SDF is symmetric and coordinate-wise non-decreasing, replacing $`q(p_i)`$ with $`p_i`$ achieves the maximum reduction when $`p_i`$ is minimal:
+   $`\displaystyle \min_{i \in \{x,y,z\}} \mathrm{sdBox}(p_i, q(p_j), q(p_k)) \equiv \mathrm{sdBox}\big(\min(a, p_z), \; q(u_x), \; q(u_y)\big).`$
 3. **Interior Longitudinal Elimination**:
-   Because $q(t) = |t + e| - e \ge -e$ for all $t \in \mathbb{R}$ and $q(t) = t$ for $t \ge -e$, the minimum coordinate $s = \min(a, p_z)$ satisfies $s \le \max(q(u_x), q(u_y))$ **identically across all of $\mathbb{R}^3$**, eliminating $s$ from the interior term $\min(\max(q_x, q_y), 0.0)$.
+   Because $`q(t) = |t + e| - e \ge -e`$ for all $`t \in \mathbb{R}`$ and $`q(t) = t`$ for $`t \ge -e`$, the minimum coordinate $`s = \min(a, p_z)`$ satisfies $`s \le \max(q(u_x), q(u_y))`$ **identically across all of $`\mathbb{R}^3`$**, eliminating $`s`$ from the interior term $`\min(\max(q_x, q_y), 0.0)`$.
 4. **Companion Cylindrical-Edge Wireframe (`sdBoxEdges`)**:
-   Replacing the square strut cross-section with a circular cross-section of radius $r$ yields the exact 3-line, 1-`sqrt` Euclidean SDF to all 12 edges of a 3D box: $\sqrt{\|p\|^2 - \min(\min(p_x, p_y, p_z), 0)^2} - r$.
+   Replacing the square strut cross-section with a circular cross-section of radius $`r`$ yields the exact 3-line, 1-`sqrt` Euclidean SDF to all 12 edges of a 3D box: $`\sqrt{\|p\|^2 - \min(\min(p_x, p_y, p_z), 0)^2} - r`$.
 
 ---
 
@@ -67,7 +67,7 @@ float sdBoxEdges( vec3 p, vec3 b, float r )
 | **Scalar `min` / `max` Ops** | `23` | **`9` (`2.56x` fewer)** |
 | **Scalar `abs` Ops** | `6` | **`5`** |
 | **Total Scalar Operations** | `56` | **`29` (`1.93x` fewer total ops)** |
-| **Max Error vs. 3-Beam Baseline** | — | **`0.0` (`8.88e-16` in FP64 across $10^6$ points)** |
+| **Max Error vs. 3-Beam Baseline** | — | **`0.0` (`8.88e-16` in FP64 across $`10^6`$ points)** |
 
 ### Code Diff vs. Baseline (Inigo Quilez)
 ```diff

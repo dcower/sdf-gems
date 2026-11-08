@@ -14,7 +14,7 @@
 
 ## Mathematical Overview
 
-Parameterized by design cosine $c_0 \in (-1, 1)$: strictly local to the corner region $\max(a,b) - c_0\min(a,b) < 2k(1+\sqrt{(1+c_0)/2})$, rigid, and conservative for all intersection angles $\theta \ge \arccos(c_0)$.
+Parameterized by design cosine $`c_0 \in (-1, 1)`$: strictly local to the corner region $`\max(a,b) - c_0\min(a,b) < 2k(1+\sqrt{(1+c_0)/2})`$, rigid, and conservative for all intersection angles $`\theta \ge \arccos(c_0)`$.
 
 ---
 

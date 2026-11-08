@@ -14,7 +14,7 @@
 
 ## Mathematical Overview
 
-Rewrites the 2D ellipse secular equation in the pole-midpoint variable $v = \lambda + \frac{a^2+b^2}{2}$ so the depressed quartic is monic with leading coefficient $1$ (never dividing by $b^2 - a^2$ when $a = b$), guarantees $Z_x > 0$ on the evolute so $\sqrt{2(Z_m + Z_x)}$ never divides by zero, and fixes the origin and high-eccentricity sign bugs.
+Rewrites the 2D ellipse secular equation in the pole-midpoint variable $`v = \lambda + \frac{a^2+b^2}{2}`$ so the depressed quartic is monic with leading coefficient $`1`$ (never dividing by $`b^2 - a^2`$ when $`a = b`$), guarantees $`Z_x > 0`$ on the evolute so $`\sqrt{2(Z_m + Z_x)}`$ never divides by zero, and fixes the origin and high-eccentricity sign bugs.
 
 ---
 

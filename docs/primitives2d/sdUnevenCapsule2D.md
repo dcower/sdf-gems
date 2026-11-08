@@ -10,7 +10,7 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions2d/](https://iquilezles.org/articles/distfunctions2d/) |
 | **Category** | `primitives2d` |
 | **GLSL File** | [`glsl/primitives2d/sdUnevenCapsule2D.glsl`](../../glsl/primitives2d/sdUnevenCapsule2D.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, `1` `sqrt` everywhere down from `2` `sqrt`s, `0.0` error) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, `1` `sqrt` everywhere down from `2` `sqrt`s, `0.0` error) |
 
 ---
 
@@ -18,7 +18,7 @@
 
 Inigo Quilez's baseline `sdUnevenCapsule` computes `a = sqrt(1.0 - b*b)` upfront and then calls a second `sqrt` (`length(p)` or `length(p - vec2(0.0, h))`) in both circular cap regions.
 
-By the **Signed-Square Tangent-Cone Reduction** (see [`sdRoundCone`](../primitives3d/sdRoundCone.md)), since $p_x = |p_x| \ge 0$ and $a = \sqrt{1 - b^2} \ge 0$, the two cap boundary tests $a y < b p_x$ and $a(y - h) > b p_x$ are equivalent to the **sqrt-free inequalities** $a^2 y |y| < b |b| p_x^2$ and $a^2 z |z| > b |b| p_x^2$ ($z = y - h$). Thus `sqrt(a2)` is only evaluated on the linear side wall, while the two cap regions only evaluate `length(p)` or `length(vec2(p.x, z))` — executing **exactly 1 `sqrt` everywhere in $\mathbb{R}^2$**.
+By the **Signed-Square Tangent-Cone Reduction** (see [`sdRoundCone`](../primitives3d/sdRoundCone.md)), since $`p_x = |p_x| \ge 0`$ and $`a = \sqrt{1 - b^2} \ge 0`$, the two cap boundary tests $`a y < b p_x`$ and $`a(y - h) > b p_x`$ are equivalent to the **sqrt-free inequalities** $`a^2 y |y| < b |b| p_x^2`$ and $`a^2 z |z| > b |b| p_x^2`$ ($`z = y - h`$). Thus `sqrt(a2)` is only evaluated on the linear side wall, while the two cap regions only evaluate `length(p)` or `length(vec2(p.x, z))` — executing **exactly 1 `sqrt` everywhere in $`\mathbb{R}^2`$**.
 
 ![Round Cone & Uneven Capsule 1-Sqrt Reduction](../images/comparisons/round_cone_comparison.png)
 

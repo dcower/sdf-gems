@@ -1,6 +1,6 @@
 # `sdEllipsoidExact` — True Exact 3D Triaxial Ellipsoid Euclidean SDF
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdEllipsoidExact](../images/primitives3d/sdEllipsoidExact.png) | ![sdEllipsoidExact slice 1](../images/primitives3d/sdEllipsoidExact_slice.png) | ![sdEllipsoidExact slice 2](../images/primitives3d/sdEllipsoidExact_slice2.png) |
 
@@ -16,18 +16,18 @@
 
 ## Mathematical Overview
 
-Solves the 3D triaxial ellipsoid Euclidean distance problem to **full IEEE-754 FP32 machine precision (`~1-2 ULPs`, mean error `3.6e-9` to `4.8e-8`, `0` NaNs)** across all of $\mathbb{R}^3$ — including the exterior, interior, coordinate planes, prolate/oblate/spherical limits, and the interior 2D focal-ellipse medial surface.
+Solves the 3D triaxial ellipsoid Euclidean distance problem to **full IEEE-754 FP32 machine precision (`~1-2 ULPs`, mean error `3.6e-9` to `4.8e-8`, `0` NaNs)** across all of $`\mathbb{R}^3`$ — including the exterior, interior, coordinate planes, prolate/oblate/spherical limits, and the interior 2D focal-ellipse medial surface.
 
 ### Key Mathematical Results
 
-1. **Irreducibility & Galois Group $S_6$**:
-   Clearing denominators in $\sum_{i=1}^3 \frac{r_i^2 p_i^2}{(r_i^2 + \lambda)^2} = 1$ yields a degree-6 polynomial $P(\lambda) = 0$. For $r^2 = (1, 2, 4)$ and $r_i^2 p_i^2 = 1$, $P(\lambda) = \lambda^6 + 14\lambda^5 + 74\lambda^4 + 184\lambda^3 + 210\lambda^2 + 76\lambda - 20$ is irreducible over $\mathbb{Q}$ with square-free modular factorizations `[6]` ($\bmod\; 13$), `[1, 5]` ($\bmod\; 7$), and `[1, 2, 3]` ($\bmod\; 19$), proving by Dedekind's theorem that $\mathrm{Gal}(P/\mathbb{Q}) = S_6$.
+1. **Irreducibility & Galois Group $`S_6`$**:
+   Clearing denominators in $`\sum_{i=1}^3 \frac{r_i^2 p_i^2}{(r_i^2 + \lambda)^2} = 1`$ yields a degree-6 polynomial $`P(\lambda) = 0`$. For $`r^2 = (1, 2, 4)`$ and $`r_i^2 p_i^2 = 1`$, $`P(\lambda) = \lambda^6 + 14\lambda^5 + 74\lambda^4 + 184\lambda^3 + 210\lambda^2 + 76\lambda - 20`$ is irreducible over $`\mathbb{Q}`$ with square-free modular factorizations `[6]` ($`\bmod\; 13`$), `[1, 5]` ($`\bmod\; 7`$), and `[1, 2, 3]` ($`\bmod\; 19`$), proving by Dedekind's theorem that $`\mathrm{Gal}(P/\mathbb{Q}) = S_6`$.
 2. **Closed-Form Interior Focal-Ellipse Distance Identity**:
-   After sorting $r_x \ge r_y \ge r_z > 0$ and setting $\Delta_x = r_x^2 - r_z^2, \Delta_y = r_y^2 - r_z^2$, on the interior 2D focal-ellipse medial disk ($p_z = 0$ and $\frac{r_x^2 p_x^2}{\Delta_x^2} + \frac{r_y^2 p_y^2}{\Delta_y^2} \le 1$), the secular parameter sits at the pole $t = r_z^2 + \lambda = 0$, and the $\Delta_x^2, \Delta_y^2$ denominators cancel identically to give the **exact closed-form radical**:
-   $$d_{\text{focal}}(p) = -r_z \sqrt{1 - \frac{p_x^2}{r_x^2 - r_z^2} - \frac{p_y^2}{r_y^2 - r_z^2}}$$
-   and across all of $\mathbb{R}^3$, the unified identity $d(p) = \frac{t - r_z^2}{r_z}\sqrt{1 - \frac{\Delta_x p_x^2}{(\Delta_x + t)^2} - \frac{\Delta_y p_y^2}{(\Delta_y + t)^2}}$.
+   After sorting $`r_x \ge r_y \ge r_z > 0`$ and setting $`\Delta_x = r_x^2 - r_z^2, \Delta_y = r_y^2 - r_z^2`$, on the interior 2D focal-ellipse medial disk ($`p_z = 0`$ and $`\frac{r_x^2 p_x^2}{\Delta_x^2} + \frac{r_y^2 p_y^2}{\Delta_y^2} \le 1`$), the secular parameter sits at the pole $`t = r_z^2 + \lambda = 0`$, and the $`\Delta_x^2, \Delta_y^2`$ denominators cancel identically to give the **exact closed-form radical**:
+   $`\displaystyle d_{\text{focal}}(p) = -r_z \sqrt{1 - \frac{p_x^2}{r_x^2 - r_z^2} - \frac{p_y^2}{r_y^2 - r_z^2}}`$
+   and across all of $`\mathbb{R}^3`$, the unified identity $`d(p) = \frac{t - r_z^2}{r_z}\sqrt{1 - \frac{\Delta_x p_x^2}{(\Delta_x + t)^2} - \frac{\Delta_y p_y^2}{(\Delta_y + t)^2}}`$.
 3. **Two-Gap Cusp Starter + 2 Dimensionless Halley Steps**:
-   Evaluates the depressed-cubic evolute cusp asymptotics across both scale gaps (the 2D focal-ellipse gap $t \ll \Delta_y$ and the 1D prolate focal-line gap $\Delta_y \ll t \ll \Delta_x$) in a single `vec2` operation, followed by 2 overflow-free dimensionless Halley steps on $G(t)^{-1/2} - 1 = 0$ and stationary focal-complement surface projection.
+   Evaluates the depressed-cubic evolute cusp asymptotics across both scale gaps (the 2D focal-ellipse gap $`t \ll \Delta_y`$ and the 1D prolate focal-line gap $`\Delta_y \ll t \ll \Delta_x`$) in a single `vec2` operation, followed by 2 overflow-free dimensionless Halley steps on $`G(t)^{-1/2} - 1 = 0`$ and stationary focal-complement surface projection.
 
 ![Triaxial Ellipsoid Slice Comparison](../images/comparisons/ellipsoid_comparison.png)
 

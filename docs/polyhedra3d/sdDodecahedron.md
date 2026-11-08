@@ -1,6 +1,6 @@
 # `sdDodecahedron` — Exact 1-Sqrt 3D Regular Dodecahedron (Ih Chamber + Axis-Aligned Edge)
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdDodecahedron](../images/polyhedra3d/sdDodecahedron.png) | ![sdDodecahedron slice 1](../images/polyhedra3d/sdDodecahedron_slice.png) | ![sdDodecahedron slice 2](../images/polyhedra3d/sdDodecahedron_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://mercury.sexy/hg_sdf/](https://mercury.sexy/hg_sdf/) |
 | **Category** | `polyhedra3d` |
 | **GLSL File** | [`glsl/polyhedra3d/sdDodecahedron.glsl`](../../glsl/polyhedra3d/sdDodecahedron.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, max error `2.22e-15`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, max error `2.22e-15`) |
 
 ---
 
 ## Mathematical Overview
 
-After 3 reflections into the icosahedral $I_h$ chamber, the active pentagon edge is parallel to the $y$-axis at $(x, z) = (0, 1.17557 r)$, reducing the exact 12-face, 30-edge, 20-vertex Euclidean Dodecahedron SDF to a **1-line axis-aligned segment check**!
+After 3 reflections into the icosahedral $`I_h`$ chamber, the active pentagon edge is parallel to the $`y`$-axis at $`(x, z) = (0, 1.17557 r)`$, reducing the exact 12-face, 30-edge, 20-vertex Euclidean Dodecahedron SDF to a **1-line axis-aligned segment check**!
 
 ---
 

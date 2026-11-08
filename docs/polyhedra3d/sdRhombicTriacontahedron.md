@@ -1,6 +1,6 @@
 # `sdRhombicTriacontahedron` — Exact 1-Sqrt 3D Catalan Rhombic Triacontahedron
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdRhombicTriacontahedron](../images/polyhedra3d/sdRhombicTriacontahedron.png) | ![sdRhombicTriacontahedron slice 1](../images/polyhedra3d/sdRhombicTriacontahedron_slice.png) | ![sdRhombicTriacontahedron slice 2](../images/polyhedra3d/sdRhombicTriacontahedron_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://github.com/dcower/sdf-gems](https://github.com/dcower/sdf-gems) |
 | **Category** | `polyhedra3d` |
 | **GLSL File** | [`glsl/polyhedra3d/sdRhombicTriacontahedron.glsl`](../../glsl/polyhedra3d/sdRhombicTriacontahedron.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, max error `2.22e-15`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, max error `2.22e-15`) |
 
 ---
 
 ## Mathematical Overview
 
-Folds $p$ into the icosahedral $I_h$ Weyl chamber (where the rhombic face normal is aligned with the $z$-axis!) and projects onto the single golden-ratio rhombic edge.
+Folds $`p`$ into the icosahedral $`I_h`$ Weyl chamber (where the rhombic face normal is aligned with the $`z`$-axis!) and projects onto the single golden-ratio rhombic edge.
 
 ---
 

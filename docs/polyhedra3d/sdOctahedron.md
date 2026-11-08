@@ -1,6 +1,6 @@
 # `sdOctahedron` — Exact 3D Regular Octahedron (4-Line Branchless Pythagorean Weyl-Basis Form)
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdOctahedron](../images/polyhedra3d/sdOctahedron.png) | ![sdOctahedron slice 1](../images/polyhedra3d/sdOctahedron_slice.png) | ![sdOctahedron slice 2](../images/polyhedra3d/sdOctahedron_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `polyhedra3d` |
 | **GLSL File** | [`glsl/polyhedra3d/sdOctahedron.glsl`](../../glsl/polyhedra3d/sdOctahedron.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, 0 branches) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, 0 branches) |
 
 ---
 
 ## Mathematical Overview
 
-In the orthonormal Weyl flag basis $\{\frac{(1,1,1)}{\sqrt{3}}, \frac{(1,1,-2)}{\sqrt{6}}, \frac{(1,-1,0)}{\sqrt{2}}\}$, the Pythagorean identity $1^2 + (\sqrt{2})^2 = (\sqrt{3})^2$ decouples the face, edge, and vertex distances into orthogonal 1D clamping terms with integer weights $(2, 1, 3)$.
+In the orthonormal Weyl flag basis $`\{\frac{(1,1,1)}{\sqrt{3}}, \frac{(1,1,-2)}{\sqrt{6}}, \frac{(1,-1,0)}{\sqrt{2}}\}`$, the Pythagorean identity $`1^2 + (\sqrt{2})^2 = (\sqrt{3})^2`$ decouples the face, edge, and vertex distances into orthogonal 1D clamping terms with integer weights $`(2, 1, 3)`$.
 
 ---
 

@@ -1,6 +1,6 @@
 # `sdRoundBox` — Exact 0/1-`sqrt` 3D Rounded Box (0-`sqrt` Interior & 6 Face Prisms)
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdRoundBox](../images/primitives3d/sdRoundBox.png) | ![sdRoundBox slice 1](../images/primitives3d/sdRoundBox_slice.png) | ![sdRoundBox slice 2](../images/primitives3d/sdRoundBox_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdRoundBox.glsl`](../../glsl/primitives3d/sdRoundBox.glsl) |
-| **Exact Euclidean SDF?** | **Yes** ($\|\nabla d\| = 1$, `0` `sqrt`s in interior + all 6 exterior face prisms, `1` in bevels) |
+| **Exact Euclidean SDF?** | **Yes** ($`\Vert \nabla d\Vert = 1`$, `0` `sqrt`s in interior + all 6 exterior face prisms, `1` in bevels) |
 
 ---
 
 ## Mathematical Overview
 
-Offsets an inner box of half-extents $\mathbf{b} - r$ by rounding radius $r$ via the 0-`sqrt` median face-prism check $q_{\text{med}} \le 0$.
+Offsets an inner box of half-extents $`\mathbf{b} - r`$ by rounding radius $`r`$ via the 0-`sqrt` median face-prism check $`q_{\text{med}} \le 0`$.
 
 ---
 

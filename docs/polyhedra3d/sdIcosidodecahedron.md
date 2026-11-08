@@ -1,6 +1,6 @@
 # `sdIcosidodecahedron` — Exact 1-Sqrt 3D Archimedean Icosidodecahedron
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdIcosidodecahedron](../images/polyhedra3d/sdIcosidodecahedron.png) | ![sdIcosidodecahedron slice 1](../images/polyhedra3d/sdIcosidodecahedron_slice.png) | ![sdIcosidodecahedron slice 2](../images/polyhedra3d/sdIcosidodecahedron_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://github.com/dcower/sdf-gems](https://github.com/dcower/sdf-gems) |
 | **Category** | `polyhedra3d` |
 | **GLSL File** | [`glsl/polyhedra3d/sdIcosidodecahedron.glsl`](../../glsl/polyhedra3d/sdIcosidodecahedron.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, max error `2.22e-15`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, max error `2.22e-15`) |
 
 ---
 
 ## Mathematical Overview
 
-Computes the exact Euclidean SDF of the 32-face, 60-edge, 30-vertex Archimedean Icosidodecahedron in 1 `sqrt` via $I_h$ chamber folding.
+Computes the exact Euclidean SDF of the 32-face, 60-edge, 30-vertex Archimedean Icosidodecahedron in 1 `sqrt` via $`I_h`$ chamber folding.
 
 ---
 

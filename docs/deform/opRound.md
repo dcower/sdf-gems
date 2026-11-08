@@ -1,6 +1,6 @@
 # `opRound` — Exact Iso-Surface Rounding
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![opRound](../images/deform/opRound.png) | ![opRound slice 1](../images/deform/opRound_slice.png) | ![opRound slice 2](../images/deform/opRound_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `deform` |
 | **GLSL File** | [`glsl/deform/opRound.glsl`](../../glsl/deform/opRound.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`) |
 
 ---
 
 ## Mathematical Overview
 
-Shifts the zero level-set outward by radius `rad` ($d - r$).
+Shifts the zero level-set outward by radius `rad` ($`d - r`$).
 
 ---
 

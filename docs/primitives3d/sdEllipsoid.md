@@ -1,6 +1,6 @@
 # `sdEllipsoid` — 3D Triaxial Ellipsoid (11-Line Unified Interior/Exterior Concave-Secular Halley)
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdEllipsoid](../images/primitives3d/sdEllipsoid.png) | ![sdEllipsoid slice 1](../images/primitives3d/sdEllipsoid_slice.png) | ![sdEllipsoid slice 2](../images/primitives3d/sdEllipsoid_slice2.png) |
 
@@ -16,10 +16,10 @@
 
 ## Mathematical Overview
 
-By the **Global Concavity Theorem**, the reciprocal secular function $\phi(\lambda) = \left(\sum_{i=1}^3 \frac{r_i^2 p_i^2}{(r_i^2 + \lambda)^2}\right)^{-1/2} - 1$ satisfies $\phi'(\lambda) > 0$ and $\phi''(\lambda) = 3(s_1^2 - s_0 s_2)s_0^{-5/2} \le 0$ across the **entire domain $(-r_{\min}^2, \infty)$** (both interior and exterior) by Cauchy-Schwarz.
+By the **Global Concavity Theorem**, the reciprocal secular function $`\phi(\lambda) = \left(\sum_{i=1}^3 \frac{r_i^2 p_i^2}{(r_i^2 + \lambda)^2}\right)^{-1/2} - 1`$ satisfies $`\phi'(\lambda) > 0`$ and $`\phi''(\lambda) = 3(s_1^2 - s_0 s_2)s_0^{-5/2} \le 0`$ across the **entire domain $`(-r_{\min}^2, \infty)`$** (both interior and exterior) by Cauchy-Schwarz.
 
-1. **Why IQ's `k0*(k0-1)/k1` fails**: Outside, it is the $\lambda = 0$ special case of the dual support hyperplane $B(\lambda) = \frac{p\cdot v - \|r \odot v\|}{\|v\|}$ ($v = p/(r^2+\lambda)$), underestimating distance by up to $87.4\%$ even at infinity. Inside ($k_0 < 1$), convexity reverses the tangent inequality, causing IQ V2 to **overestimate interior distance by up to $r_{\max}/r_{\min}$ ($10\times$)**, form a Moiré figure-8 vortex on the interior cross-section, and return `0.0/0.0 = NaN` at $p = (0,0,0)$.
-2. **11-Line Unified Solution**: Packing all 8 subset lower bounds (three 1-axis interior/exterior bounds, three 2-axis surface bounds, one 3-axis surface bound, and one 3-axis far-field bound) into two `vec4` lines without clamping $\lambda \ge 0$, followed by **1 Halley step on $\phi(\lambda) = 0$** and the stationary dual hyperplane projection $B(\lambda)$, achieves $\sim 10^{-6}$ mean error across both exterior and interior in 11 lines of branchless GLSL. (For full 1-ULP FP32 machine precision on the focal-ellipse medial surface, see [`sdEllipsoidExact`](sdEllipsoidExact.md).)
+1. **Why IQ's `k0*(k0-1)/k1` fails**: Outside, it is the $`\lambda = 0`$ special case of the dual support hyperplane $`B(\lambda) = \frac{p\cdot v - \|r \odot v\|}{\|v\|}`$ ($`v = p/(r^2+\lambda)`$), underestimating distance by up to $`87.4\%`$ even at infinity. Inside ($`k_0 < 1`$), convexity reverses the tangent inequality, causing IQ V2 to **overestimate interior distance by up to $`r_{\max}/r_{\min}`$ ($`10\times`$)**, form a Moiré figure-8 vortex on the interior cross-section, and return `0.0/0.0 = NaN` at $`p = (0,0,0)`$.
+2. **11-Line Unified Solution**: Packing all 8 subset lower bounds (three 1-axis interior/exterior bounds, three 2-axis surface bounds, one 3-axis surface bound, and one 3-axis far-field bound) into two `vec4` lines without clamping $`\lambda \ge 0`$, followed by **1 Halley step on $`\phi(\lambda) = 0`$** and the stationary dual hyperplane projection $`B(\lambda)`$, achieves $`\sim 10^{-6}`$ mean error across both exterior and interior in 11 lines of branchless GLSL. (For full 1-ULP FP32 machine precision on the focal-ellipse medial surface, see [`sdEllipsoidExact`](sdEllipsoidExact.md).)
 
 ---
 

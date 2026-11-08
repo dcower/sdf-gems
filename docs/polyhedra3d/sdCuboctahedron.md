@@ -1,6 +1,6 @@
 # `sdCuboctahedron` — Exact 1-Sqrt 3D Cuboctahedron (Oh Weyl Chamber)
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdCuboctahedron](../images/polyhedra3d/sdCuboctahedron.png) | ![sdCuboctahedron slice 1](../images/polyhedra3d/sdCuboctahedron_slice.png) | ![sdCuboctahedron slice 2](../images/polyhedra3d/sdCuboctahedron_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://mercury.sexy/hg_sdf/](https://mercury.sexy/hg_sdf/) |
 | **Category** | `polyhedra3d` |
 | **GLSL File** | [`glsl/polyhedra3d/sdCuboctahedron.glsl`](../../glsl/polyhedra3d/sdCuboctahedron.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, max error `1.33e-15`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, max error `1.33e-15`) |
 
 ---
 
 ## Mathematical Overview
 
-By Chamber-Wall Invariance in the $O_h$ Weyl chamber $x \ge y \ge z \ge 0$, the 14-face, 24-edge, 12-vertex Cuboctahedron reduces to 1 square face, 1 triangle face, and 1 shared edge.
+By Chamber-Wall Invariance in the $`O_h`$ Weyl chamber $`x \ge y \ge z \ge 0`$, the 14-face, 24-edge, 12-vertex Cuboctahedron reduces to 1 square face, 1 triangle face, and 1 shared edge.
 
 ---
 

@@ -1,6 +1,6 @@
 # `sdgBox` — Exact 0/1-SFU 3D Box & Rounded Box with Analytical Gradient
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdgBox](../images/gradients3d/sdgBox.png) | ![sdgBox slice 1](../images/gradients3d/sdgBox_slice.png) | ![sdgBox slice 2](../images/gradients3d/sdgBox_slice2.png) |
 
@@ -10,7 +10,7 @@
 | **Source** | [https://iquilezles.org/articles/distgradfunctions3d/](https://iquilezles.org/articles/distgradfunctions3d/) |
 | **Category** | `gradients3d` |
 | **GLSL File** | [`glsl/gradients3d/sdgBox.glsl`](../../glsl/gradients3d/sdgBox.glsl) |
-| **Exact Euclidean SDF?** | **Yes** ($\|\nabla d\| = 1$, `0` SFUs & `0` divisions across $100\%$ of interior + all 6 exterior face prisms) |
+| **Exact Euclidean SDF?** | **Yes** ($`\Vert \nabla d\Vert = 1`$, `0` SFUs & `0` divisions across $`100\%`$ of interior + all 6 exterior face prisms) |
 
 ---
 
@@ -22,7 +22,7 @@
 
 ## Mathematical Overview
 
-Replacing IQ's `g = max(w.x, max(w.y, w.z)) > 0.0` test with the median test $\max(\min(w_x, w_y), \min(\max(w_x, w_y), w_z)) \le 0$ extends the **0-`sqrt`, 0-division** axis-unit-vector gradient branch from the box interior to **all 6 infinite exterior face prisms** ($64.9\%$ of $[-1.5, 1.5]^3$), and guarantees $\mathbf{q} \cdot \mathbf{q} > 0$ in the remaining edge/corner branch (`sdgBox` & `sdgRoundBox`).
+Replacing IQ's `g = max(w.x, max(w.y, w.z)) > 0.0` test with the median test $`\max(\min(w_x, w_y), \min(\max(w_x, w_y), w_z)) \le 0`$ extends the **0-`sqrt`, 0-division** axis-unit-vector gradient branch from the box interior to **all 6 infinite exterior face prisms** ($`64.9\%`$ of $`[-1.5, 1.5]^3`$), and guarantees $`\mathbf{q} \cdot \mathbf{q} > 0`$ in the remaining edge/corner branch (`sdgBox` & `sdgRoundBox`).
 
 ---
 

@@ -18,6 +18,8 @@ Goal: add ONE genuinely novel, exact (or provably conservative) SDF primitive/op
   - `docs/images/<category>/<name>.png` (3D: 360x270 `render_3d_sdf`; 2D: 320x320 `render_2d_sdf`),
     `<name>_slice.png` (360x360) for 3D, and `docs/images/comparisons/<name>_comparison.png`.
 - Do NOT edit `README.md`, `sdf_gems.glsl`, or any existing file. Do NOT run git add/commit/push.
+- Math in docs: inline `` $`...`$ ``, display ```` ```math ```` (in list items: `` $`\displaystyle ...`$ `` on its own line); never bare
+  `$...`` $` / `$ ``$...$$`. Run `uv run tools/lint_math.py --render` on your doc before reporting.
 - Never put personal names or usernames in any file, including repository URLs that contain a username.
 - **Attribution**: credit the model YOU are, using its human-readable name. If you are not certain of your exact
   model name or version, ask the parent agent before writing it. Do not guess and do not copy another model's name.

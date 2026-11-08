@@ -14,7 +14,7 @@
 
 ## Mathematical Overview
 
-Matches the exact endpoint values and derivatives of $1 - \sqrt{1 - h(2-h)}$ at $h=0$ and $h=1$ using a `[3/1]` rational Padé approximant with $\sqrt{2}$ coefficients.
+Matches the exact endpoint values and derivatives of $`1 - \sqrt{1 - h(2-h)}`$ at $`h=0`$ and $`h=1`$ using a `[3/1]` rational Padé approximant with $`\sqrt{2}`$ coefficients.
 
 ---
 

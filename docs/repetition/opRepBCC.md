@@ -1,6 +1,6 @@
 # `opRepBCC` — 1-Tap 3D Body-Centered Cubic (BCC) Kelvin-Cell Repetition
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![opRepBCC](../images/repetition/opRepBCC.png) | ![opRepBCC slice 1](../images/repetition/opRepBCC_slice.png) | ![opRepBCC slice 2](../images/repetition/opRepBCC_slice2.png) |
 
@@ -16,7 +16,7 @@
 
 ## Mathematical Overview
 
-Folds $\mathbb{R}^3$ into the exact Truncated Octahedron (Kelvin cell) Voronoi region of the BCC lattice using the linear $L_1$ inequality $|r_x| + |r_y| + |r_z| > 0.75$ (3 lines, 0 `sqrt`s, 0 dot products, $68.02\%$ sphere packing density).
+Folds $`\mathbb{R}^3`$ into the exact Truncated Octahedron (Kelvin cell) Voronoi region of the BCC lattice using the linear $`L_1`$ inequality $`|r_x| + |r_y| + |r_z| > 0.75`$ (3 lines, 0 `sqrt`s, 0 dot products, $`68.02\%`$ sphere packing density).
 
 ---
 

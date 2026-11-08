@@ -8,13 +8,13 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions2d/](https://iquilezles.org/articles/distfunctions2d/) |
 | **Category** | `primitives2d` |
 | **GLSL File** | [`glsl/primitives2d/sdBox2D.glsl`](../../glsl/primitives2d/sdBox2D.glsl) |
-| **Exact Euclidean SDF?** | **Yes** ($\|\nabla d\| = 1$, `0` SFUs across $100\%$ of interior + all 4 exterior face slabs, `1` in corners) |
+| **Exact Euclidean SDF?** | **Yes** ($`\Vert \nabla d\Vert = 1`$, `0` SFUs across $`100\%`$ of interior + all 4 exterior face slabs, `1` in corners) |
 
 ---
 
 ## Mathematical Overview
 
-Whenever $\min(d_x, d_y) \le 0$ (all 3 non-corner quadrants of $\mathbb{R}^2$, i.e. $100\%$ of the interior AND all 4 exterior face slabs), $\|\max(\mathbf{d}, \mathbf{0})\| + \min(\max(d_x, d_y), 0) \equiv \max(d_x, d_y)$ with **0 `sqrt`s** (`sdBox2D`, `sdRoundBox2D`, `sdgBox2D`, `sdgRoundBox2D`).
+Whenever $`\min(d_x, d_y) \le 0`$ (all 3 non-corner quadrants of $`\mathbb{R}^2`$, i.e. $`100\%`$ of the interior AND all 4 exterior face slabs), $`\|\max(\mathbf{d}, \mathbf{0})\| + \min(\max(d_x, d_y), 0) \equiv \max(d_x, d_y)`$ with **0 `sqrt`s** (`sdBox2D`, `sdRoundBox2D`, `sdgBox2D`, `sdgRoundBox2D`).
 
 ---
 

@@ -14,7 +14,7 @@
 
 ## Mathematical Overview
 
-Computes $\min(d_1, d_2)$, which is exact in the exterior of both shapes.
+Computes $`\min(d_1, d_2)`$, which is exact in the exterior of both shapes.
 
 ---
 

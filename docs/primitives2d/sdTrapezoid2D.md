@@ -13,7 +13,7 @@
 Inigo Quilez's [`sdTrapezoid`](https://www.shadertoy.com/view/MlycD3) provides both an axis-aligned 2D trapezoid `sdTrapezoid(p, r1, r2, he)` and an arbitrary-segment 2D trapezoid `sdTrapezoid(p, a, b, ra, rb)`:
 1. **30.9% FP32 Central-Axis `NaN` Rate & Redundant Per-Pixel `sqrt` in `sdTrapezoid(p, a, b, ra, rb)`**:
    IQ computes the perpendicular distance to the central axis via `float x = sqrt(papa - paba * paba * baba);`.
-   - In FP32, for **$30.9\%$ of points along the central axis** $p = a + t(b - a)$, rounding error produces $\text{papa} - \text{paba}^2\,\text{baba} < 0$, causing `sqrt` to return **`NaN`**.
+   - In FP32, for **$`30.9\%`$ of points along the central axis** $`p = a + t(b - a)`$, rounding error produces $`\text{papa} - \text{paba}^2\,\text{baba} < 0`$, causing `sqrt` to return **`NaN`**.
    - Furthermore, it requires a per-pixel `sqrt` before the final `sqrt(min(...))`.
 2. **Redundant `cax` and `sqrt` in Cap Voronoi Regions**:
    Both variants compute `cax = max(0.0, x - ((paba < 0.5) ? ra : rb))` and evaluate `sqrt` even in the top and bottom flat-cap Voronoi zones where the distance is linear.
@@ -25,14 +25,18 @@ Inigo Quilez's [`sdTrapezoid`](https://www.shadertoy.com/view/MlycD3) provides b
 ## 2. Mathematical Derivations
 
 ### Theorem 1 (Lagrange's 2D Cross-Product Identity)
-For any two vectors $\mathbf{pa}, \mathbf{ba} \in \mathbb{R}^2$ with $\text{baba} = \|\mathbf{ba}\|_2^2$, $\text{papa} = \|\mathbf{pa}\|_2^2$, and $\text{paba} = (\mathbf{pa}\cdot\mathbf{ba})/\text{baba}$:
-$$\text{baba}\cdot\big(\text{papa} - \text{paba}^2\,\text{baba}\big) = \|\mathbf{ba}\|_2^2 \|\mathbf{pa}\|_2^2 - (\mathbf{pa}\cdot\mathbf{ba})^2 \equiv \big(\text{pa}_x\text{ba}_y - \text{pa}_y\text{ba}_x\big)^2.$$
-Dividing by $l = \sqrt{\text{baba}}$ (which depends only on the segment endpoints $a, b$ and is loop/uniform-invariant) yields:
-$$x = \frac{|\text{pa}_x\text{ba}_y - \text{pa}_y\text{ba}_x|}{l},$$
-which uses **zero per-pixel `sqrt`s** for $x$ and is **guaranteed non-negative (`0.0%` `NaN` rate)** everywhere in $\mathbb{R}^2$.
+For any two vectors $`\mathbf{pa}, \mathbf{ba} \in \mathbb{R}^2`$ with $`\text{baba} = \|\mathbf{ba}\|_2^2`$, $`\text{papa} = \|\mathbf{pa}\|_2^2`$, and $`\text{paba} = (\mathbf{pa}\cdot\mathbf{ba})/\text{baba}`$:
+```math
+\text{baba}\cdot\big(\text{papa} - \text{paba}^2\,\text{baba}\big) = \|\mathbf{ba}\|_2^2 \|\mathbf{pa}\|_2^2 - (\mathbf{pa}\cdot\mathbf{ba})^2 \equiv \big(\text{pa}_x\text{ba}_y - \text{pa}_y\text{ba}_x\big)^2.
+```
+Dividing by $`l = \sqrt{\text{baba}}`$ (which depends only on the segment endpoints $`a, b`$ and is loop/uniform-invariant) yields:
+```math
+x = \frac{|\text{pa}_x\text{ba}_y - \text{pa}_y\text{ba}_x|}{l},
+```
+which uses **zero per-pixel `sqrt`s** for $`x`$ and is **guaranteed non-negative (`0.0%` `NaN` rate)** everywhere in $`\mathbb{R}^2`$.
 
 ### Theorem 2 (Endpoint Subsumption in Cap Voronoi Regions)
-Because the cap endpoints $(r_1, -\mathit{he})$ and $(r_2, +\mathit{he})$ are already endpoints of the slanted leg segment, whenever $|p_x| > r_c$ (where $r_c = (p_y < 0) ? r_1 : r_2$), the closest point on the horizontal cap is $(r_c, \pm\mathit{he})$, which is already covered by the clamped leg projection `cb`. Thus `cax` is redundant, and whenever $|p_x| \le r_c$, the cap distance is linear ($|c_y|$ where $c_y = |p_y| - \mathit{he}$, requiring **`0` `sqrt`s**).
+Because the cap endpoints $`(r_1, -\mathit{he})`$ and $`(r_2, +\mathit{he})`$ are already endpoints of the slanted leg segment, whenever $`|p_x| > r_c`$ (where $`r_c = (p_y < 0) ? r_1 : r_2`$), the closest point on the horizontal cap is $`(r_c, \pm\mathit{he})`$, which is already covered by the clamped leg projection `cb`. Thus `cax` is redundant, and whenever $`|p_x| \le r_c`$, the cap distance is linear ($`|c_y|`$ where $`c_y = |p_y| - \mathit{he}`$, requiring **`0` `sqrt`s**).
 
 ---
 

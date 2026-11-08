@@ -8,13 +8,13 @@
 | **Source** | [https://iquilezles.org/articles/smin/](https://iquilezles.org/articles/smin/) |
 | **Category** | `booleans` |
 | **GLSL File** | [`glsl/booleans/sminCircular.glsl`](../../glsl/booleans/sminCircular.glsl) |
-| **Exact Euclidean SDF?** | Conservative (`||grad|| <= 1`, 1 shared `sqrt` in `sdgSmoothCircular`) |
+| **Exact Euclidean SDF?** | Conservative (`\|\|grad\|\| <= 1`, 1 shared `sqrt` in `sdgSmoothCircular`) |
 
 ---
 
 ## Mathematical Overview
 
-Circular profile smooth minimum along the direct difference $|a - b|$, together with `smaxCircular`, `opSmoothSubtractionCircular`, and the analytical 3D gradient `sdgSmoothCircular` which reuses the single radical $s = \sqrt{1 - h(h - 2)}$ for both distance and gradient weight $m = \frac{s - 1 + h}{2s}$ (`2.82e-9` max central-FD error).
+Circular profile smooth minimum along the direct difference $`|a - b|`$, together with `smaxCircular`, `opSmoothSubtractionCircular`, and the analytical 3D gradient `sdgSmoothCircular` which reuses the single radical $`s = \sqrt{1 - h(h - 2)}`$ for both distance and gradient weight $`m = \frac{s - 1 + h}{2s}`$ (`2.82e-9` max central-FD error).
 
 ---
 

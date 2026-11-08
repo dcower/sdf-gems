@@ -1,6 +1,6 @@
 # `sdSpheroid` — Exact Closed-Form 3D Spheroid (Oblate & Prolate Ellipsoid of Revolution)
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdSpheroid](../images/primitives3d/sdSpheroid.png) | ![sdSpheroid slice 1](../images/primitives3d/sdSpheroid_slice.png) | ![sdSpheroid slice 2](../images/primitives3d/sdSpheroid_slice2.png) |
 
@@ -16,7 +16,7 @@
 
 ## Mathematical Overview
 
-Whenever two semi-axes of a 3D ellipsoid are equal ($r = (a, b, a)$), the factor $(a^2 + \lambda)^2$ cancels from the degree-6 secular polynomial $P(\lambda) = 0$ everywhere in $\mathbb{R}^3$, reducing the 3D Euclidean distance problem to a **degree-4 monic quartic** in the pole-midpoint variable $v = \lambda + \frac{a^2 + b^2}{2}$ via cylindrical reduction `q = vec2(length(p.xz), abs(p.y))`.
+Whenever two semi-axes of a 3D ellipsoid are equal ($`r = (a, b, a)`$), the factor $`(a^2 + \lambda)^2`$ cancels from the degree-6 secular polynomial $`P(\lambda) = 0`$ everywhere in $`\mathbb{R}^3`$, reducing the 3D Euclidean distance problem to a **degree-4 monic quartic** in the pole-midpoint variable $`v = \lambda + \frac{a^2 + b^2}{2}`$ via cylindrical reduction `q = vec2(length(p.xz), abs(p.y))`.
 
 ---
 

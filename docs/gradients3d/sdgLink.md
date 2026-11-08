@@ -10,14 +10,14 @@
 | **Source** | [https://iquilezles.org/articles/distgradfunctions3d/](https://iquilezles.org/articles/distgradfunctions3d/) |
 | **Category** | `gradients3d` |
 | **GLSL File** | [`glsl/gradients3d/sdgLink.glsl`](../../glsl/gradients3d/sdgLink.glsl) |
-| **Exact Euclidean SDF?** | Yes ($\|\nabla d\|_2 = 1$ to `4.44e-16`; fixes $100\%$ 2D planar strip `0.0 / 0.0 = NaN` in IQ's `wc3yD7`) |
+| **Exact Euclidean SDF?** | Yes ($`\Vert \nabla d\Vert _2 = 1`$ to `4.44e-16`; fixes $`100\%`$ 2D planar strip `0.0 / 0.0 = NaN` in IQ's `wc3yD7`) |
 
 ---
 
 ## Mathematical Overview
 
-In IQ's `sdgLink` (`wc3yD7`), `vec3 q = vec3(p.x, max(abs(p.y)-le, 0.0), p.z); float w = length(q.xy);` is followed by `q.xy - r1*q.xy/w`. Across the entire **2D planar strip $p_x = 0, |p_y| \le l_e, p_z \in \mathbb{R}$**, `q.xy = vec2(0.0, 0.0)` and `w = 0.0`, so `r1 * q.xy / w` evaluates **`0.0 / 0.0 = NaN`**!
-Handling the middle slab $|p_y| \le l_e$ directly sets $w = |p_x|$ with **0 inner `sqrt`s** (reducing the total `sqrt` count from `2` to `1` across the entire slab) and completely eliminates the `0.0 / 0.0` division on $p_x = 0$.
+In IQ's `sdgLink` (`wc3yD7`), `vec3 q = vec3(p.x, max(abs(p.y)-le, 0.0), p.z); float w = length(q.xy);` is followed by `q.xy - r1*q.xy/w`. Across the entire **2D planar strip $`p_x = 0, |p_y| \le l_e, p_z \in \mathbb{R}`$**, `q.xy = vec2(0.0, 0.0)` and `w = 0.0`, so `r1 * q.xy / w` evaluates **`0.0 / 0.0 = NaN`**!
+Handling the middle slab $`|p_y| \le l_e`$ directly sets $`w = |p_x|`$ with **0 inner `sqrt`s** (reducing the total `sqrt` count from `2` to `1` across the entire slab) and completely eliminates the `0.0 / 0.0` division on $`p_x = 0`$.
 
 ---
 

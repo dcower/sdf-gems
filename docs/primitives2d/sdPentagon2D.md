@@ -10,20 +10,20 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions2d/](https://iquilezles.org/articles/distfunctions2d/) |
 | **Category** | `primitives2d` |
 | **GLSL File** | [`glsl/primitives2d/sdPentagon2D.glsl`](../../glsl/primitives2d/sdPentagon2D.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, `0` `sqrt`s in interior & 5 edge normal strips; `1` `sqrt` in 3D `sdPentagonalPrism`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, `0` `sqrt`s in interior & 5 edge normal strips; `1` `sqrt` in 3D `sdPentagonalPrism`) |
 
 ---
 
 ## Mathematical Overview
 
-In IQ's `sdPentagon`, after two Householder reflections into the $D_5$ fundamental sector, IQ computes:
+In IQ's `sdPentagon`, after two Householder reflections into the $`D_5`$ fundamental sector, IQ computes:
 ```glsl
 p.x -= clamp(p.x, -r*k.z, r*k.z);
 return length(p)*sign(p.y);
 ```
-By the **Fundamental-Chamber Vertex-Dominance Theorem**, every point in the folded $D_5$ sector satisfies $|p_x| \le k_z p_y$. Consequently, whenever the tangential overshoot $d_x = |p_x| - r k_z > 0$, we necessarily have $p_y > r \iff d_y = p_y - r > 0$ (strictly exterior)!
-- Across **100% of the interior and all 5 exterior edge normal strips** ($d_x \le 0$), the exact signed distance is simply `d.y = p.y - r` with **0 `sqrt`s, 0 `clamp`s, and 0 `sign`s** (`0.000e+00` bitwise-identical difference vs. IQ's `sdPentagon`).
-- Furthermore, extruding along $z$ fuses the 2D vertex distance and $z$-cap distance into a **single 1-`sqrt` 3D Euclidean norm** `min(max(d.y, d.z), 0.0) + length(max(d, 0.0))` in `sdPentagonalPrism`.
+By the **Fundamental-Chamber Vertex-Dominance Theorem**, every point in the folded $`D_5`$ sector satisfies $`|p_x| \le k_z p_y`$. Consequently, whenever the tangential overshoot $`d_x = |p_x| - r k_z > 0`$, we necessarily have $`p_y > r \iff d_y = p_y - r > 0`$ (strictly exterior)!
+- Across **100% of the interior and all 5 exterior edge normal strips** ($`d_x \le 0`$), the exact signed distance is simply `d.y = p.y - r` with **0 `sqrt`s, 0 `clamp`s, and 0 `sign`s** (`0.000e+00` bitwise-identical difference vs. IQ's `sdPentagon`).
+- Furthermore, extruding along $`z`$ fuses the 2D vertex distance and $`z`$-cap distance into a **single 1-`sqrt` 3D Euclidean norm** `min(max(d.y, d.z), 0.0) + length(max(d, 0.0))` in `sdPentagonalPrism`.
 
 ---
 

@@ -1,6 +1,6 @@
 # `sdCapsule` — Exact 3D Capsule / Swept Sphere
 
-| 3D Surface ($f(p) = 0$) | 2D Cross-Section Slice |
+| 3D Surface ($`f(p) = 0`$) | 2D Cross-Section Slice |
 | :---: | :---: |
 | ![sdCapsule](../images/primitives3d/sdCapsule.png) | ![sdCapsule slice](../images/primitives3d/sdCapsule_slice.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdCapsule.glsl`](../../glsl/primitives3d/sdCapsule.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`) |
 
 ---
 
 ## Mathematical Overview
 
-Projects $p$ onto the line segment $[a, b]$ and subtracts radius $r$ in a single `sqrt`.
+Projects $`p`$ onto the line segment $`[a, b]`$ and subtracts radius $`r`$ in a single `sqrt`.
 
 ---
 

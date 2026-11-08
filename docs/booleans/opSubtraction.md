@@ -14,7 +14,7 @@
 
 ## Mathematical Overview
 
-Computes $\max(-d_1, d_2)$.
+Computes $`\max(-d_1, d_2)`$.
 
 ---
 

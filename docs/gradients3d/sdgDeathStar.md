@@ -11,7 +11,7 @@
 | **Source** | [https://github.com/dcower/sdf-gems](https://github.com/dcower/sdf-gems) |
 | **Category** | `gradients3d` |
 | **GLSL File** | [`glsl/gradients3d/sdgDeathStar.glsl`](../../glsl/gradients3d/sdgDeathStar.glsl) |
-| **Exact Euclidean SDF?** | **Yes** ($\|\nabla d\| = 1$, 1 `inversesqrt` across $88\%\text{--}91\%$ of space, 2 in rim, 0 `NaN`s) |
+| **Exact Euclidean SDF?** | **Yes** ($`\Vert \nabla d\Vert = 1`$, 1 `inversesqrt` across $`88\%\text{--}91\%`$ of space, 2 in rim, 0 `NaN`s) |
 
 ---
 
@@ -23,13 +23,13 @@
 
 ## Mathematical Overview
 
-- **0-`sqrt` Signed-Square Rim-Cone Test & 1-`inversesqrt` Confocal-Conic Bisector (`sdgDeathStar`, `sdgLens`)**: Decides the circular rim-cone condition in **0 `sqrt`s** via $b^2 p_x |p_x| > a |a| yz^2$ and $(d - a)|d - a| yz^2 > b^2 (d - p_x)|d - p_x|$. Outside the rim wedge ($88\%\text{--}91\%$ of $\mathbb{R}^3$), the confocal hyperbola/ellipse bisector $(r_a \pm r_b)^2 (p_x^2 + yz^2) \gtrless m^2$ selects the primary vs secondary sphere and computes both distance and unit gradient in **1 `inversesqrt`**.
-- **Cancellation-Free Conjugate Rim Offset**: Evaluates $w_y = \sqrt{yz^2} - \sqrt{b^2}$ via $(yz^2 - b^2) / (\sqrt{yz^2} + \sqrt{b^2})$, eliminating FP32 mantissa cancellation near the rim circle $yz^2 \approx b^2$.
+- **0-`sqrt` Signed-Square Rim-Cone Test & 1-`inversesqrt` Confocal-Conic Bisector (`sdgDeathStar`, `sdgLens`)**: Decides the circular rim-cone condition in **0 `sqrt`s** via $`b^2 p_x |p_x| > a |a| yz^2`$ and $`(d - a)|d - a| yz^2 > b^2 (d - p_x)|d - p_x|`$. Outside the rim wedge ($`88\%\text{--}91\%`$ of $`\mathbb{R}^3`$), the confocal hyperbola/ellipse bisector $`(r_a \pm r_b)^2 (p_x^2 + yz^2) \gtrless m^2`$ selects the primary vs secondary sphere and computes both distance and unit gradient in **1 `inversesqrt`**.
+- **Cancellation-Free Conjugate Rim Offset**: Evaluates $`w_y = \sqrt{yz^2} - \sqrt{b^2}`$ via $`(yz^2 - b^2) / (\sqrt{yz^2} + \sqrt{b^2})`$, eliminating FP32 mantissa cancellation near the rim circle $`yz^2 \approx b^2`$.
 
-| Function | SFU Count | Max $\big|\|\nabla d\| - 1\big|$ | Median Central-FD Error | p99 Central-FD Error | `NaN`s |
+| Function | SFU Count | Max $`\big\vert \Vert \nabla d\Vert - 1\big\vert`$ | Median Central-FD Error | p99 Central-FD Error | `NaN`s |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **`sdgDeathStar`** | `1` ($91\%$) / `2` (rim) | `3.33e-16` | `1.89e-10` | `4.88e-10` | `0` |
-| **`sdgLens`** | `1` ($88\%$) / `2` (rim) | `3.33e-16` | `2.02e-10` | `6.23e-10` | `0` |
+| **`sdgDeathStar`** | `1` ($`91\%`$) / `2` (rim) | `3.33e-16` | `1.89e-10` | `4.88e-10` | `0` |
+| **`sdgLens`** | `1` ($`88\%`$) / `2` (rim) | `3.33e-16` | `2.02e-10` | `6.23e-10` | `0` |
 | **`sdgVesicaSegment`** | `1` (caps) / `2` (body) | `1.22e-15` | `2.55e-10` | `6.05e-10` | `0` |
 
 ---

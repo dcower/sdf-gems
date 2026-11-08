@@ -1,6 +1,6 @@
 # `opRepFCC` — 1-Tap 3D Face-Centered Cubic (FCC / D3) Rhombic-Dodecahedron Repetition
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![opRepFCC](../images/repetition/opRepFCC.png) | ![opRepFCC slice 1](../images/repetition/opRepFCC_slice.png) | ![opRepFCC slice 2](../images/repetition/opRepFCC_slice2.png) |
 
@@ -16,7 +16,7 @@
 
 ## Mathematical Overview
 
-Folds $\mathbb{R}^3$ into the exact Rhombic Dodecahedron Voronoi cell of the FCC ($D_3$) lattice via Conway-Sloane parity rounding, achieving the maximum $74.05\%$ 3D sphere-packing density.
+Folds $`\mathbb{R}^3`$ into the exact Rhombic Dodecahedron Voronoi cell of the FCC ($`D_3`$) lattice via Conway-Sloane parity rounding, achieving the maximum $`74.05\%`$ 3D sphere-packing density.
 
 ---
 

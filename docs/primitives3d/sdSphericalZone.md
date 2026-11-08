@@ -1,6 +1,6 @@
 # `sdSphericalZone` — Exact 3D Hollow Spherical Zone (Conjugate-Square & Signed-Square Reduction)
 
-| 3D Surface ($f(p) = 0$) | 2D Cross-Section Slice |
+| 3D Surface ($`f(p) = 0`$) | 2D Cross-Section Slice |
 | :---: | :---: |
 | ![sdSphericalZone](../images/primitives3d/sdSphericalZone.png) | ![sdSphericalZone slice](../images/primitives3d/sdSphericalZone_slice.png) |
 
@@ -10,15 +10,15 @@
 | **Source** | [https://github.com/dcower/sdf-gems](https://github.com/dcower/sdf-gems) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdSphericalZone.glsl`](../../glsl/primitives3d/sdSphericalZone.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, `1/2` `sqrt`s down from `4` `sqrt`s) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, `1/2` `sqrt`s down from `4` `sqrt`s) |
 
 ---
 
 ## Mathematical Overview
 
-Computes the exact 3D Euclidean distance to an open-ended spherical zone shell of radius $r$ and thickness $t$ truncated by two arbitrary parallel planes $y = h_1$ and $y = h_2$ ($-r < h_1 < h_2 < r$).
+Computes the exact 3D Euclidean distance to an open-ended spherical zone shell of radius $`r`$ and thickness $`t`$ truncated by two arbitrary parallel planes $`y = h_1`$ and $`y = h_2`$ ($`-r < h_1 < h_2 < r`$).
 
-By the **Signed-Square Cone Test** ($h_i |h_i| x_2 \gtrless w_i^2 p_y |p_y|$) and **Conjugate-Square Rim Identity** (see [`sdCutSphere`](sdCutSphere.md)), neither $w_1 = \sqrt{r^2 - h_1^2}$, $w_2 = \sqrt{r^2 - h_2^2}$, nor $q_x = \|p_{xz}\|$ needs to be evaluated upfront, reducing the spherical shell region from **4 `sqrt`s to 1 `sqrt`** (`4.0x` reduction) and the two rim regions from **4 `sqrt`s to 2 `sqrt`s** (`2.0x` reduction).
+By the **Signed-Square Cone Test** ($`h_i |h_i| x_2 \gtrless w_i^2 p_y |p_y|`$) and **Conjugate-Square Rim Identity** (see [`sdCutSphere`](sdCutSphere.md)), neither $`w_1 = \sqrt{r^2 - h_1^2}`$, $`w_2 = \sqrt{r^2 - h_2^2}`$, nor $`q_x = \|p_{xz}\|`$ needs to be evaluated upfront, reducing the spherical shell region from **4 `sqrt`s to 1 `sqrt`** (`4.0x` reduction) and the two rim regions from **4 `sqrt`s to 2 `sqrt`s** (`2.0x` reduction).
 
 ---
 

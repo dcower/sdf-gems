@@ -13,6 +13,7 @@
 
 ## Documentation & README Formatting
 - **Modular Structure**: Every SDF or operator belongs in its own `glsl/<category>/<name>.glsl` header with a matching `docs/<category>/<name>.md` explanation and rendered previews in `docs/images/<category>/`.
+- **GitHub-Safe Math Only**: Write inline math as `` $`...`$ `` and display math as a ```` ```math ```` block (inside list items, use `` $`\displaystyle ...`$ `` on its own line). Never use bare `$...`` $` / `$ ``$...$$`: GitHub eats backslash escapes (`\%`, `\{`, `\|`, `\\`, `\,` ...) and runs emphasis/link syntax across them. Inside table rows, math and code spans must not contain an unescaped `|`. `uv run tools/update_umbrella.py` enforces this; `uv run tools/lint_math.py --fix --render --github` converts, renders with MathJax + KaTeX, and verifies against GitHub's renderer.
 - **Narrow `README.md` Tables**: Keep all category tables in `README.md` to 3 compact columns (`Preview | Function | Summary`) with a single `96px`-wide thumbnail and short function name link so the page never scrolls horizontally.
 
 ## Mandatory Visual & Numerical Verification

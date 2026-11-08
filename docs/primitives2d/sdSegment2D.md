@@ -8,13 +8,13 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions2d/](https://iquilezles.org/articles/distfunctions2d/) |
 | **Category** | `primitives2d` |
 | **GLSL File** | [`glsl/primitives2d/sdSegment2D.glsl`](../../glsl/primitives2d/sdSegment2D.glsl) |
-| **Exact Euclidean SDF?** | **Yes** ($\|\nabla d\| = 1$, 1 `inversesqrt`, 0 `NaN`s on segment spine) |
+| **Exact Euclidean SDF?** | **Yes** ($`\Vert \nabla d\Vert = 1`$, 1 `inversesqrt`, 0 `NaN`s on segment spine) |
 
 ---
 
 ## Mathematical Overview
 
-Exact Euclidean distance and 1-`inversesqrt` analytical 2D gradient for a line segment $[a, b]$ (`sdSegment2D`, `sdgSegment2D`) and 2D capsule (`sdCapsule2D`, `sdgCapsule2D`), with a perpendicular unit-normal fallback when $p$ lies directly on the segment spine ($l^2 = 0$).
+Exact Euclidean distance and 1-`inversesqrt` analytical 2D gradient for a line segment $`[a, b]`$ (`sdSegment2D`, `sdgSegment2D`) and 2D capsule (`sdCapsule2D`, `sdgCapsule2D`), with a perpendicular unit-normal fallback when $`p`$ lies directly on the segment spine ($`l^2 = 0`$).
 
 ---
 

@@ -9,14 +9,16 @@
 | **Author / Discoverer** | **Discovered using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Category** | `gradients3d` |
 | **GLSL File** | [`glsl/gradients3d/sdgHexPrism.glsl`](../../glsl/gradients3d/sdgHexPrism.glsl) |
-| **Exact Euclidean SDF?** | Yes ($\|\nabla d\|_2 = 1$ to `4.44e-16`, `0` `sqrt`s in interior & caps, `1` `sqrt` in exterior walls/corners) |
+| **Exact Euclidean SDF?** | Yes ($`\Vert \nabla d\Vert _2 = 1`$ to `4.44e-16`, `0` `sqrt`s in interior & caps, `1` `sqrt` in exterior walls/corners) |
 
 ---
 
 ## Mathematical Overview
 
-Inside the 2D polygonal cross-section ($d_{\text{2D}} \le 0$), the distance to the polygon edges is purely linear, so both the 3D prism interior ($w_z \le 0$) and the exterior flat-cap Voronoi zones ($w_z > 0$) require **0 `sqrt`s** and return exact unit normals. Outside the 2D cross-section ($d_{\text{2D}} > 0$), the 2D displacement vector $v_2 = (u_x, u_y)$ in the folded fundamental sector combines with $w_{z+} = \max(|p_z| - h_y, 0)$ under a **single 3D `sqrt`**:
-$$d = \sqrt{u_x^2 + u_y^2 + w_{z+}^2}, \qquad (g_2, g_z) = \frac{1}{d}\big(u_x, u_y, \mathrm{sign}(p_z) w_{z+}\big),$$
+Inside the 2D polygonal cross-section ($`d_{\text{2D}} \le 0`$), the distance to the polygon edges is purely linear, so both the 3D prism interior ($`w_z \le 0`$) and the exterior flat-cap Voronoi zones ($`w_z > 0`$) require **0 `sqrt`s** and return exact unit normals. Outside the 2D cross-section ($`d_{\text{2D}} > 0`$), the 2D displacement vector $`v_2 = (u_x, u_y)`$ in the folded fundamental sector combines with $`w_{z+} = \max(|p_z| - h_y, 0)`$ under a **single 3D `sqrt`**:
+```math
+d = \sqrt{u_x^2 + u_y^2 + w_{z+}^2}, \qquad (g_2, g_z) = \frac{1}{d}\big(u_x, u_y, \mathrm{sign}(p_z) w_{z+}\big),
+```
 which is unfolded by reversing the 2D Householder reflections.
 
 ---

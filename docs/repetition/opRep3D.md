@@ -1,6 +1,6 @@
 # `opRep3D` — 4-Tap 3D BCC Delaunay Tetrahedron Domain Repetition (opRepBCC4)
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![opRep3D](../images/repetition/opRep3D.png) | ![opRep3D slice 1](../images/repetition/opRep3D_slice.png) | ![opRep3D slice 2](../images/repetition/opRep3D_slice2.png) |
 

@@ -14,7 +14,7 @@
 
 ## Mathematical Overview
 
-Computes $\max(d_1, d_2)$. Note: underestimates the true Euclidean distance in the exterior normal cone where both $d_1 > 0$ and $d_2 > 0$; see [`sdgWedgeIntersection`](../gradients3d/sdgWedgeIntersection.md) for the exact Euclidean fix.
+Computes $`\max(d_1, d_2)`$. Note: underestimates the true Euclidean distance in the exterior normal cone where both $`d_1 > 0`$ and $`d_2 > 0`$; see [`sdgWedgeIntersection`](../gradients3d/sdgWedgeIntersection.md) for the exact Euclidean fix.
 
 ---
 

@@ -1,6 +1,6 @@
 # `sdgExtrusion` — Exact 2D-to-3D Extrusion Operators with Analytical Gradients
 
-| 3D Surface ($f(p) = 0$) | 2D Cross-Section Slice ($y = 0$) |
+| 3D Surface ($`f(p) = 0`$) | 2D Cross-Section Slice ($`y = 0`$) |
 | :---: | :---: |
 | ![sdgExtrusion](../images/gradients3d/sdgExtrusion.png) | ![sdgExtrusion slice](../images/gradients3d/sdgExtrusion_slice.png) |
 
@@ -9,29 +9,31 @@
 | **Author / Discoverer** | **Discovered using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Category** | `gradients3d` |
 | **GLSL File** | [`glsl/gradients3d/sdgExtrusion.glsl`](../../glsl/gradients3d/sdgExtrusion.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1` across exterior bevels, flat caps, and interior; returns `vec4(d, grad.xyz)`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1` across exterior bevels, flat caps, and interior; returns `vec4(d, grad.xyz)`) |
 
 ---
 
 ## Mathematical Overview
 
-Inigo Quilez's 3D and 2D gradient articles note that any 2D SDF+gradient `d2g = vec3(u, gx, gy)` with $g_x^2 + g_y^2 = 1$ can be lifted into 3D via extrusion, but never formulate the 3D analytical gradient operators.
+Inigo Quilez's 3D and 2D gradient articles note that any 2D SDF+gradient `d2g = vec3(u, gx, gy)` with $`g_x^2 + g_y^2 = 1`$ can be lifted into 3D via extrusion, but never formulate the 3D analytical gradient operators.
 
-By the **Orthogonal Profile Chain Rule**, given $u = d_{2\text{D}}(p_{xy})$ with $\nabla_{xy} u = (g_x, g_y)$ and $v = |z| - h$ with $\partial_z v = s_z = \mathrm{sign}(z)$, any 2D corner profile $f(u, v)$ with unit partial-derivative vector $(\partial_u f, \partial_v f)$ lifts to an exact 3D `vec4(d, grad.xyz)`:
-$$\mathrm{sdg}(p) = \bigl(f(u, v), \; (\partial_u f)\,g_x, \; (\partial_u f)\,g_y, \; (\partial_v f)\,s_z\bigr), \qquad \|\nabla_{x,y,z} f\|_2^2 = (\partial_u f)^2(g_x^2 + g_y^2) + (\partial_v f)^2 s_z^2 = 1.$$
+By the **Orthogonal Profile Chain Rule**, given $`u = d_{2\text{D}}(p_{xy})`$ with $`\nabla_{xy} u = (g_x, g_y)`$ and $`v = |z| - h`$ with $`\partial_z v = s_z = \mathrm{sign}(z)`$, any 2D corner profile $`f(u, v)`$ with unit partial-derivative vector $`(\partial_u f, \partial_v f)`$ lifts to an exact 3D `vec4(d, grad.xyz)`:
+```math
+\mathrm{sdg}(p) = \bigl(f(u, v), \; (\partial_u f)\,g_x, \; (\partial_u f)\,g_y, \; (\partial_v f)\,s_z\bigr), \qquad \|\nabla_{x,y,z} f\|_2^2 = (\partial_u f)^2(g_x^2 + g_y^2) + (\partial_v f)^2 s_z^2 = 1.
+```
 
 This file provides seven exact 2D-to-3D gradient extrusion operators:
 1. **`sdgExtrusion(d2g, z, h)`**: Sharp linear extrusion.
 2. **`sdgExtrudeRound(d2g, z, h, r)`**: Round-beveled extrusion.
-3. **`sdgExtrudeChamfer(d2g, z, h, c)`**: $45^\circ$-chamfered extrusion.
-4. **`sdgExtrudeStairs(d2g, z, h, r, n)`**: $n$-tier ziggurat stepped extrusion.
+3. **`sdgExtrudeChamfer(d2g, z, h, c)`**: $`45^\circ`$-chamfered extrusion.
+4. **`sdgExtrudeStairs(d2g, z, h, r, n)`**: $`n`$-tier ziggurat stepped extrusion.
 5. **`sdgExtrudeCove(d2g, z, h, r)`**: Quarter-circle concave cove / rabbet molding extrusion.
 6. **`sdgExtrudeBead(d2g, z, h, r)`**: Convex astragal torus bead molding extrusion.
 7. **`sdgExtrudeOgee(d2g, z, h, r)`**: Tangent Roman Ogee (Cyma Recta) S-curve molding extrusion.
 
-### Numerical Verification ($50{,}000$ Random 3D Points vs. Central Differences $\epsilon = 10^{-6}$)
+### Numerical Verification ($`50{,}000`$ Random 3D Points vs. Central Differences $`\epsilon = 10^{-6}`$)
 
-| Analytical Gradient Operator | Max $\big|\|\nabla d\|_2 - 1\big|$ | Median $\|\nabla d - \nabla_{\text{FD}} d\|_2$ | 99th Pct $\|\nabla d - \nabla_{\text{FD}} d\|_2$ |
+| Analytical Gradient Operator | Max $`\big\vert \Vert \nabla d\Vert _2 - 1\big\vert`$ | Median $`\Vert \nabla d - \nabla_{\text{FD}} d\Vert _2`$ | 99th Pct $`\Vert \nabla d - \nabla_{\text{FD}} d\Vert _2`$ |
 | :--- | :---: | :---: | :---: |
 | **`sdgExtrusion`** | `4.441e-16` | `8.823e-11` | `2.699e-10` |
 | **`sdgExtrudeRound`** | `3.331e-16` | `9.526e-11` | `3.063e-10` |

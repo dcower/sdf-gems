@@ -1,6 +1,6 @@
 # `opExtrudeRound` — Orthogonal Eikonal Round-Bevel Extrusion
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![opExtrudeRound](../images/deform/opExtrudeRound.png) | ![opExtrudeRound slice 1](../images/deform/opExtrudeRound_slice.png) | ![opExtrudeRound slice 2](../images/deform/opExtrudeRound_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://github.com/dcower/sdf-gems](https://github.com/dcower/sdf-gems) |
 | **Category** | `deform` |
 | **GLSL File** | [`glsl/deform/opExtrudeRound.glsl`](../../glsl/deform/opExtrudeRound.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`) |
 
 ---
 
 ## Mathematical Overview
 
-By the Orthogonal Eikonal Composition Theorem, composing any exact 2D base SDF $d_{\text{2D}}(p_{xy})$ with a 2D round-capped profile preserves $\|\nabla d_{\text{3D}}\| = 1$ identically.
+By the Orthogonal Eikonal Composition Theorem, composing any exact 2D base SDF $`d_{\text{2D}}(p_{xy})`$ with a 2D round-capped profile preserves $`\|\nabla d_{\text{3D}}\| = 1`$ identically.
 
 ---
 

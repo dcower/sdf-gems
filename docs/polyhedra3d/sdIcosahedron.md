@@ -1,6 +1,6 @@
 # `sdIcosahedron` — Exact 1-Sqrt 3D Regular Icosahedron (Ih Chamber + Axis-Aligned Edge)
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdIcosahedron](../images/polyhedra3d/sdIcosahedron.png) | ![sdIcosahedron slice 1](../images/polyhedra3d/sdIcosahedron_slice.png) | ![sdIcosahedron slice 2](../images/polyhedra3d/sdIcosahedron_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://mercury.sexy/hg_sdf/](https://mercury.sexy/hg_sdf/) |
 | **Category** | `polyhedra3d` |
 | **GLSL File** | [`glsl/polyhedra3d/sdIcosahedron.glsl`](../../glsl/polyhedra3d/sdIcosahedron.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, max error `1.78e-15`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, max error `1.78e-15`) |
 
 ---
 
 ## Mathematical Overview
 
-In the $I_h$ chamber, the active triangle edge is parallel to the $x$-axis at $(y, z) = (0, 1.070466 r)$, giving a 1-line axis-aligned edge projection.
+In the $`I_h`$ chamber, the active triangle edge is parallel to the $`x`$-axis at $`(y, z) = (0, 1.070466 r)`$, giving a 1-line axis-aligned edge projection.
 
 ---
 

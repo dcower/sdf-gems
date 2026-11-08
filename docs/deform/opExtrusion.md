@@ -1,6 +1,6 @@
 # `opExtrusion` & `opExtrusionSq` — Exact 2D-to-3D Linear Extrusion & Universal 1-`sqrt` Extrusion
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![opExtrusion](../images/deform/opExtrusion.png) | ![opExtrusion slice 1](../images/deform/opExtrusion_slice.png) | ![opExtrusion slice 2](../images/deform/opExtrusion_slice2.png) |
 
@@ -10,15 +10,15 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `deform` |
 | **GLSL File** | [`glsl/deform/opExtrusion.glsl`](../../glsl/deform/opExtrusion.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, `1` `sqrt` total in 3D via `opExtrusionSq`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, `1` `sqrt` total in 3D via `opExtrusionSq`) |
 
 ---
 
 ## Mathematical Overview
 
-1. **`opExtrusion(p, sdf2d, h)`**: Extrudes any signed 2D SDF `sdf2d` along the $z$-axis to half-height $h$ with flat caps.
+1. **`opExtrusion(p, sdf2d, h)`**: Extrudes any signed 2D SDF `sdf2d` along the $`z`$-axis to half-height $`h`$ with flat caps.
 2. **Universal 1-`sqrt` 3D Extrusion (`opExtrusionSq(d2, s, z, h)`)**:
-   When a 2D primitive produces an unsigned squared distance $d_2 \ge 0$ and an outside sign $s$ ($s > 0$ outside, $s \le 0$ inside), naive `opExtrusion(p, sign(s)*sqrt(d2), h)` evaluates **two `sqrt`s**. Because $\max(d_{2\text{D}}, 0)^2 = d_2$ for $s > 0$ and $\min(\max(-\sqrt{d_2}, q_z), 0) + \max(q_z, 0) \equiv \max(-\sqrt{d_2}, q_z)$ for $s \le 0$, `opExtrusionSq` fuses the 2D and 3D square roots into **a single `sqrt` everywhere in $\mathbb{R}^3$** (`0.0` error).
+   When a 2D primitive produces an unsigned squared distance $`d_2 \ge 0`$ and an outside sign $`s`$ ($`s > 0`$ outside, $`s \le 0`$ inside), naive `opExtrusion(p, sign(s)*sqrt(d2), h)` evaluates **two `sqrt`s**. Because $`\max(d_{2\text{D}}, 0)^2 = d_2`$ for $`s > 0`$ and $`\min(\max(-\sqrt{d_2}, q_z), 0) + \max(q_z, 0) \equiv \max(-\sqrt{d_2}, q_z)`$ for $`s \le 0`$, `opExtrusionSq` fuses the 2D and 3D square roots into **a single `sqrt` everywhere in $`\mathbb{R}^3`$** (`0.0` error).
 
 ---
 

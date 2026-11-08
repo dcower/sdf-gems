@@ -1,6 +1,6 @@
 # `sdTruncatedOctahedron` — Exact 1-Sqrt 3D Truncated Octahedron / Kelvin Cell
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdTruncatedOctahedron](../images/polyhedra3d/sdTruncatedOctahedron.png) | ![sdTruncatedOctahedron slice 1](../images/polyhedra3d/sdTruncatedOctahedron_slice.png) | ![sdTruncatedOctahedron slice 2](../images/polyhedra3d/sdTruncatedOctahedron_slice2.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://mercury.sexy/hg_sdf/](https://mercury.sexy/hg_sdf/) |
 | **Category** | `polyhedra3d` |
 | **GLSL File** | [`glsl/polyhedra3d/sdTruncatedOctahedron.glsl`](../../glsl/polyhedra3d/sdTruncatedOctahedron.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, max error `1.78e-15`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, max error `1.78e-15`) |
 
 ---
 
 ## Mathematical Overview
 
-Computes the exact 3D Euclidean distance to the space-filling Kelvin cell (14 faces, 36 edges, 24 vertices; Voronoi cell of the BCC lattice) in 1 `sqrt` via $O_h$ Weyl chamber folding.
+Computes the exact 3D Euclidean distance to the space-filling Kelvin cell (14 faces, 36 edges, 24 vertices; Voronoi cell of the BCC lattice) in 1 `sqrt` via $`O_h`$ Weyl chamber folding.
 
 ---
 

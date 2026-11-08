@@ -14,7 +14,7 @@
 
 ## Mathematical Overview
 
-Strictly local (`a < k && b < k`), rigid, and associative circular fillet, but overestimates distance (`||grad d|| > 1`) when $\nabla a \cdot \nabla b > 0$.
+Strictly local (`a < k && b < k`), rigid, and associative circular fillet, but overestimates distance (`||grad d|| > 1`) when $`\nabla a \cdot \nabla b > 0`$.
 
 ---
 

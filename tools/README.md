@@ -69,3 +69,14 @@ Builders that use only the shape *definition*, never the formula under test:
 ## 7. Raymarching Cost & Safety (`raymarch_stats` in [`tools/render_sdf.py`](render_sdf.py))
 
 `stats, img = raymarch_stats(fn)` sphere-traces like `render_3d_sdf` and reports mean/95th-percentile steps per pixel, pixels needing more than 18 steps, and **overstep pixels** (rays ending inside the surface, drawn in red). Use it in before/after comparisons of bounds (slower marching) and overestimating SDFs (unsafe).
+
+## 8. GitHub-Safe Math in Markdown ([`tools/lint_math.py`](lint_math.py))
+
+```bash
+uv run tools/lint_math.py                       # fail on bare $...$ / $$...$$ or `|` in table-row math/code
+uv run tools/lint_math.py --fix                 # convert to $`...`$ (inline) and ```math (display)
+uv run tools/lint_math.py --render              # render every formula with MathJax 3 + KaTeX (Node.js)
+uv run tools/lint_math.py --github              # verify against the GitHub Markdown API (60 req/h; GITHUB_TOKEN)
+```
+
+GitHub processes Markdown before MathJax: backslash escapes before punctuation are consumed (`\%` becomes a TeX comment, `\\` collapses matrix rows, `\{` `\|` `\,` vanish) and emphasis/link syntax runs across formulas. GitHub's Markdown-proof syntax (`` $`...`$ `` and ```` ```math ````) passes TeX through verbatim. The offline lint also runs inside `tools/update_umbrella.py`.

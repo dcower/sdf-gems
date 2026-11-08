@@ -1,6 +1,6 @@
 # `sdCappedTorus` — Exact 3D Capped Torus (Cancellation-Free Core Circle)
 
-| 3D Surface ($f(p) = 0$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
+| 3D Surface ($`f(p) = 0`$) | Primary 2D Cross-Section | Secondary 2D Cross-Section |
 | :---: | :---: | :---: |
 | ![sdCappedTorus](../images/primitives3d/sdCappedTorus.png) | ![sdCappedTorus slice 1](../images/primitives3d/sdCappedTorus_slice.png) | ![sdCappedTorus slice 2](../images/primitives3d/sdCappedTorus_slice2.png) |
 
@@ -10,7 +10,7 @@
 | **Source** | [https://iquilezles.org/articles/distfunctions/](https://iquilezles.org/articles/distfunctions/) |
 | **Category** | `primitives3d` |
 | **GLSL File** | [`glsl/primitives3d/sdCappedTorus.glsl`](../../glsl/primitives3d/sdCappedTorus.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1`, 0% NaN rate) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1`, 0% NaN rate) |
 
 ---
 

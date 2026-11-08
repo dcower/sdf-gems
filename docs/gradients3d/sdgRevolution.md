@@ -1,6 +1,6 @@
 # `sdgRevolution` — Exact Full & Limited-Angle 3D Revolution with Gradients
 
-| 3D Surface ($f(p) = 0$) | 2D Cross-Section Slice ($y = 0$) |
+| 3D Surface ($`f(p) = 0`$) | 2D Cross-Section Slice ($`y = 0`$) |
 | :---: | :---: |
 | ![sdgRevolution](../images/gradients3d/sdgRevolution.png) | ![sdgRevolution slice](../images/gradients3d/sdgRevolution_slice.png) |
 
@@ -9,15 +9,15 @@
 | **Author / Discoverer** | **Discovered using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Category** | `gradients3d` |
 | **GLSL File** | [`glsl/gradients3d/sdgRevolution.glsl`](../../glsl/gradients3d/sdgRevolution.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1` across $\mathbb{R}^3$; returns `vec4(d, grad.xyz)`) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1` across $`\mathbb{R}^3`$; returns `vec4(d, grad.xyz)`) |
 
 ---
 
 ## Mathematical Overview
 
-Lifts any 2D SDF+gradient `d2g = vec3(d, gx, gy)` into an exact 3D `vec4(d, gx, gy, gz)` under full $360^\circ$ revolution (`sdgRevolutionFinalize`) or limited-angle partial revolution (`sdgRevolutionLimFinalize`, paired with [`opRevolutionLim`](../deform/opRevolutionLim.md)):
-- **Inside the angular sector ($w \le 0$)**: The radial coordinate $l = \|p_{xz}\|_2$ has gradient $\nabla l = (p_x / l, 0, p_z / l) \perp \hat{y}$, so the mantle gradient is $(g_x p_x / l, g_y, g_x p_z / l)$ (or the flat end-cap normal $g_w = (\mathrm{sign}(p_x)\cos\theta, 0, -\sin\theta)$ when the interior end-cap is active).
-- **Outside the angular sector ($w > 0$)**: The in-plane cap tangent $(\mathrm{sign}(p_x)\sin\theta, 0, \cos\theta)$, the vertical axis $(0, 1, 0)$, and the outward cap normal $g_w = (\mathrm{sign}(p_x)\cos\theta, 0, -\sin\theta)$ form a **3D orthonormal triad**, so the exterior cap-rim gradient is $(d_{2\text{D}}\,g_u + w\,g_w) / \sqrt{d_{2\text{D}}^2 + w^2}$ with exact unit norm $\|\nabla d\|_2 = 1$ (`3.33e-16` max Eikonal deviation).
+Lifts any 2D SDF+gradient `d2g = vec3(d, gx, gy)` into an exact 3D `vec4(d, gx, gy, gz)` under full $`360^\circ`$ revolution (`sdgRevolutionFinalize`) or limited-angle partial revolution (`sdgRevolutionLimFinalize`, paired with [`opRevolutionLim`](../deform/opRevolutionLim.md)):
+- **Inside the angular sector ($`w \le 0`$)**: The radial coordinate $`l = \|p_{xz}\|_2`$ has gradient $`\nabla l = (p_x / l, 0, p_z / l) \perp \hat{y}`$, so the mantle gradient is $`(g_x p_x / l, g_y, g_x p_z / l)`$ (or the flat end-cap normal $`g_w = (\mathrm{sign}(p_x)\cos\theta, 0, -\sin\theta)`$ when the interior end-cap is active).
+- **Outside the angular sector ($`w > 0`$)**: The in-plane cap tangent $`(\mathrm{sign}(p_x)\sin\theta, 0, \cos\theta)`$, the vertical axis $`(0, 1, 0)`$, and the outward cap normal $`g_w = (\mathrm{sign}(p_x)\cos\theta, 0, -\sin\theta)`$ form a **3D orthonormal triad**, so the exterior cap-rim gradient is $`(d_{2\text{D}}\,g_u + w\,g_w) / \sqrt{d_{2\text{D}}^2 + w^2}`$ with exact unit norm $`\|\nabla d\|_2 = 1`$ (`3.33e-16` max Eikonal deviation).
 
 ---
 

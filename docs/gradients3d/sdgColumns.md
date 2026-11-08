@@ -9,17 +9,21 @@
 | **Author / Discoverer** | **Discovered using Gemini 4 Argon (sdf-gems, 2026)** |
 | **Category** | `gradients3d` |
 | **GLSL File** | [`glsl/gradients3d/sdgColumns.glsl`](../../glsl/gradients3d/sdgColumns.glsl) |
-| **Exact Euclidean SDF?** | Yes ($\|\nabla d\|_2 = 1$ to `4.44e-16` across all column arcs, cusps, and walls) |
+| **Exact Euclidean SDF?** | Yes ($`\Vert \nabla d\Vert _2 = 1`$ to `4.44e-16` across all column arcs, cusps, and walls) |
 
 ---
 
 ## Mathematical Overview
 
-In [`opUnionColumns`](../booleans/opUnionColumns.md) and [`opSubtractionColumns`](../booleans/opUnionColumns.md), $n$ circular columns of radius $R = \frac{r\sqrt{2}}{(n-1)2 + \sqrt{2}}$ are arrayed along the $45^\circ$ diagonal in sorted coordinates $(x, y) = (\min(a,b), \max(a,b))$ with orthonormal rotated coordinates:
-$$p_x = (x + y - r + 2R)\sqrt{0.5}, \qquad p_y = (y - x)\sqrt{0.5}.$$
-Differentiating the single `sqrt` distance $l$ with respect to $(p_x, p_y)$ yields $g_p = \pm (q_x, d_y) / l$ on the exterior/interior column arcs and tangent cusps, which lifts back to $(x, y)$ via the inverse $45^\circ$ orthogonal transpose:
-$$(g_x, g_y) = \left(\frac{g_{px} - g_{py}}{\sqrt{2}}, \; \frac{g_{px} + g_{py}}{\sqrt{2}}\right), \qquad \nabla d = g_x\,\nabla a + g_y\,\nabla b.$$
-Across $[-1.5, 1.5]^2$, `sdgUnionColumns`, `sdgSubtractionColumns`, and `sdgIntersectionColumns` achieve **`4.44e-16` maximum Eikonal error $\big|\|\nabla d\|_2 - 1\big|$** while requiring only **1 `sqrt`** per evaluation.
+In [`opUnionColumns`](../booleans/opUnionColumns.md) and [`opSubtractionColumns`](../booleans/opUnionColumns.md), $`n`$ circular columns of radius $`R = \frac{r\sqrt{2}}{(n-1)2 + \sqrt{2}}`$ are arrayed along the $`45^\circ`$ diagonal in sorted coordinates $`(x, y) = (\min(a,b), \max(a,b))`$ with orthonormal rotated coordinates:
+```math
+p_x = (x + y - r + 2R)\sqrt{0.5}, \qquad p_y = (y - x)\sqrt{0.5}.
+```
+Differentiating the single `sqrt` distance $`l`$ with respect to $`(p_x, p_y)`$ yields $`g_p = \pm (q_x, d_y) / l`$ on the exterior/interior column arcs and tangent cusps, which lifts back to $`(x, y)`$ via the inverse $`45^\circ`$ orthogonal transpose:
+```math
+(g_x, g_y) = \left(\frac{g_{px} - g_{py}}{\sqrt{2}}, \; \frac{g_{px} + g_{py}}{\sqrt{2}}\right), \qquad \nabla d = g_x\,\nabla a + g_y\,\nabla b.
+```
+Across $`[-1.5, 1.5]^2`$, `sdgUnionColumns`, `sdgSubtractionColumns`, and `sdgIntersectionColumns` achieve **`4.44e-16` maximum Eikonal error $`\big|\|\nabla d\|_2 - 1\big|`$** while requiring only **1 `sqrt`** per evaluation.
 
 ---
 

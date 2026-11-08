@@ -1,6 +1,6 @@
 # `sdgSmoothUnion` — Angle-Exact Eikonal Smooth Union (Solving IQ's smin Trilemma)
 
-| 3D Surface ($f(p) = 0$) | 2D Cross-Section Slice |
+| 3D Surface ($`f(p) = 0`$) | 2D Cross-Section Slice |
 | :---: | :---: |
 | ![sdgSmoothUnion](../images/gradients3d/sdgSmoothUnion.png) | ![sdgSmoothUnion slice](../images/gradients3d/sdgSmoothUnion_slice.png) |
 
@@ -10,13 +10,13 @@
 | **Source** | [https://github.com/dcower/sdf-gems](https://github.com/dcower/sdf-gems) |
 | **Category** | `gradients3d` |
 | **GLSL File** | [`glsl/gradients3d/sdgSmoothUnion.glsl`](../../glsl/gradients3d/sdgSmoothUnion.glsl) |
-| **Exact Euclidean SDF?** | Yes (`||grad d|| = 1` identically in blend zone) |
+| **Exact Euclidean SDF?** | Yes (`\|\|grad d\|\| = 1` identically in blend zone) |
 
 ---
 
 ## Mathematical Overview
 
-Resolves Inigo Quilez's Smooth-Minimum Trilemma: forms an exact, division-by-zero-free homotopy between IQ's Circular Geometrical `smin` ($c = 0$) and Quadratic CD `smin` ($c \to 1$), achieving **exact unit Eikonal gradient $\|\nabla d\| = 1$**, **strict corner locality ($c < 1$)**, and **$0\%$ overestimation**.
+Resolves Inigo Quilez's Smooth-Minimum Trilemma: forms an exact, division-by-zero-free homotopy between IQ's Circular Geometrical `smin` ($`c = 0`$) and Quadratic CD `smin` ($`c \to 1`$), achieving **exact unit Eikonal gradient $`\|\nabla d\| = 1`$**, **strict corner locality ($`c < 1`$)**, and **$`0\%`$ overestimation**.
 
 ![Smooth-Minimum Trilemma Solved](../images/comparisons/smin_trilemma_solved_2d.png)
 
