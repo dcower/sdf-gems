@@ -169,6 +169,7 @@
 #include "glsl/primitives3d/sdLens.glsl"
 #include "glsl/primitives3d/sdLink.glsl"
 #include "glsl/primitives3d/sdMeissnerTetrahedron.glsl"
+#include "glsl/primitives3d/sdOloid.glsl"
 #include "glsl/primitives3d/sdParaboloid.glsl"
 #include "glsl/primitives3d/sdPyramid.glsl"
 #include "glsl/primitives3d/sdPyramidFrustum.glsl"
