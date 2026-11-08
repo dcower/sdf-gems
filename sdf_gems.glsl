@@ -162,6 +162,7 @@
 #include "glsl/primitives3d/sdDeathStar.glsl"
 #include "glsl/primitives3d/sdEllipsoid.glsl"
 #include "glsl/primitives3d/sdEllipsoidExact.glsl"
+#include "glsl/primitives3d/sdHelicalGear.glsl"
 #include "glsl/primitives3d/sdHelix.glsl"
 #include "glsl/primitives3d/sdHexPrism.glsl"
 #include "glsl/primitives3d/sdHollowCone.glsl"
