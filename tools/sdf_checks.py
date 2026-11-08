@@ -16,6 +16,9 @@ Provides:
   - check_sdg(sd, sdg, P, h)            : dg.x == d, |grad| == 1, cosine vs finite differences
   - self_projection(sd, sdg, P)         : x = p - d(p) grad(p) must land ON the surface (|d(x)| ~ 0).
                                           Wrong distances or gradients miss the surface. Needs no ground truth.
+  - lipschitz_pairs(sd, P)              : max |d(a) - d(b)| / |a - b| (must be <= 1)
+  - surface_zero(sd, S)                 : |d| on independently generated surface samples
+  - exactness_certificate(sd, sdg, P, S): Lipschitz + zero-on-surface + self-projection  =>  exact SDF (no GT needed)
 
 NOTE: an eikonal map (|grad d| - 1) cannot reveal every wrong SDF: a max()/min() of exact distances has
 |grad d| = 1 almost everywhere and can still be badly wrong. Always also compare against ground truth.
@@ -104,3 +107,32 @@ def self_projection(sd, sdg, P, label=""):
     r = np.abs(np.asarray(sd(X)))
     print(f"[{label}] self-projection: max |d(p - d grad)| {r.max():.3e}  median {np.median(r):.2e}")
     return X, r
+
+
+def lipschitz_pairs(sd, P, sigma=0.05, label="", seed=1):
+    """max |d(a) - d(b)| / |a - b| over pairs (a, b = a + N(0, sigma)). Must be <= 1 (+ FP32 noise)."""
+    P = np.asarray(P, dtype=np.float64)
+    Q = P + np.random.default_rng(seed).normal(0.0, sigma, P.shape)
+    lip = np.abs(np.asarray(sd(P)) - np.asarray(sd(Q))) / np.linalg.norm(P - Q, axis=1)
+    print(f"[{label}] Lipschitz: max {lip.max():.6f}  (pairs {len(P)}, sigma {sigma})")
+    return lip.max()
+
+
+def surface_zero(sd, S, label=""):
+    """max |d| on surface samples S generated INDEPENDENTLY from the shape definition (not from sd itself)."""
+    r = np.abs(np.asarray(sd(S)))
+    print(f"[{label}] |d| on independent surface samples: max {r.max():.3e}")
+    return r.max()
+
+
+def exactness_certificate(sd, sdg, P, S, label=""):
+    """Ground-truth-free exactness test. If, with S independent samples of the true surface:
+      (1) d is 1-Lipschitz,
+      (2) d = 0 on S (and the sign is right),
+      (3) x = p - d(p) grad(p) lands on the zero set for every p,
+    then |d(p)| <= dist(p, surface) by (1)+(2), and dist(p, surface) <= |p - x| = |d(p)| by (3), so d is the exact SDF
+    (up to the reported tolerances). Cheap enough to run on every primitive."""
+    lip = lipschitz_pairs(sd, P, label=label)
+    z = surface_zero(sd, S, label=label)
+    _, r = self_projection(sd, sdg, P, label=label)
+    return {"lipschitz": lip, "surface_zero": z, "self_projection": float(r.max())}

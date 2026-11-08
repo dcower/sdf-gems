@@ -7,6 +7,7 @@ Provides:
   - render_2d_sdf(fn_2d, ...)           : 2D SDF isoline & zero-set preview
   - render_eikonal_error_map(fn, ...)   : Visualizes Eikonal deviation (||grad d|| - 1)
   - render_error_heatmap(fn, gt, ...)   : log10 |fn - gt| slice heatmap with colorbar (preferred before/after view)
+  - raymarch_stats(fn, ...)             : sphere-tracing steps/pixel and overstep pixels (+ heatmap image)
   - combine_panels(images, titles=None) : Horizontally concatenates PIL images with optional titles
 
 Run via UV:
@@ -263,6 +264,70 @@ def render_error_heatmap(
     out.paste(img, (0, 0))
     out.paste(bar, (0, res))
     return out
+
+
+def raymarch_stats(
+    sdf_fn,
+    res=(360, 270),
+    cam_pos=(1.75, 1.35, 1.85),
+    look_at=(0.0, -0.05, 0.0),
+    max_steps=200,
+    hit_eps=1e-3,
+    t_max=6.0,
+    label=None,
+):
+    """
+    Sphere-traces `sdf_fn` exactly like `render_3d_sdf` and reports what a GPU raymarcher would see:
+      - steps per pixel (mean, 95th percentile, pixels above 18 steps), a performance metric;
+      - overstep pixels: rays whose final position lies inside the surface (d < -hit_eps), a safety metric.
+    Returns (stats_dict, PIL.Image heatmap of step counts with overstep pixels in red).
+    Use it in before/after comparisons for bounds (Lipschitz-scaled SDFs march slower) and overestimating SDFs.
+    """
+    W, H = res
+    ro = np.array(cam_pos, dtype=np.float64)
+    fw = np.array(look_at, dtype=np.float64) - ro
+    fw /= np.linalg.norm(fw)
+    rt = np.cross(fw, [0.0, 1.0, 0.0])
+    rt /= np.linalg.norm(rt)
+    up = np.cross(rt, fw)
+    xs = (2.0 * (np.arange(W) + 0.5) / W - 1.0) * (W / H)
+    ys = 1.0 - 2.0 * (np.arange(H) + 0.5) / H
+    uu, vv = np.meshgrid(xs, ys)
+    rd = uu[..., None] * rt + vv[..., None] * up + 1.85 * fw
+    rd = (rd / np.linalg.norm(rd, axis=-1, keepdims=True)).reshape(-1, 3)
+    n = len(rd)
+    t = np.full(n, 0.1)
+    steps = np.zeros(n, dtype=int)
+    done = np.zeros(n, dtype=bool)
+    hit = np.zeros(n, dtype=bool)
+    for _ in range(max_steps):
+        idx = np.where(~done)[0]
+        if len(idx) == 0:
+            break
+        d = np.asarray(sdf_fn(ro[None, :] + t[idx, None] * rd[idx]), dtype=np.float64)
+        steps[idx] += 1
+        h = d < hit_eps
+        hit[idx[h]] = True
+        done[idx[h | (t[idx] > t_max)]] = True
+        t[idx] += np.where(h, 0.0, d)
+    dend = np.asarray(sdf_fn(ro[None, :] + t[:, None] * rd), dtype=np.float64)
+    over = hit & (dend < -hit_eps)
+    stats = {
+        "mean_steps": float(steps.mean()),
+        "p95_steps": float(np.percentile(steps, 95)),
+        "pixels_gt18": int(np.sum(steps > 18)),
+        "overstep_pixels": int(over.sum()),
+        "hit_pixels": int(hit.sum()),
+    }
+    x = np.clip(steps / 80.0, 0.0, 1.0)
+    col = np.stack([0.15 + 0.85 * x, 0.15 + 0.6 * x * x, 0.25 * (1 - x)], -1)
+    col[over] = [1.0, 0.1, 0.05]
+    img = Image.fromarray((np.clip(col.reshape(H, W, 3), 0, 1) * 255).astype(np.uint8))
+    draw = ImageDraw.Draw(img, "RGBA")
+    txt = (label + ": " if label else "") + f"{stats['mean_steps']:.1f} steps/px, {stats['overstep_pixels']} overstep px"
+    draw.rounded_rectangle([8, 8, 8 + len(txt) * 6 + 14, 26], radius=4, fill=(15, 20, 28, 195))
+    draw.text((15, 11), txt, fill=(240, 244, 248, 255))
+    return stats, img
 
 
 def combine_panels(images):

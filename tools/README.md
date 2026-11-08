@@ -58,9 +58,14 @@ Builders that use only the shape *definition*, never the formula under test:
 
 ## 5. Numerical Checks ([`tools/sdf_checks.py`](sdf_checks.py))
 
-`probe_points`, `check_finite`, `compare_gt`, `seam_pair_test`, `eikonal_fd`, `check_sdg`, `self_projection`.
+`probe_points`, `check_finite`, `compare_gt`, `seam_pair_test`, `eikonal_fd`, `check_sdg`, `self_projection`, `lipschitz_pairs`, `surface_zero`, `exactness_certificate`.
 `self_projection` (step `x = p - d(p) grad(p)` and require `d(x) = 0`) needs no ground truth and catches wrong distances and gradients, including FP32 rounding-shell bugs on the surface itself.
+`exactness_certificate` combines 1-Lipschitz pairs, zero on independently generated surface samples, and self-projection: together they imply the SDF is exact, with no ground-truth distances.
 
 ## 6. Error Heatmaps (`render_error_heatmap` in [`tools/render_sdf.py`](render_sdf.py))
 
 `render_error_heatmap(fn, gt, ...)` draws log10 |fn - gt| on a slice with a colorbar and the true surface in cyan. Prefer it to eikonal maps for before/after comparisons: a `max()` of exact distances has unit gradient yet can be badly wrong.
+
+## 7. Raymarching Cost & Safety (`raymarch_stats` in [`tools/render_sdf.py`](render_sdf.py))
+
+`stats, img = raymarch_stats(fn)` sphere-traces like `render_3d_sdf` and reports mean/95th-percentile steps per pixel, pixels needing more than 18 steps, and **overstep pixels** (rays ending inside the surface, drawn in red). Use it in before/after comparisons of bounds (slower marching) and overestimating SDFs (unsafe).

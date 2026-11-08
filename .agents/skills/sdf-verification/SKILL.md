@@ -15,8 +15,8 @@ Follow this checklist whenever creating, upgrading, or auditing any SDF or opera
 | :--- | :--- |
 | `tools/gpu_eval.py` | `gpu_eval` / `gpu_fn` run the **literal** `.glsl` on the GPU (OpenGL 4.1, FP32). `glsl_args(...)` formats numbers safely. `uv run tools/gpu_eval.py --new <file> --call "<vec4 expr of P>"` performs the single-translation-unit compile in forward, reverse and new-file-first order. |
 | `tools/ground_truth.py` | Independent FP64 ground truth: `polygon_sdf`, `polyline_distance`, `convex_hull_sdf`, `point_triangle_distance`, `implicit_boundary_cloud` + `cloud_sdf`. |
-| `tools/sdf_checks.py` | `probe_points`, `check_finite`, `compare_gt`, `seam_pair_test`, `eikonal_fd`, `check_sdg`, `self_projection`. |
-| `tools/render_sdf.py` | `render_3d_sdf`, `render_slice_3d`, `render_2d_sdf`, `render_error_heatmap`, `render_eikonal_error_map`, `combine_panels`. |
+| `tools/sdf_checks.py` | `probe_points`, `check_finite`, `compare_gt`, `seam_pair_test`, `eikonal_fd`, `check_sdg`, `self_projection`, `lipschitz_pairs`, `surface_zero`, `exactness_certificate`. |
+| `tools/render_sdf.py` | `render_3d_sdf`, `render_slice_3d`, `render_2d_sdf`, `render_error_heatmap`, `render_eikonal_error_map`, `raymarch_stats`, `combine_panels`. |
 
 Wrap the literal shader with `gpu_fn(["glsl/<cat>/<name>.glsl"], "vec4(sdFoo(p, 1.0))")` and pass that callable to the
 checks and renderers, so every number and image comes from the code being committed.
@@ -42,11 +42,18 @@ Python prototypes can mask transcription bugs in constants, variable swaps, or i
      - Verify `dg.x == sd*(p)` (`< 1e-6`).
      - Verify `length(dg.yzw) == 1.0` (`< 1e-4`), including finite unit-length fallbacks on medial axes and at the origin.
      - Verify `dg.yzw` matches central finite differences of `dg.x` (`> 0.999` cosine similarity away from medial seams).
-   - **Self-Projection** (`self_projection`): $x = p - d(p)\,\nabla d(p)$ must land on the surface ($|d(x)| \approx 0$). This needs no ground truth and catches wrong distances and wrong gradients at once.
+   - **Self-Projection** (`self_projection`): $x = p - d(p)\,\nabla d(p)$ must land on the surface ($|d(x)| \approx 0$). This needs no ground truth and catches wrong distances and wrong gradients at once. Include points placed *exactly on* the surface: FP32 rounding shells are where branches disagree.
+   - **Exactness Certificate** (`exactness_certificate`): (1) 1-Lipschitz on random pairs, (2) $d = 0$ on surface samples generated independently from the shape definition, and (3) self-projection lands on the zero set. Together these imply $d$ is the exact SDF, with no ground-truth distance computation. Run it on every exact primitive, in addition to the brute-force comparison.
+   - **Special-Case Regression**: when a new primitive reduces to an existing verified one for some parameter (helix angle $0$, equal radii, $n \to$ a known polygon), compare against it numerically.
+   - **Validate the Shape Definition Itself**: before trusting a ground truth built from a definition, check its invariants (e.g. constant width in thousands of directions, known volume, chirality vs. the mirror image, symmetry orbit invariance).
+   - **Before Blaming the Shader**: when a handful of points disagree with the reference, refine the reference first (denser samples, local search, a second method). Several "outliers" in this repo's history were reference misses, not shader bugs.
 3. **FP32 Pitfalls Seen in Practice**:
    - Format GLSL literals with `glsl_args(...)`: interpolating numpy scalars produces `np.float64(...)`, which does not compile.
    - Avoid `sign(x + 1e-30)` and `v / max(len, eps)` in gradients: they can yield zero vectors exactly on the surface. Use ternaries with unit-vector fallbacks.
    - Fixed-iteration solvers: cluster bracketing nodes (e.g. Chebyshev–Lobatto) where roots bunch up near symmetry planes; uniform nodes can lose two orders of magnitude of accuracy there.
+   - Write radicands as products, not differences: `sqrt(max((r - a) * (r + a), 0.0))` instead of `sqrt(r*r - a*a)`. With constant-folded parameters and FMA contraction, `sqrt(rb*rb - rb*rb)` can become `sqrt(-eps)` = NaN.
+   - Make branch selection rounding-tolerant: if an early-exit test (`dm <= 0`) and a later region test (`h > 0`) are computed along different arithmetic paths, a surface point can satisfy neither. Accept candidates within a tiny tolerance or provably on the far side of the boundary (each candidate is still a true distance to a boundary point, so the result stays an upper bound and exact up to rounding).
+   - A finite-difference gradient in FP32 makes self-projection noise-dominated (noise × $d$). Use the analytical `sdg` or an FP64 port for self-projection.
 
 ## 3. Rendering & Mandatory Visual Inspection
 Use `tools/render_sdf.py` via `uv run` to generate documentation visuals, preferably from the literal GLSL through `gpu_fn`:
@@ -57,6 +64,7 @@ Use `tools/render_sdf.py` via `uv run` to generate documentation visuals, prefer
    - Render with `render_slice_3d` or `render_2d_sdf` at `res=(360, 360)`.
 3. **Before/After Comparison (`docs/images/comparisons/`)**:
    - Prefer `render_error_heatmap(fn, gt)` (log10 error vs ground truth, with a colorbar) over eikonal maps; add 3D renders of offsets (`d - r`) or shells where the old approach visibly fails.
+   - For bounds and overestimating SDFs, add `raymarch_stats(fn)`: mean steps/pixel and overstep pixels (in red), the cost and safety a GPU raymarcher actually sees.
 4. **Inspect with `read_file`**:
    - Call `read_file` on **every** generated `.png` before staging or committing. Reject and re-render any image that is clipped, blank, overly zoomed, or uses the wrong aspect ratio, or whose before/after does not make the improvement obvious.
 
