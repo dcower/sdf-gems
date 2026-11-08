@@ -1,4 +1,4 @@
-# `sdf-gems` — Modular 2D & 3D Signed Distance Field Library
+# `sdf-gems` — 2D & 3D Signed Distance Fields
 
 `sdf-gems` is an **AI-assisted research and engineering effort to systematically explore Signed Distance Fields (SDFs)**—auditing classic formulations for numerical and geometric edge cases, finding algebraic and instruction-level optimizations, deriving tighter bounds and exact closed-form/numerical solutions, and discovering new 2D/3D primitives, exact polyhedra, analytical-gradient booleans, orthogonal extrusions, deformations, and simplicial domain repetition operators. Enjoy the slop!
 
