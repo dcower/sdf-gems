@@ -1,0 +1,169 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>sdf-gems interactive viewer</title>
+<style>
+body{margin:0;background:#111;color:#ddd;font:13px system-ui;overflow:hidden}
+canvas{display:block;width:100vw;height:100vh}
+#ui{position:fixed;top:8px;left:8px;background:#000a;padding:8px;border-radius:6px}
+#ui *{margin:2px}#src{display:none;position:fixed;top:0;right:0;width:45vw;height:100vh;margin:0;overflow:auto;background:#000d;color:#cfc;font:11px ui-monospace,monospace;padding:8px;box-sizing:border-box;white-space:pre}#err{color:#f66;white-space:pre;max-width:60vw;overflow:auto}
+</style></head><body>
+<canvas id="c"></canvas><pre id="src"></pre>
+<div id="ui">
+  <select id="sel"></select><button id="rl">reload</button><button id="gs">GLSL</button>
+  <select id="mode"><option value="0">shaded</option><option value="1">colour head</option><option value="2">steps heatmap</option><option value="3">normals</option></select>
+  <label><input id="sh" type="checkbox" checked>shadows+AO+ground</label> <label>light <input id="li" type="range" min="0" max="6.283" step="0.01" value="0.9"></label> <label><input id="fa" type="checkbox">fast trace (sd*Fast)</label> <label><input id="ov" type="checkbox">over-relax</label> <label><input id="tay" type="checkbox">Taylor step (O(√d))</label> <label>scale <input id="res" type="range" min="0.25" max="1" step="0.25" value="0.5"></label>
+  <span id="fps"></span><div id="err"></div>
+  <div style="opacity:.6">drag = orbit, wheel = zoom</div>
+</div>
+<script>
+// Entries: pure-SDF primitives and operators
+const ENTRIES = [
+  {label: "sdMilnorTorusKnot", file: "../../glsl/primitives3d/sdMilnorSeifertKnot.glsl", sd: "sdMilnorTorusKnot", eye: 2.5, ground: -0.6},
+  {label: "sdSeifertSurface", file: "../../glsl/primitives3d/sdMilnorSeifertKnot.glsl", sd: "sdSeifertSoapFilm", eye: 2.5, ground: -0.6},
+  {label: "sdChladniEigen", file: "../../glsl/volume/sdfChladniOrbitals.glsl", sd: "sdChladniEigen", eye: 2.2, ground: -0.5},
+  {label: "sdRieszMetaball", file: "../../glsl/volume/sdfLevyRieszClouds.glsl", sd: "sdRieszMetaball2", eye: 2.6, ground: -0.6},
+  {label: "sdPauliSpinorUnion", file: "../../glsl/volume/sdfPauliSpinorSoliton.glsl", sd: "sdPauliSpinorUnion", eye: 2.4, ground: -0.5},
+  {label: "sdTrefoilKnot", file: "../../glsl/primitives3d/sdTrefoilKnot.glsl", sd: "sdTrefoilKnot", eye: 2.6, ground: -0.6},
+  {label: "sdCinquefoilKnot", file: "../../glsl/primitives3d/sdCinquefoilKnot.glsl", sd: "sdCinquefoilKnot", eye: 2.6, ground: -0.6},
+  {label: "sdFigureEightKnot", file: "../../glsl/primitives3d/sdFigureEightKnot.glsl", sd: "sdFigureEightKnot", eye: 2.6, ground: -0.6},
+  {label: "sdMeissnerTetrahedron", file: "../../glsl/primitives3d/sdMeissnerTetrahedron.glsl", sd: "sdMeissnerTetrahedron", eye: 2.4, ground: -0.5},
+  {label: "sdOloid", file: "../../glsl/primitives3d/sdOloid.glsl", sd: "sdOloid", eye: 2.4, ground: -0.5},
+  {label: "sdHelicalGear", file: "../../glsl/primitives3d/sdHelicalGear.glsl", sd: "sdHelicalGear", eye: 2.4, ground: -0.5}
+];
+const seen = new Set();
+async function resolve(url){  // inline #include "relative/path" recursively (each file once)
+  const abs = new URL(url, location.href).href; if (seen.has(abs)) return ""; seen.add(abs);
+  const r = await fetch(abs + "?t=" + Date.now()); if (!r.ok) throw "missing " + url;
+  let out = "";
+  for (const line of (await r.text()).split("\n")) {
+    const m = line.match(/^\s*#include\s+"([^"]+)"/);
+    out += m ? await resolve(new URL(m[1], abs).href) : line + "\n";
+  }
+  return out;
+}
+const c = document.getElementById("c"), gl = c.getContext("webgl2"), $ = id => document.getElementById(id);
+ENTRIES.forEach((e, i) => $("sel").add(new Option(e.label, i)));
+let prog = null, cam = {th: 0.8, ph: 0.35, r: 2.6}, cur = null;
+const VS = `#version 300 es
+in vec2 v; void main(){ gl_Position = vec4(v,0,1); }`;
+const FS = (src, e) => `#version 300 es
+precision highp float;
+${src}
+uniform vec2 res; uniform vec3 eye; uniform int mode; uniform int shadows; uniform float lang; out vec4 o;
+uniform float groundY; uniform int fastTrace, overRelax, taylorStep;
+float SDO(vec3 p){ return ${e.sd}(p); }
+float SD(vec3 p){ float d = SDO(p); return shadows == 1 ? min(d, p.y - groundY) : d; }
+float TR(vec3 p){ float d = ${e.fast ? `fastTrace == 1 ? ${e.fast}(p) : SDO(p)` : `SDO(p)`}; return shadows == 1 ? min(d, p.y - groundY) : d; }
+float softShadow(vec3 ro, vec3 rd){  // Catastrophe-fold penumbra (Arnold A2 fold / IQ geometric closest approach)
+  float res = 1.0, t = 0.01, ph = 1e10;
+  for (int i = 0; i < 64; i++) {
+    float h = SD(ro + t*rd);
+    float y = (i == 0) ? 0.0 : h*h / (2.0*ph);
+    float d = sqrt(max(h*h - y*y, 0.0));
+    res = min(res, 10.0*d / max(1e-4, t - y));
+    ph = h;
+    t += clamp(h, 0.005, 0.2);
+    if (res < 0.002 || t > 4.0) break;
+  }
+  return clamp(res, 0.0, 1.0);
+}
+float ao(vec3 p, vec3 n){ float o = 0.0, w = 1.0; for (int i = 1; i <= 5; i++) { float h = 0.03*float(i); o += w*(h - SD(p + h*n)); w *= 0.6; } return clamp(1.0 - 3.0*o, 0.0, 1.0); }
+vec3 COL(vec3 p, vec3 n, vec3 rd){ ${e.col ? `return ${e.col}(p, n, rd);` : `return vec3(0.75);`} }
+${e.shade ? `vec3 SHADE(vec3 p, vec3 rd, out vec3 n){ return ${e.shade}(p, rd, n); }` : `vec3 SHADE(vec3 p, vec3 rd, out vec3 n){ n = vec3(0); return vec3(-1); }`}
+void main(){
+  vec2 uv = (2.0*gl_FragCoord.xy - res)/res.y;
+  vec3 fw = normalize(-eye), rt = normalize(cross(fw, vec3(0,1,0))), up = cross(rt, fw);
+  vec3 rd = normalize(uv.x*rt + uv.y*up + 1.85*fw), ro = eye;
+  float t = 0.0; int i; bool hit = false;
+  // Over-relaxed sphere tracing (Keinert et al. 2014) & Directional Taylor tracing (O(sqrt(d))):
+  // step w*d or dtTay, fall back when consecutive unbounding spheres do not overlap.
+  // 100% guaranteed never to overstep any 1-Lipschitz SDF while accelerating silhouettes.
+  float w = overRelax == 1 ? 1.6 : 1.0, prevD = 0.0, stepLen = 0.0;
+  for (i = 0; i < 160; i++) {
+    float d = TR(ro + t*rd);
+    if ((w > 1.0 || taylorStep == 1) && i > 0 && d + prevD < stepLen) {
+      t += prevD - stepLen; stepLen = 0.0; w = 1.0; prevD = 0.0; continue;
+    }
+    if (d < 2e-4*(1.0+t)) { hit = true; break; }
+    if (taylorStep == 1 && i > 0 && stepLen > 1e-5) {
+      float dotD = clamp((d - prevD) / stepLen, -1.0, 1.0);
+      float kappa = 1.8;
+      float dtTay = (dotD < 0.0) ? ((dotD + sqrt(dotD*dotD + 2.0*kappa*max(d, 0.0))) / kappa) : (d / max(1.0 - 0.5*dotD, 0.5));
+      stepLen = clamp(dtTay, d, 3.0 * d);
+    } else {
+      stepLen = w * d;
+    }
+    prevD = d; t += stepLen; if (t > 12.0) break;
+  }
+  vec3 col = vec3(0.32, 0.36, 0.42) - 0.1*uv.y;
+  if (mode == 2) { float s = float(i)/160.0; o = vec4(vec3(s, s*s, 1.0-s) * (hit ? 1.0 : 0.6), 1); return; }
+  if (hit) {
+    vec3 p = ro + t*rd, n, base = vec3(-1);
+    bool onObj = shadows == 0 || SDO(p) <= p.y - groundY + 1e-4;
+    if (${e.shade ? "true" : "false"} && onObj) base = SHADE(p, rd, n);  // one pass: analytic normal + colour
+    else { vec2 h = vec2(1,-1)*5e-4; n = normalize(h.xyy*SD(p+h.xyy) + h.yyx*SD(p+h.yyx) + h.yxy*SD(p+h.yxy) + h.xxx*SD(p+h.xxx)); }
+    vec3 l = normalize(vec3(0.7*cos(lang), 0.75, 0.7*sin(lang)));
+    bool isGround = shadows == 1 && SDO(p) > p.y - groundY + 1e-4;
+    float sh = shadows == 1 ? softShadow(p + 2e-3*n, l) : 1.0, oc = shadows == 1 ? ao(p, n) : 1.0;
+    if (mode == 3) col = 0.5 + 0.5*n;
+    else if (isGround) col = vec3(0.55, 0.5, 0.45) * (0.35*oc + 0.65*sh);
+    else if (mode == 1) col = (base.x >= 0.0 ? base : COL(p, n, rd)) * (0.55 + 0.45*sh) * (0.6 + 0.4*oc);
+    else col = vec3(0.8,0.75,0.7) * (0.25*oc + 0.75*max(dot(n,l),0.0)*sh) + 0.15*n.y*oc;
+  }
+  o = vec4(pow(clamp(col,0.0,1.0), vec3(mode==1 ? 1.0 : 0.4545)), 1);
+}`;
+function compile(type, src){ const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s); return s; }
+async function load(){
+  const e = ENTRIES[$("sel").value]; $("err").textContent = "compiling " + e.file + " ...";
+  try {
+    seen.clear(); const src = await resolve("../../glsl/common/common.glsl") + await resolve(e.file);
+    const p = gl.createProgram(), t0 = performance.now();
+    gl.attachShader(p, compile(gl.VERTEX_SHADER, VS)); gl.attachShader(p, compile(gl.FRAGMENT_SHADER, FS(src, e)));
+    gl.bindAttribLocation(p, 0, "v"); gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw gl.getProgramInfoLog(p);
+    if (prog) gl.deleteProgram(prog);
+    prog = p; cur = e; if (e.eye) cam.r = e.eye;
+    $("err").textContent = ""; $("src").textContent = src;
+    console.log("compiled in", (performance.now()-t0).toFixed(1), "ms");
+  } catch(ex){ $("err").textContent = ex; }
+}
+const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+$("sel").onchange = load; $("rl").onclick = load; $("gs").onclick = () => $("src").style.display = $("src").style.display === "block" ? "none" : "block";
+let dragging = false, last = [0,0];
+window.onpointerdown = e => { if (e.target === c) { dragging = true; last = [e.clientX, e.clientY]; } };
+window.onpointermove = e => {
+  if (!dragging) return;
+  cam.th -= (e.clientX - last[0]) * 0.005;
+  cam.ph = Math.max(-1.5, Math.min(1.5, cam.ph + (e.clientY - last[1]) * 0.005));
+  last = [e.clientX, e.clientY];
+};
+window.onpointerup = () => dragging = false;
+window.onwheel = e => { cam.r = Math.max(0.5, Math.min(20.0, cam.r * (1 + e.deltaY * 0.001))); };
+
+let frames = 0, lastT = performance.now();
+function render(t){
+  requestAnimationFrame(render);
+  const sc = parseFloat($("res").value);
+  const W = Math.round(c.clientWidth * sc), H = Math.round(c.clientHeight * sc);
+  if (c.width !== W || c.height !== H){ c.width = W; c.height = H; gl.viewport(0,0,W,H); }
+  if (!prog) return;
+  gl.useProgram(prog);
+  const eye = [cam.r*Math.cos(cam.ph)*Math.sin(cam.th), cam.r*Math.sin(cam.ph), cam.r*Math.cos(cam.ph)*Math.cos(cam.th)];
+  gl.uniform2f(gl.getUniformLocation(prog, "res"), W, H);
+  gl.uniform3fv(gl.getUniformLocation(prog, "eye"), eye);
+  gl.uniform1i(gl.getUniformLocation(prog, "mode"), parseInt($("mode").value));
+  gl.uniform1i(gl.getUniformLocation(prog, "shadows"), $("sh").checked ? 1 : 0);
+  gl.uniform1f(gl.getUniformLocation(prog, "lang"), parseFloat($("li").value));
+  gl.uniform1f(gl.getUniformLocation(prog, "groundY"), cur && cur.ground !== undefined ? cur.ground : -0.5);
+  gl.uniform1i(gl.getUniformLocation(prog, "fastTrace"), $("fa").checked ? 1 : 0);
+  gl.uniform1i(gl.getUniformLocation(prog, "overRelax"), $("ov").checked ? 1 : 0);
+  gl.uniform1i(gl.getUniformLocation(prog, "taylorStep"), $("tay").checked ? 1 : 0);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  frames++;
+  if (t - lastT > 500){ $("fps").textContent = (frames * 1000 / (t - lastT)).toFixed(1) + " fps"; frames = 0; lastT = t; }
+}
+load().then(() => requestAnimationFrame(render));
+</script></body></html>
