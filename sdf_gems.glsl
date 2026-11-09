@@ -273,6 +273,7 @@
 #include "glsl/repetition/sdKelvinFoam.glsl"
 #include "glsl/volume/sdfBernsteinMomentRay.glsl"
 #include "glsl/volume/sdfCatastropheResidue.glsl"
+#include "glsl/volume/sdfDavidenkoHomotopy.glsl"
 #include "glsl/volume/sdfFinslerSubsurface.glsl"
 #include "glsl/volume/sdfPauliSpinorSoliton.glsl"
 #include "glsl/volume/sdfStokesExactForms.glsl"
