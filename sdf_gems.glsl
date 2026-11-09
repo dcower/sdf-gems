@@ -8,6 +8,7 @@
 #include "glsl/booleans/opIntersection.glsl"
 #include "glsl/booleans/opSubtraction.glsl"
 #include "glsl/booleans/opUnion.glsl"
+#include "glsl/booleans/opUnionAsym.glsl"
 #include "glsl/booleans/opUnionChamfer.glsl"
 #include "glsl/booleans/opUnionColumns.glsl"
 #include "glsl/booleans/opUnionRound3.glsl"
