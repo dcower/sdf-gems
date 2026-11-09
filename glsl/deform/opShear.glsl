@@ -158,6 +158,8 @@ vec4 sdgShearBox( in vec3 p, in vec3 b, in float k )
     return vec4(e2 * invE, g);
 }
 
+#ifndef SDF_GEMS_HAS_SD_RHOMBOHEDRON
+#define SDF_GEMS_HAS_SD_RHOMBOHEDRON
 // 6. Exact 0-Trig 0/1-Sqrt 3D Trigonal Rhombohedron (equatorial radius r, polar half-height h):
 //    Calcite crystal / body-diagonal-stretched cube with D_3d antiprismatic symmetry (order 12),
 //    polar apices at (0, +/-h, 0), and 6 equatorial zig-zag vertices at height +/-h/3 and radius r.
@@ -269,5 +271,6 @@ vec4 sdgRhombohedron( in vec3 p, in float r, in float h )
     g.z *= sz0;
     return vec4(d, g);
 }
+#endif // SDF_GEMS_HAS_SD_RHOMBOHEDRON
 
 #endif // SDF_GEMS_OP_SHEAR_GLSL
