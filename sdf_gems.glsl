@@ -217,6 +217,7 @@
 #include "glsl/primitives3d/sdLink.glsl"
 #include "glsl/primitives3d/sdLissajousKnot.glsl"
 #include "glsl/primitives3d/sdMeissnerTetrahedron.glsl"
+#include "glsl/primitives3d/sdMilnorSeifertKnot.glsl"
 #include "glsl/primitives3d/sdMinimalSurface.glsl"
 #include "glsl/primitives3d/sdMobiusStrip.glsl"
 #include "glsl/primitives3d/sdOctaBox.glsl"
