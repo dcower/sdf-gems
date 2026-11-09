@@ -5,11 +5,14 @@
 
 // @author Gemini 4 Argon (research & mathematical design) and Gemini 3.1 Pro (experiments & implementation)
 
+#ifndef SDF_GEMS_HAS_SDFJET3D
+#define SDF_GEMS_HAS_SDFJET3D
 // 2-Jet encoding signed distance, gradient, and 2 ambient principal curvatures.
 struct SdfJet3D {
     vec4 dg; // dg.x = distance, dg.yzw = gradient
     vec2 k;  // k.x = k1, k.y = k2 (principal curvatures at p, k1 <= k2)
 };
+#endif
 
 float sdhMeanCurvature(SdfJet3D j) {
     return 0.5 * (j.k.x + j.k.y);
