@@ -7,6 +7,16 @@ Every primitive and operator has:
 2. **Its own dedicated Markdown article** under [`docs/<category>/<name>.md`](docs/) with mathematical derivations, attribution, and before/after diffs
 3. **Its own rendered 3D surface preview and 2D cross-section slices** under [`docs/images/<category>/`](docs/images/) and [`docs/images/comparisons/`](docs/images/comparisons/)
 
+## Table of Contents
+
+1. [**3D Primitives**](#1-3d-primitives-glslprimitives3d--docsprimitives3d) — [`glsl/primitives3d/`](glsl/primitives3d/) · [`docs/primitives3d/`](docs/primitives3d/)
+2. [**Exact 3D Polyhedra**](#2-exact-3d-polyhedra-glslpolyhedra3d--docspolyhedra3d) — [`glsl/polyhedra3d/`](glsl/polyhedra3d/) · [`docs/polyhedra3d/`](docs/polyhedra3d/)
+3. [**2D Primitives**](#3-2d-primitives-glslprimitives2d--docsprimitives2d) — [`glsl/primitives2d/`](glsl/primitives2d/) · [`docs/primitives2d/`](docs/primitives2d/)
+4. [**Booleans & Smooth Minimums**](#4-booleans--smooth-minimums-glslbooleans--docsbooleans) — [`glsl/booleans/`](glsl/booleans/) · [`docs/booleans/`](docs/booleans/)
+5. [**Analytical Gradients (`sdg`)**](#5-analytical-gradients-sdg-glslgradients3d--docsgradients3d) — [`glsl/gradients3d/`](glsl/gradients3d/) · [`docs/gradients3d/`](docs/gradients3d/)
+6. [**Extrusions & Deformations**](#6-extrusions--deformations-glsldeform--docsdeform) — [`glsl/deform/`](glsl/deform/) · [`docs/deform/`](docs/deform/)
+7. [**Domain Repetition**](#7-domain-repetition-glslrepetition--docsrepetition) — [`glsl/repetition/`](glsl/repetition/) · [`docs/repetition/`](docs/repetition/)
+
 ---
 
 ## 1. 3D Primitives ([`glsl/primitives3d/`](glsl/primitives3d/) & [`docs/primitives3d/`](docs/primitives3d/))
