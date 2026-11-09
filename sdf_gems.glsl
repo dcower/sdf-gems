@@ -200,6 +200,7 @@
 #include "glsl/repetition/opRep3D.glsl"
 #include "glsl/repetition/opRepBCC.glsl"
 #include "glsl/repetition/opRepCairo.glsl"
+#include "glsl/repetition/opRepDiamond.glsl"
 #include "glsl/repetition/opRepFCC.glsl"
 #include "glsl/repetition/opRepHelix.glsl"
 #include "glsl/repetition/opRepHex.glsl"
