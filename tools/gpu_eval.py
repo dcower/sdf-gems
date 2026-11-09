@@ -25,6 +25,7 @@ import numpy as np
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _ctx = None
+_progs = {}  # compiled transform-feedback programs, keyed by full source (complex multi-include shaders compile slowly)
 
 
 def ctx():
@@ -34,6 +35,19 @@ def ctx():
 
         _ctx = moderngl.create_standalone_context(require=410)
     return _ctx
+
+
+_park = None
+
+
+def park_framebuffer():
+    """Bind a small persistent framebuffer. Call after fragment renders and before releasing their FBOs: binding
+    then releasing an FBO in the same context can make later transform-feedback evaluations silently return
+    stale buffers."""
+    global _park
+    if _park is None:
+        _park = ctx().simple_framebuffer((4, 4))
+    _park.use()
 
 
 def glsl_float(x):
@@ -74,13 +88,15 @@ def gpu_eval(paths, expr, pts, extra="", with_common=True):
         + "\nin vec3 P;\nout vec4 R;\nvoid main(){ vec3 p = P; R = " + expr + "; }\n"
     )
     c = ctx()
-    prog = c.program(vertex_shader=vs, varyings=["R"])
+    prog = _progs.get(vs)
+    if prog is None:
+        prog = _progs[vs] = c.program(vertex_shader=vs, varyings=["R"])
     vbo = c.buffer(pts.tobytes())
     out = c.buffer(reserve=max(pts.shape[0], 1) * 16)
     vao = c.vertex_array(prog, [(vbo, "3f", "P")])
     vao.transform(out, mode=moderngl.POINTS, vertices=pts.shape[0])
     res = np.frombuffer(out.read(), dtype=np.float32).reshape(-1, 4)[: pts.shape[0]].copy()
-    for o in (vao, vbo, out, prog):
+    for o in (vao, vbo, out):
         o.release()
     return res
 
