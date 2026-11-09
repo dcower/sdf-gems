@@ -271,5 +271,6 @@
 #include "glsl/repetition/opRepPerimeter.glsl"
 #include "glsl/repetition/opRepPolar.glsl"
 #include "glsl/repetition/sdKelvinFoam.glsl"
+#include "glsl/volume/sdfCatastropheResidue.glsl"
 
 #endif // SDF_GEMS_GLSL
