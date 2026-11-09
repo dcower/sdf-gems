@@ -36,6 +36,7 @@
 #include "glsl/deform/opExtrudeTaper.glsl"
 #include "glsl/deform/opExtrusion.glsl"
 #include "glsl/deform/opHopfPullback.glsl"
+#include "glsl/deform/opHyperbolicBrenier.glsl"
 #include "glsl/deform/opOnion.glsl"
 #include "glsl/deform/opPoincareBall.glsl"
 #include "glsl/deform/opRevolution.glsl"
