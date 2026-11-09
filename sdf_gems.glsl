@@ -276,6 +276,7 @@
 #include "glsl/volume/sdfChladniOrbitals.glsl"
 #include "glsl/volume/sdfDavidenkoHomotopy.glsl"
 #include "glsl/volume/sdfFinslerSubsurface.glsl"
+#include "glsl/volume/sdfLevyRieszClouds.glsl"
 #include "glsl/volume/sdfPauliSpinorSoliton.glsl"
 #include "glsl/volume/sdfStokesExactForms.glsl"
 #include "glsl/volume/sdfWavefrontBragg.glsl"
