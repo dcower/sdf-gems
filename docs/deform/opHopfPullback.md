@@ -23,7 +23,7 @@ Given a point $`\mathbf{p} = (x, y, z) \in \mathbb{R}^3`$ with radius $`r = \|\m
 ```math
 z_1 = \frac{2(x + iy)}{1 + r^2}, \qquad z_2 = \frac{2z + i(1 - r^2)}{1 + r^2}
 ```
-Applying the standard Hopf map $`\mathbf{n} = (2\operatorname{Re}(z_1\bar{z}_2), 2\operatorname{Im}(z_1\bar{z}_2), |z_1|^2 - |z_2|^2)`$ yields a rational quartic expression for $`\mathbf{n}(\mathbf{p}) \in S^2`$.
+Applying the standard Hopf map $`\mathbf{n} = (2\mathrm{Re}(z_1\bar{z}_2), 2\mathrm{Im}(z_1\bar{z}_2), |z_1|^2 - |z_2|^2)`$ yields a rational quartic expression for $`\mathbf{n}(\mathbf{p}) \in S^2`$.
 
 #### Exact Villarceau Circle (`sdHopfFiber`)
 Because stereographic projection maps circles on $`S^3`$ to circles in $`\mathbb{R}^3`$, the fiber over any $`\mathbf{q} \in S^2`$ is an exact geometric circle in $`\mathbb{R}^3`$. By solving for its parameters, the circle has:

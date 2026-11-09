@@ -46,7 +46,7 @@ The **Fish Curve** (French: *courbe du poisson*, German: *Fischkurve*), first in
 
 3. **Challenges in Existing SDF Implementations**:
    Prior shader implementations of fish-shaped contours suffered from major limitations:
-   - **Trigonometric Overheads**: Evaluating $`\sin t`$, $`\cos t`$, and $`\operatorname{atan2}`$ inside iterative solvers creates high register pressure and execution latency on GPU warps.
+   - **Trigonometric Overheads**: Evaluating $`\sin t`$, $`\cos t`$, and $`\mathrm{atan2}`$ inside iterative solvers creates high register pressure and execution latency on GPU warps.
    - **Heuristic Approximations**: Approximate algebraic distance bounds $`f(x, y) / \|\nabla f\|`$ fail severely near crunodes and inflection points, violating the Eikonal equation ($`\|\nabla d\| \neq 1`$) and causing severe raymarching overstepping.
    - **Lack of Closed Sign Tests**: Defining a solid interior for self-intersecting curves typically requires expensive winding number ray casts or clipping half-planes.
 

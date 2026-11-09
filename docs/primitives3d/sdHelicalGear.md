@@ -34,7 +34,7 @@ The idea behind this file is that the twist does not need to be approximated. A 
 
 ## Mathematical Derivation
 
-Axis $`z`$, base cylinder radius $`r_b`$, base helix angle $`\beta_b`$, twist rate $`\tau = \tan\beta_b / r_b`$. Write the untwisted angle as $`\varphi' = \varphi - \tau z`$. The transverse flank is $`\varphi' = \psi(\rho) = \psi_b - \operatorname{inv}(\arccos(r_b/\rho))`$ with $`\operatorname{inv}(a) = \tan a - a`$.
+Axis $`z`$, base cylinder radius $`r_b`$, base helix angle $`\beta_b`$, twist rate $`\tau = \tan\beta_b / r_b`$. Write the untwisted angle as $`\varphi' = \varphi - \tau z`$. The transverse flank is $`\varphi' = \psi(\rho) = \psi_b - \mathrm{inv}(\arccos(r_b/\rho))`$ with $`\mathrm{inv}(a) = \tan a - a`$.
 
 ### 1. Involute-Helicoid Parallel-Offset Theorem
 

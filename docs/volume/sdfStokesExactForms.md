@@ -29,18 +29,18 @@ Traditional volumetric raymarching evaluates hundreds of fine interior steps per
 any closed or exact differential $`k`$-form integrates over an arbitrary $`k`$-dimensional ray slab or beam frustum **in zero interior steps**, reducing volumetric volume ($`k=3`$), beam/pixel-frustum ($`k=2`$), and ray slab ($`k=1`$) integrals to simple boundary evaluations:
 
 1. **1D Ray Slabs ($`k=1`$, 0 steps)**: An exact 1-form $`\omega^1 = \mathrm{d}\Phi_0`$ along a ray segment $`\gamma = [\mathbf{p}_a, \mathbf{p}_b]`$ collapses to 0-step endpoint evaluation:
-   ```math
-   \int_\gamma \mathrm{d}\Phi_0 = \Phi_0(\mathbf{p}_b) - \Phi_0(\mathbf{p}_a).
-   ```
+```math
+\int_\gamma \mathrm{d}\Phi_0 = \Phi_0(\mathbf{p}_b) - \Phi_0(\mathbf{p}_a).
+```
    For physical shell potentials (exponential shock fronts and algebraic Lorentzian rims) with an interior turning point $`\mathbf{p}_*`$, the closest-approach distance $`F_*`$ is extracted from endpoint distances and ray derivatives via cubic Hermite turning-point analysis in $`O(1)`$ operations, computing total variation in 0 interior steps:
-   ```math
-   \int_{t_a}^{t_b} \Big\lvert \frac{\mathrm{d}\Phi_0}{\mathrm{d}t} \Big\rvert \,\mathrm{d}t = 2\,\Phi_0(F_*) - \Phi_0(F_a) - \Phi_0(F_b).
-   ```
+```math
+\int_{t_a}^{t_b} \Big\lvert \frac{\mathrm{d}\Phi_0}{\mathrm{d}t} \Big\rvert \,\mathrm{d}t = 2\,\Phi_0(F_*) - \Phi_0(F_a) - \Phi_0(F_b).
+```
 
 2. **2D Pixel-Frustum Beams ($`k=2`$, 3 boundary edges)**: The net flux of a divergence-free curl field $`\mathbf{B} = \nabla \times \mathbf{A}`$ across a triangular pixel-cone cross-section $`\triangle = (\mathbf{p}_0, \mathbf{p}_1, \mathbf{p}_2)`$ collapses from a 2D surface integral to a discrete boundary circulation:
-   ```math
-   \iint_\triangle (\nabla \times \mathbf{A}) \cdot \mathrm{d}\mathbf{S} = \oint_{\partial \triangle} \mathbf{A} \cdot \mathrm{d}\mathbf{x} = \sum_{e \in \partial \triangle} \int_e \mathbf{A} \cdot \mathrm{d}\mathbf{x}.
-   ```
+```math
+\iint_\triangle (\nabla \times \mathbf{A}) \cdot \mathrm{d}\mathbf{S} = \oint_{\partial \triangle} \mathbf{A} \cdot \mathrm{d}\mathbf{x} = \sum_{e \in \partial \triangle} \int_e \mathbf{A} \cdot \mathrm{d}\mathbf{x}.
+```
 
 ---
 
@@ -130,14 +130,14 @@ When integrating symmetric radial shells such as the **Exponential Shock Shell**
 Using the endpoint distances $`F_a, F_b`$ and directional derivatives $`\mathrm{d}f_a = \nabla F_a \cdot \mathbf{d}`$, $`\mathrm{d}f_b = \nabla F_b \cdot \mathbf{d}`$:
 
 1. If $`\mathrm{d}f_a < 0`$ and $`\mathrm{d}f_b > 0`$, the turning point lies within the slab:
-   ```math
-   u_* = \mathrm{clamp}\!\left(\frac{-\mathrm{d}f_a}{\mathrm{d}f_b - \mathrm{d}f_a},\ 0,\ 1\right).
-   ```
+```math
+u_* = \mathrm{clamp}\!\left(\frac{-\mathrm{d}f_a}{\mathrm{d}f_b - \mathrm{d}f_a},\ 0,\ 1\right).
+```
 2. The minimum distance $`F_*`$ is evaluated using cubic Hermite basis functions $`h_{ij}(u_*)`$, achieving $`O(\Delta t^4)`$ fourth-order local convergence.
 3. The total variation along the V-shaped path is then given by:
-   ```math
-   \int_{t_a}^{t_b} \Big\lvert \frac{\mathrm{d}\Phi_0}{\mathrm{d}t} \Big\rvert \,\mathrm{d}t = 2\,\Phi_0(F_*) - \Phi_0(F_a) - \Phi_0(F_b).
-   ```
+```math
+\int_{t_a}^{t_b} \Big\lvert \frac{\mathrm{d}\Phi_0}{\mathrm{d}t} \Big\rvert \,\mathrm{d}t = 2\,\Phi_0(F_*) - \Phi_0(F_a) - \Phi_0(F_b).
+```
 
 ### 4. 2D Stokes Pixel-Frustum Beam Flux
 

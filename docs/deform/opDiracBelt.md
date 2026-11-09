@@ -27,7 +27,7 @@ This module provides the first closed-form, strictly volume-preserving ($`\det(\
 
 For a query point $`\mathbf{p} \in \mathbb{R}^3`$ at radius $`r = \|\mathbf{p}\|`$, normalized radial progress between the inner core radius $`r_1`$ and outer anchor radius $`r_2`$ is parameterized by:
 ```math
-u = \operatorname{clamp}\left(\frac{r - r_1}{r_2 - r_1},\; 0,\; 1\right), \qquad s(u) = 3u^2 - 2u^3
+u = \mathrm{clamp}\left(\frac{r - r_1}{r_2 - r_1},\; 0,\; 1\right), \qquad s(u) = 3u^2 - 2u^3
 ```
 The interpolation angle $`\beta(r) \in [0, \pi/2]`$ is given by:
 ```math
@@ -39,12 +39,7 @@ q(r, t) = \sin\beta\cos(2\pi t)\,\mathbf{1} + \cos\beta\,\mathbf{i} + \sin\beta\
 ```
 The relative spinor $`Q(r, t) = q(r, t)\,\overline{q(r, 0)} = (q_x, q_y, q_z, q_w)`$ relative to the initial state $`q(r, 0)`$ simplifies algebraically to:
 ```math
-\begin{aligned}
-q_w &= 1 - 2\sin^2\beta\sin^2(\pi t), \\
-q_x &= \sin(2\beta)\sin^2(\pi t), \\
-q_y &= \sin^2\beta\sin(2\pi t), \\
-q_z &= -\tfrac{1}{2}\sin(2\beta)\sin(2\pi t).
-\end{aligned}
+\begin{aligned} q_w &= 1 - 2\sin^2\beta\sin^2(\pi t), \\ q_x &= \sin(2\beta)\sin^2(\pi t), \\ q_y &= \sin^2\beta\sin(2\pi t), \\ q_z &= -\tfrac{1}{2}\sin(2\beta)\sin(2\pi t). \end{aligned}
 ```
 Direct algebraic verification confirms that $`q_w^2 + q_x^2 + q_y^2 + q_z^2 \equiv 1`$ for all $`r`$ and $`t`$.
 
@@ -84,13 +79,7 @@ Because $`\mathbf{J}`$ is a unimodular shear, its singular values satisfy $`\sig
 
 When stepping from stationary exterior space ($`r \ge r_2`$) or the rigid core ($`r \le r_1`$) into the sheared shell, raymarching must account for entering the compressed metric. The boundary-aware scale function partitions space:
 ```math
-d(\mathbf{p}) = \begin{cases}
-d_{\text{raw}}, & r \ge r_2 \text{ and } d_{\text{raw}} \le r - r_2 \\
-(r - r_2) + \dfrac{d_{\text{raw}} - (r - r_2)}{\sigma_{\max}}, & r \ge r_2 \text{ and } d_{\text{raw}} > r - r_2 \\
-d_{\text{raw}}, & r \le r_1 \text{ and } d_{\text{raw}} \le r_1 - r \\
-(r_1 - r) + \dfrac{d_{\text{raw}} - (r_1 - r)}{\sigma_{\max}}, & r \le r_1 \text{ and } d_{\text{raw}} > r_1 - r \\
-\dfrac{d_{\text{raw}}}{\sigma_{\max}}, & r_1 < r < r_2
-\end{cases}
+d(\mathbf{p}) = \begin{cases} d_{\text{raw}}, & r \ge r_2 \text{ and } d_{\text{raw}} \le r - r_2 \\ (r - r_2) + \dfrac{d_{\text{raw}} - (r - r_2)}{\sigma_{\max}}, & r \ge r_2 \text{ and } d_{\text{raw}} > r - r_2 \\ d_{\text{raw}}, & r \le r_1 \text{ and } d_{\text{raw}} \le r_1 - r \\ (r_1 - r) + \dfrac{d_{\text{raw}} - (r_1 - r)}{\sigma_{\max}}, & r \le r_1 \text{ and } d_{\text{raw}} > r_1 - r \\ \dfrac{d_{\text{raw}}}{\sigma_{\max}}, & r_1 < r < r_2 \end{cases}
 ```
 This guarantees an exact 1-Lipschitz bound everywhere ($`\|\nabla d\| \le 1`$) with zero overstep pixels during sphere tracing.
 

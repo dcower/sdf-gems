@@ -51,13 +51,13 @@ vec3 q  = sw ? vec3(a.y, a.x, a.z) : a;
 
 In the fundamental chamber $`q_x \ge q_y \ge 0, q_z \ge 0`$, the 12 bounding planes of the polyhedron collapse to exactly **two active half-spaces**:
 1. **Vertical hexagonal face $`F_1`$**:
-   ```math
-   q_x + q_y \le s, \qquad \mathbf{n}_1 = \frac{1}{\sqrt{2}}(1, 1, 0)
-   ```
+```math
+q_x + q_y \le s, \qquad \mathbf{n}_1 = \frac{1}{\sqrt{2}}(1, 1, 0)
+```
 2. **Sloped rhombic cap face $`F_2`$**:
-   ```math
-   q_x + q_z \le s + h, \qquad \mathbf{n}_2 = \frac{1}{\sqrt{2}}(1, 0, 1)
-   ```
+```math
+q_x + q_z \le s + h, \qquad \mathbf{n}_2 = \frac{1}{\sqrt{2}}(1, 0, 1)
+```
 
 Defining the plane residuals:
 ```math

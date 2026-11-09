@@ -21,10 +21,10 @@
 Implicit and volumetric representations traditionally parameterize view-dependent radiance by feeding world-space query positions $`\mathbf{p} = (x, y, z)`$ and world-space ray directions $`\mathbf{r}_d = (d_x, d_y, d_z)`$ directly into shading functions. While functional for static scenes, this formulation suffers from three severe physical and numerical failure modes:
 
 1. **World-Space Rotation & Brenier-Warp Corruption**: When a primitive is rotated in a composed scene ($`R \in SO(3)`$) or deformed via optimal transport / Brenier potential warps ($`\mathbf{p} \mapsto \nabla\psi(\mathbf{p})`$), the world-space view ray no longer aligns with the local surface orientation. Specular highlights and anisotropic sheens shear, blur, or distort across the surface.
-2. **Non-Convex Single-Exponent ($`k_s \to 0`$) Collapse**: Fitting a classical Blinn-Phong or single-exponent spherical Gaussian $`(\mathbf{n}\cdot\mathbf{h})^m$ via numerical optimization is highly non-convex. When initial specular weight $`k_s`$ is small or highlights are misaligned, the gradient with respect to exponent $`m`$:
-   ```math
-   \frac{\partial \mathcal{L}}{\partial m} \propto k_s\,(\mathbf{n}\cdot\mathbf{h})^m \ln(\mathbf{n}\cdot\mathbf{h}) \to 0
-   ```
+2. **Non-Convex Single-Exponent ($`k_s \to 0`$) Collapse**: Fitting a classical Blinn-Phong or single-exponent spherical Gaussian $`(\mathbf{n}\cdot\mathbf{h})^m`$ via numerical optimization is highly non-convex. When initial specular weight $`k_s`$ is small or highlights are misaligned, the gradient with respect to exponent $`m`$:
+```math
+\frac{\partial \mathcal{L}}{\partial m} \propto k_s\,(\mathbf{n}\cdot\mathbf{h})^m \ln(\mathbf{n}\cdot\mathbf{h}) \to 0
+```
    vanishes exponentially. The solver falls into a zero-gradient plateau where $`k_s \to 0`$, absorbing specular highlights into albedo or ambient terms.
 3. **Radiative CSG Blending Discontinuities**: Fusing multiple primitives via smooth boolean operators (`smin`) creates transition zones where naïve color interpolation violates radiative energy conservation.
 
@@ -59,7 +59,7 @@ When $`\Vert\mathbf{v}\Vert \ge 10^{-5}`$, the orthonormal Darboux frame $`(\mat
 If $`\mathbf{g}_{\text{feat}}`$ is degenerate or parallel to $`\mathbf{n}`$ ($`\Vert\mathbf{v}\Vert < 10^{-5}`$), the operator smoothly evaluates the branch-free Duff et al. (2017) / Frisvad (2012) orthonormal basis:
 
 ```math
-s = \operatorname{sgn}(n_z), \quad a = -\frac{1}{s + n_z}, \quad b = n_x n_y a
+s = \mathrm{sgn}(n_z), \quad a = -\frac{1}{s + n_z}, \quad b = n_x n_y a
 ```
 
 ```math
@@ -73,17 +73,7 @@ In all cases, the resulting matrix $`\mathbf{D} = [\mathbf{t}\mid\mathbf{b}\mid\
 Rather than passing raw world coordinates to downstream radiance evaluators, `sdfPhaseSpaceInvariants` computes the canonical 4-dimensional phase-space invariant vector:
 
 ```math
-\mathbf{I}(\mathbf{p}, \mathbf{n}, \mathbf{D}, \mathbf{r}_d) = \begin{pmatrix}
-\mathbf{n}\cdot\mathbf{r}_d \\
-\mathbf{t}\cdot\mathbf{r}_d \\
-\mathbf{b}\cdot\mathbf{r}_d \\
-(\mathbf{p}\times\mathbf{r}_d)\cdot\mathbf{n}
-\end{pmatrix} = \begin{pmatrix}
-\cos\theta_v \\
-\sin\theta_v\cos\phi_v \\
-\sin\theta_v\sin\phi_v \\
-\tau_{\text{Plücker}}
-\end{pmatrix}
+\mathbf{I}(\mathbf{p}, \mathbf{n}, \mathbf{D}, \mathbf{r}_d) = \begin{pmatrix} \mathbf{n}\cdot\mathbf{r}_d \\ \mathbf{t}\cdot\mathbf{r}_d \\ \mathbf{b}\cdot\mathbf{r}_d \\ (\mathbf{p}\times\mathbf{r}_d)\cdot\mathbf{n} \end{pmatrix} = \begin{pmatrix} \cos\theta_v \\ \sin\theta_v\cos\phi_v \\ \sin\theta_v\sin\phi_v \\ \tau_{\text{Plucker}} \end{pmatrix}
 ```
 
 Under any rigid rotation $`R \in SO(3)`$ where $`\mathbf{p}' = R\mathbf{p}`$, $`\mathbf{n}' = R\mathbf{n}`$, $`\mathbf{r}_d' = R\mathbf{r}_d`$, and $`\mathbf{D}' = R\mathbf{D}`$:
@@ -103,7 +93,7 @@ Because all 4 components are strictly invariant (numerical error $`< 10^{-14}`$)
 To eradicate the non-convex $`k_s \to 0`$ optimization collapse, the continuous specular distribution is expanded onto a fixed dyadic sharpness basis $`\boldsymbol{\lambda} = (4.0, 16.0, 64.0, 256.0)`$:
 
 ```math
-B_k(\mu) = \frac{\lambda_k + 1}{2\pi}\,\exp\!\big(\lambda_k\,(\operatorname{clamp}(\mu, 0.0, 1.0) - 1.0)\big), \quad k \in \{0, 1, 2, 3\}
+B_k(\mu) = \frac{\lambda_k + 1}{2\pi}\,\exp\!\big(\lambda_k\,(\mathrm{clamp}(\mu, 0.0, 1.0) - 1.0)\big), \quad k \in \{0, 1, 2, 3\}
 ```
 
 where $`\mu = \mathbf{n}\cdot\mathbf{h}`$ is the half-vector cosine. Each lobe is normalized over the unit hemisphere:

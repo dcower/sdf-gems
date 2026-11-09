@@ -64,7 +64,7 @@ Because the inverse function $`\phi(t) = t^{1/n}`$ is **strictly increasing and 
 Therefore, the **Concave-Power Secant Pullback**:
 
 ```math
-\boxed{d_{\text{pow}}(z, d_w, n) = \operatorname{sgn}(d_w) \left[ \left(|z|^n + |d_w|\right)^{1/n} - |z| \right]}
+\boxed{d_{\text{pow}}(z, d_w, n) = \mathrm{sgn}(d_w) \left[ \left(|z|^n + |d_w|\right)^{1/n} - |z| \right]}
 ```
 
 satisfies:
@@ -72,7 +72,7 @@ satisfies:
 2. **First-Order Eikonal Exactness**: As $`d_w \to 0`$, a 1st-order Taylor expansion yields:
    $`\displaystyle d_{\text{pow}}(z, d_w, n) = \frac{d_w}{n |z|^{n-1}} + O(d_w^2) = \frac{d_w}{|f'(z)|},`$
    recovering the exact Eikonal surface normal on $`d_w = 0`$.
-3. **Exact Metric at the Branch Point**: At $`z = 0`$, $`d_{\text{pow}}(0, d_w, n) = \operatorname{sgn}(d_w) |d_w|^{1/n}`$, which is the exact Euclidean distance to concentric disks centered at the origin.
+3. **Exact Metric at the Branch Point**: At $`z = 0`$, $`d_{\text{pow}}(0, d_w, n) = \mathrm{sgn}(d_w) |d_w|^{1/n}`$, which is the exact Euclidean distance to concentric disks centered at the origin.
 
 ---
 

@@ -18,7 +18,7 @@
 Standard rounded, chamfered, and stepped boolean operators (`opUnionRound`, `opUnionChamfer`, `opUnionStairs`) require **equal setbacks** $`r_a = r_b = r`$ on both surfaces. In CAD, mechanical modeling, and architectural molding, joints between orthogonal walls or slabs routinely require **asymmetric setbacks** $`(r_a, r_b)`$ with $`r_a \ne r_b`$:
 
 1. **Why Elliptical Scaling Fails for Asymmetric Fillets**:
-   Scaling a circular fillet via $`r_a \cdot \operatorname{opUnionRound}(a/r_a, b/r_b, 1)`$ warps the circular arc into an ellipse of semi-axes $`(r_a, r_b)`$ whose exact Euclidean distance requires solving a depressed quartic polynomial. Without a quartic solver, the anisotropically scaled field has gradient magnitude $`\|\nabla d\|_2 \in [\min(1, r_a/r_b), \max(1, r_a/r_b)]`$, reaching $`\|\nabla d\|_2 = 2.67`$ for $`(r_a, r_b) = (0.80, 0.30)`$ and causing **3,683 raymarching overstep pixels** (`31.9%` of hit pixels).
+   Scaling a circular fillet via $`r_a \cdot \mathrm{opUnionRound}(a/r_a, b/r_b, 1)`$ warps the circular arc into an ellipse of semi-axes $`(r_a, r_b)`$ whose exact Euclidean distance requires solving a depressed quartic polynomial. Without a quartic solver, the anisotropically scaled field has gradient magnitude $`\|\nabla d\|_2 \in [\min(1, r_a/r_b), \max(1, r_a/r_b)]`$, reaching $`\|\nabla d\|_2 = 2.67`$ for $`(r_a, r_b) = (0.80, 0.30)`$ and causing **3,683 raymarching overstep pixels** (`31.9%` of hit pixels).
 2. **Why 3-Plane Asymmetric Chamfers Fail in the Interior**:
    The 3-plane bound $`\min(a, b, (a r_b + b r_a - r_a r_b)/\sqrt{r_a^2 + r_b^2})`$ is exact in the exterior of a union, but in the interior ($`a < 0`$ or $`b < 0`$) it ignores the two reflex bevel vertices $`V_a = (r_a, 0)`$ and $`V_b = (0, r_b)`$, creating a non-local medial seam that corrupts interior distances all the way to $`-\infty`$.
 3. **Why CSG Rabbet Notches Fail by $`29.3\%`$**:
@@ -85,7 +85,7 @@ In coordinates $`(u, v) = (a + r_a, b + r_b)`$ centered at the $`270^\circ`$ re-
 
 By exact De Morgan reflection, the stepped corner gusset on a union $`\{a \le 0\} \cup \{b \le 0\} \cup \{a \le r_a, b \le r_b\}`$ is identically:
 ```math
-\operatorname{opUnionRabbet}(a, b, r_a, r_b) = -\operatorname{opRabbet}(-a, -b, r_a, r_b).
+\mathrm{opUnionRabbet}(a, b, r_a, r_b) = -\mathrm{opRabbet}(-a, -b, r_a, r_b).
 ```
 
 ---

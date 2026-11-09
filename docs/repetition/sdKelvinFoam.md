@@ -46,9 +46,9 @@ In 1887, Lord Kelvin investigated the problem of partitioning 3D space into cell
 
 Each cell has 14 faces (6 square faces along coordinate axes, 8 regular hexagonal faces along body diagonals), 24 vertices, and 36 edges (the Plateau-border struts).
 
-Under BCC repetition $`\mathbf{q} = \operatorname{opRepBCC}(\mathbf{p}, s)`$, the local coordinate $`\mathbf{q}`$ is restricted to the Voronoi cell centered at the origin. Taking the absolute value and sorting components descendingly:
+Under BCC repetition $`\mathbf{q} = \mathrm{opRepBCC}(\mathbf{p}, s)`$, the local coordinate $`\mathbf{q}`$ is restricted to the Voronoi cell centered at the origin. Taking the absolute value and sorting components descendingly:
 ```math
-w_1 \ge w_2 \ge w_3 \ge 0, \qquad \mathbf{w} = \operatorname{sort}(|\mathbf{q}|)
+w_1 \ge w_2 \ge w_3 \ge 0, \qquad \mathbf{w} = \mathrm{sort}(|\mathbf{q}|)
 ```
 folds $`\mathbb{R}^3`$ into the fundamental Weyl chamber of the octahedral symmetry group $`O_h`$ (order 48).
 
@@ -56,11 +56,11 @@ Within this fundamental chamber, the 36 cell edges partition into two symmetry o
 - **Square-Hexagon Edges** (24 edges): In the Weyl chamber, these fold into the segment
   $`\displaystyle \mathbf{c}_1(t_1) = \left( \frac{1}{2}s,\; \frac{1}{4}s - t_1,\; t_1 \right), \qquad t_1 \in \left[0,\; \frac{1}{8}s\right].`$
   The unconstrained axial projection of $`\mathbf{w}`$ onto this segment is:
-  $`\displaystyle t_1^* = \operatorname{clamp}\left( \frac{1}{2}\left( \frac{1}{4}s - w_2 + w_3 \right),\; 0,\; \frac{1}{8}s \right).`$
+  $`\displaystyle t_1^* = \mathrm{clamp}\left( \frac{1}{2}\left( \frac{1}{4}s - w_2 + w_3 \right),\; 0,\; \frac{1}{8}s \right).`$
 - **Hexagon-Hexagon Edges** (12 edges): In the Weyl chamber, these fold into the segment
   $`\displaystyle \mathbf{c}_2(t_2) = \left( \frac{1}{2}s - t_2,\; \frac{1}{4}s + t_2,\; 0 \right), \qquad t_2 \in \left[0,\; \frac{1}{8}s\right].`$
   The unconstrained axial projection is:
-  $`\displaystyle t_2^* = \operatorname{clamp}\left( \frac{1}{2}\left( \frac{1}{4}s - w_1 + w_2 \right),\; 0,\; \frac{1}{8}s \right).`$
+  $`\displaystyle t_2^* = \mathrm{clamp}\left( \frac{1}{2}\left( \frac{1}{4}s - w_1 + w_2 \right),\; 0,\; \frac{1}{8}s \right).`$
 
 With residual vectors $`\mathbf{d}_1 = \mathbf{w} - \mathbf{c}_1(t_1^*)`$ and $`\mathbf{d}_2 = \mathbf{w} - \mathbf{c}_2(t_2^*)`$, the exact Euclidean distance to all 36 struts is:
 ```math
@@ -73,12 +73,12 @@ d(\mathbf{p}) = \sqrt{\min\left( \|\mathbf{d}_1\|^2,\; \|\mathbf{d}_2\|^2 \right
 
 The Voronoi cell of the Face-Centered Cubic (FCC / $`D_3`$) lattice is the **rhombic dodecahedron**, having 12 congruent rhombic faces, 14 vertices, and 24 edges.
 
-Folding $`\mathbf{q} = \operatorname{opRepFCC}(\mathbf{p}, s)`$ into the sorted absolute chamber $`w_1 \ge w_2 \ge w_3 \ge 0`$:
+Folding $`\mathbf{q} = \mathrm{opRepFCC}(\mathbf{p}, s)`$ into the sorted absolute chamber $`w_1 \ge w_2 \ge w_3 \ge 0`$:
 - **Edge A** (lying on $`w_1 = w_2 = \frac{1}{4}s`$):
-  $`\displaystyle \mathbf{c}_A(t_A) = \left( \frac{1}{4}s,\; \frac{1}{4}s,\; t_A \right), \qquad t_A = \operatorname{clamp}\left(w_3,\; 0,\; \frac{1}{4}s\right).`$
+  $`\displaystyle \mathbf{c}_A(t_A) = \left( \frac{1}{4}s,\; \frac{1}{4}s,\; t_A \right), \qquad t_A = \mathrm{clamp}\left(w_3,\; 0,\; \frac{1}{4}s\right).`$
 - **Edge B** (lying on $`w_2 = w_3 = t_B, \; w_1 = \frac{1}{2}s - t_B`$):
   Minimizing $`(w_1 - (\frac{1}{2}s - t_B))^2 + (w_2 - t_B)^2 + (w_3 - t_B)^2`$ yields:
-  $`\displaystyle t_B = \operatorname{clamp}\left( \frac{w_2 + w_3 - w_1 + \frac{1}{2}s}{3},\; 0,\; \frac{1}{4}s \right).`$
+  $`\displaystyle t_B = \mathrm{clamp}\left( \frac{w_2 + w_3 - w_1 + \frac{1}{2}s}{3},\; 0,\; \frac{1}{4}s \right).`$
 
 The exact Euclidean distance is:
 ```math
@@ -111,7 +111,7 @@ d(\mathbf{p}) = \sqrt{\frac{1}{2}(w_1 - w_2)^2 + w_3^2} - r.
 
 The 8-connected BCC body-diagonal truss connects lattice sites along the 4 cubic body diagonals $`\frac{1}{\sqrt{3}}(\pm 1, \pm 1, \pm 1)`$.
 
-Within $`\operatorname{opRepBCC}(\mathbf{p}, s)`$ and sorted coordinates $`w_1 \ge w_2 \ge w_3 \ge 0`$, the closest strut either radiates from the cell center along $`(1, 1, 1)`$ or passes through an adjacent cell vertex along $`(-1, 1, 1)`$:
+Within $`\mathrm{opRepBCC}(\mathbf{p}, s)`$ and sorted coordinates $`w_1 \ge w_2 \ge w_3 \ge 0`$, the closest strut either radiates from the cell center along $`(1, 1, 1)`$ or passes through an adjacent cell vertex along $`(-1, 1, 1)`$:
 - **Strut 1**: Mean coordinate $`m_1 = \frac{w_1 + w_2 + w_3}{3}`$, residual $`\mathbf{d}_1 = \mathbf{w} - m_1 (1, 1, 1)`$.
 - **Strut 2**: Coordinate reflection $`\mathbf{v} = (s - w_1, w_2, w_3)`$, mean $`m_2 = \frac{v_1 + v_2 + v_3}{3}`$, residual $`\mathbf{d}_2 = \mathbf{v} - m_2 (1, 1, 1)`$.
 

@@ -45,9 +45,9 @@ In implicit Cartesian coordinates, clearing the secant denominator yields a degr
 
 Approximating Euclidean distance via the first-order algebraic gradient normalization $`d_{\text{naive}} \approx F(x, y) / \|\nabla F(x, y)\|`$ fails catastrophically:
 1. **Vanishing Gradient Singularity at the Crunode**: At the origin node $`(0, 0)`$, both partial derivatives vanish identically:
-   ```math
-   \nabla F(0, 0) = \left( 2b(0) + b^2(0) - 0,\; 2b^2(0) \right) = (0, 0)
-   ```
+```math
+\nabla F(0, 0) = \left( 2b(0) + b^2(0) - 0,\; 2b^2(0) \right) = (0, 0)
+```
    Division by zero causes extreme numeric blow-up, with errors exceeding $`3.5 \times 10^1`$ (as showcased in Panel 1 of the comparison banner above).
 2. **Severe Distance Field Warping**: Even away from the crunode, the quartic scaling warps raymarching step sizes and corrupts procedural ambient occlusion and distance-based displacement.
 

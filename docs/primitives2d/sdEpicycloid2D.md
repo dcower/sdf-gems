@@ -55,10 +55,7 @@ Differentiating with respect to $`t`$ yields the tangent velocity:
 ```
 Applying the prosthaphaeresis product-to-sum trigonometric identities reveals the cusp factor:
 ```math
-\begin{aligned}
--\sin t + \sin((k + 1)t) &= 2 \sin\left(\frac{k t}{2}\right) \cos\left(\frac{(k + 2)t}{2}\right), \\
-\cos t - \cos((k + 1)t) &= 2 \sin\left(\frac{k t}{2}\right) \sin\left(\frac{(k + 2)t}{2}\right).
-\end{aligned}
+\begin{aligned} -\sin t + \sin((k + 1)t) &= 2 \sin\left(\frac{k t}{2}\right) \cos\left(\frac{(k + 2)t}{2}\right), \\ \cos t - \cos((k + 1)t) &= 2 \sin\left(\frac{k t}{2}\right) \sin\left(\frac{(k + 2)t}{2}\right). \end{aligned}
 ```
 Hence, the velocity vanishes identically at every cusp $`\sin(kt/2) = 0`$:
 ```math
@@ -104,13 +101,13 @@ G'(t) = -2 r (k - 1)\sin\left(\frac{k t}{2}\right) + \frac{k - 2}{2}\big[(\mathb
 
 The $`k`$-cusped curve possesses full dihedral symmetry $`D_k`$. We fold $`\mathbf{p} \in \mathbb{R}^2`$ into the fundamental sector $`\phi \in [0, \pi/k]`$ using a 2D rotation matrix:
 ```math
-\phi = \operatorname{atan2}(p_y, p_x), \quad m = \left\lfloor \frac{\phi}{2\pi/k} + \frac{1}{2} \right\rfloor, \quad \alpha = m \frac{2\pi}{k}.
+\phi = \mathrm{atan2}(p_y, p_x), \quad m = \left\lfloor \frac{\phi}{2\pi/k} + \frac{1}{2} \right\rfloor, \quad \alpha = m \frac{2\pi}{k}.
 ```
 Rotating $`\mathbf{p}`$ by $`-\alpha`$:
 ```math
 \mathbf{p}_{\text{rot}} = \begin{pmatrix} \cos\alpha & \sin\alpha \\ -\sin\alpha & \cos\alpha \end{pmatrix} \mathbf{p}, \qquad \mathbf{p}_{\text{loc}} = (p_{\text{rot}, x}, |p_{\text{rot}, y}|).
 ```
-The gradient is unfolded by reversing the reflection ($`g_y \leftarrow g_y \cdot \operatorname{flip}`$) and rotating by $`+\alpha`$.
+The gradient is unfolded by reversing the reflection ($`g_y \leftarrow g_y \cdot \mathrm{flip}`$) and rotating by $`+\alpha`$.
 
 ### 4. Vectorized 3-Seed Parallel Newton Solver
 
@@ -120,7 +117,7 @@ Within the fundamental arc $`t \in [0, \pi/k]`$, distance can have up to 3 stati
 ```
 Four iterations of the damped desingularized Newton step:
 ```math
-\mathbf{t}_{n+1} = \operatorname{clamp}\left(\mathbf{t}_n - \frac{\mathbf{G}(\mathbf{t}_n)}{\min(\mathbf{G}'(\mathbf{t}_n), -10^{-6} R)}, \; 0, \; \frac{\pi}{k}\right)
+\mathbf{t}_{n+1} = \mathrm{clamp}\left(\mathbf{t}_n - \frac{\mathbf{G}(\mathbf{t}_n)}{\min(\mathbf{G}'(\mathbf{t}_n), -10^{-6} R)}, \; 0, \; \frac{\pi}{k}\right)
 ```
 converge to machine precision. Comparing squared distances across the 3 converged roots and the 2 boundary endpoints $`\{0, \pi/k\}`$ selects the global Euclidean minimum with zero branch divergence.
 

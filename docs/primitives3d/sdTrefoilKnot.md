@@ -20,7 +20,7 @@ The general `` $`(p, q)`$ `` torus knot curve in 3D can be parameterized by:
 \mathbf{q}(t) = \bigl((R + r_0\cos(q t))\cos(p t),\; (R + r_0\cos(q t))\sin(p t),\; r_0\sin(q t)\bigr)
 ```
 
-The naive distance relies on solving for the nearest point on this highly nonlinear curve. However, because the azimuthal angle of the cylinder is identically `` $`\Phi(t) = p t \pmod{2\pi}`$ ``, the `` $`p`$ `` strands of the knot intersect any given meridional half-plane at `` $`\phi = \operatorname{atan2}(y, x)`$ `` with exact analytical parameter seeds:
+The naive distance relies on solving for the nearest point on this highly nonlinear curve. However, because the azimuthal angle of the cylinder is identically `` $`\Phi(t) = p t \pmod{2\pi}`$ ``, the `` $`p`$ `` strands of the knot intersect any given meridional half-plane at `` $`\phi = \mathrm{atan2}(y, x)`$ `` with exact analytical parameter seeds:
 ```math
 t_k^{(0)} = \frac{\phi + 2\pi k}{p} \quad (k = 0, \dots, p-1)
 ```

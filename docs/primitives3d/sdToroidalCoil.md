@@ -30,15 +30,15 @@ Because the curve oscillates $`N`$ times, there are at least $`2N`$ local minima
 
 For a query point $`\mathbf{p}`$, we compute its toroidal angle $`\phi_0`$ and poloidal angle $`\psi_0`$:
 ```math
-\phi_0 = \operatorname{atan2}(\mathbf{p}_y, \mathbf{p}_x)
+\phi_0 = \mathrm{atan2}(\mathbf{p}_y, \mathbf{p}_x)
 ```
 ```math
-\psi_0 = \operatorname{atan2}(\mathbf{p}_z, \sqrt{\mathbf{p}_x^2 + \mathbf{p}_y^2} - R)
+\psi_0 = \mathrm{atan2}(\mathbf{p}_z, \sqrt{\mathbf{p}_x^2 + \mathbf{p}_y^2} - R)
 ```
 
 The coil's poloidal angle is $`N\phi`$. We expect the nearest point to satisfy $`N\phi \approx \psi_0 + 2\pi k`$ for some integer $`k`$. At the same time, we want the toroidal angle $`\phi`$ to be as close to $`\phi_0`$ as possible. The optimal winding integer $`k_0`$ is:
 ```math
-k_0 = \operatorname{round}\left(\frac{N\phi_0 - \psi_0}{2\pi}\right)
+k_0 = \mathrm{round}\left(\frac{N\phi_0 - \psi_0}{2\pi}\right)
 ```
 
 This generates our primary candidate toroidal angles:

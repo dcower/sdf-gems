@@ -37,7 +37,7 @@ Crucially, the derivative is:
 g'(u) = c(1 + \cosh(2u)) - \rho\cosh u
 ```
 
-This derivative is strictly positive anywhere outside the catenary's evolute. By initializing the seed as `` $`u_0 = \operatorname{clamp}(\operatorname{asinh}(\max(\rho, |z|) / c), 0.0, h/c)`$ `` and performing 4 Newton steps, we achieve the exact Euclidean distance with zero divergence.
+This derivative is strictly positive anywhere outside the catenary's evolute. By initializing the seed as `` $`u_0 = \mathrm{clamp}(\mathrm{asinh}(\max(\rho, |z|) / c), 0.0, h/c)`$ `` and performing 4 Newton steps, we achieve the exact Euclidean distance with zero divergence.
 
 ### 2. Exact 3D Euclidean Ruled Helicoid
 
@@ -45,7 +45,7 @@ The Helicoid is formed by straight line segments sweeping along a helix: `` $`\m
 For any query point `` $`(x, y, z)`$ ``, the exact projection onto the straight line segment at angle `` $`v`$ `` is:
 
 ```math
-u^*(v) = \operatorname{clamp}(x\cos v + y\sin v, -R, R)
+u^*(v) = \mathrm{clamp}(x\cos v + y\sin v, -R, R)
 ```
 
 The squared distance to this ruling is:

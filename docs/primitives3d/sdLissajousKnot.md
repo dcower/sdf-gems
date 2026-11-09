@@ -116,9 +116,9 @@ Notice that $`g(t)`$ and $`g'(t)`$ are **pure rational functions** of $`t`$. Eva
 
 To guarantee convergence across the entire $`t \in [-t_{\max}, t_{\max}]`$ domain, 4 orthogonal initial seeds are evaluated in parallel:
 ```math
-\mathbf{t}^{(0)} = \begin{pmatrix} \operatorname{clamp}(p_z / h, -t_{\max}, t_{\max}) \\ \operatorname{clamp}(\tan(\phi / 2), -t_{\max}, t_{\max}) \\ -0.5\, t_{\max} \\ +0.5\, t_{\max} \end{pmatrix}
+\mathbf{t}^{(0)} = \begin{pmatrix} \mathrm{clamp}(p_z / h, -t_{\max}, t_{\max}) \\ \mathrm{clamp}(\tan(\phi / 2), -t_{\max}, t_{\max}) \\ -0.5\, t_{\max} \\ +0.5\, t_{\max} \end{pmatrix}
 ```
-where $`\phi = \operatorname{atan2}(p_y, p_x)`$. After 7 rational Newton steps, selecting the candidate with minimum squared Euclidean distance yields $`2.07 \times 10^{-7}`$ accuracy.
+where $`\phi = \mathrm{atan2}(p_y, p_x)`$. After 7 rational Newton steps, selecting the candidate with minimum squared Euclidean distance yields $`2.07 \times 10^{-7}`$ accuracy.
 
 ---
 

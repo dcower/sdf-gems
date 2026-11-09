@@ -28,16 +28,16 @@ The **Right Strophoid** and the **Folium of Descartes** are two foundational cub
 
 1. **Evangelista Torricelli (1645) & Isaac Barrow (1670) Right Strophoid**:
    Studied by Torricelli in his letters and formalized by Isaac Barrow in his 1670 *Lectiones Geometricae* (from the Greek *strophos*, meaning a twisted cord or belt). In Cartesian coordinates:
-   ```math
-   y^2 (a - x) = x^2 (a + x)
-   ```
+```math
+y^2 (a - x) = x^2 (a + x)
+```
    The curve exhibits an orthogonal self-intersection (node) at the origin $`(0, 0)`$ where the two branches cross at right angles with slopes $`\pm 1`$, a rounded apex vertex at $`(-a, 0)`$, and an asymptote at $`x = a`$. The nodal loop occupies $`x \in [-a, 0]`$.
 
 2. **René Descartes's (1638) Folium Loop**:
    Introduced in 1638 by René Descartes in a letter to Father Marin Mersenne to challenge Pierre de Fermat's newly developed method of maxima and tangents (from Latin *folium*, meaning leaf). In implicit Cartesian form:
-   ```math
-   x^3 + y^3 = 3 a x y
-   ```
+```math
+x^3 + y^3 = 3 a x y
+```
    The curve forms an iconic leaf-shaped nodal loop in the first quadrant with a sharp node at $`(0, 0)`$ (tangent to both coordinate axes) and apex along the diagonal $`x = y = \frac{3}{2}a`$, accompanied by two infinite branches in the second and fourth quadrants with asymptote $`x + y + a = 0`$.
 
 ### Prior Art & Failure of Implicit Normalization

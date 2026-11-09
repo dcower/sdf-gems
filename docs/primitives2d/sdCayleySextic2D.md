@@ -44,7 +44,7 @@ The curve exhibits a rich and intricate topology:
 
 Prior to this work, evaluating distance to Cayley's sextic in real-time shaders relied on algebraic level-set approximations or polar heuristics, both of which break down catastrophically:
 1. **Algebraic Gradient Collapse ($`f / \|\nabla f\|`$)**: At both the crunode $`(-a/2, 0)`$ and the origin $`(0, 0)`$, the gradient of the degree-6 implicit polynomial $`f(x, y) = 4(r^2 - ax)^3 - 27a^2 r^4`$ vanishes identically ($`\|\nabla f\| = 0`$), producing catastrophic $`0/0`$ division by zero and $`\mathrm{NaN}`$ explosions.
-2. **Radial Distance Distortions ($`> 55\%`$)**: The naive polar distance $`d_{\mathrm{polar}} = \|\mathbf{p}\| - 4a\cos^3(\operatorname{atan2}(y, x)/3)`$ fails because the ray from the origin is strongly non-orthogonal to the curve normal (diverging by up to $`68^\circ`$). Furthermore, on the inner teardrop loop where $`r < 0`$, the naive formula undergoes complete sign inversion, misclassifying interior and exterior points and creating infinite step overruns.
+2. **Radial Distance Distortions ($`> 55\%`$)**: The naive polar distance $`d_{\mathrm{polar}} = \|\mathbf{p}\| - 4a\cos^3(\mathrm{atan2}(y, x)/3)`$ fails because the ray from the origin is strongly non-orthogonal to the curve normal (diverging by up to $`68^\circ`$). Furthermore, on the inner teardrop loop where $`r < 0`$, the naive formula undergoes complete sign inversion, misclassifying interior and exterior points and creating infinite step overruns.
 
 `sdCayleySextic2D.glsl` introduces the first **exact, closed-form 0-trig Euclidean signed distance functions and analytical unit gradients** for both the closed outer kidney loop solid, the full self-intersecting curve, and the 3D revolved shell.
 

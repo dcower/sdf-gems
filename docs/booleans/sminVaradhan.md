@@ -51,7 +51,7 @@ A cylinder of physical radius $`r`$ tangent to both half-spaces has center locus
 ```math
 \mathbf{C} = \left( \frac{r}{\cos(\theta/2)},\; 0 \right)
 ```
-For any evaluation point $`\mathbf{p}`$, the displacement $`\mathbf{p} - \mathbf{C}`$ expressed in the contravariant basis $`(-\mathbf{g}_a, -\mathbf{g}_b)`$ via the inverse Gram matrix $`\operatorname{Gram}(\mathbf{g}_a, \mathbf{g}_b)^{-1} = \frac{1}{\sin^2\theta}\begin{pmatrix} 1 & -\cos\theta \\ -\cos\theta & 1 \end{pmatrix}`$ yields contravariant coordinates:
+For any evaluation point $`\mathbf{p}`$, the displacement $`\mathbf{p} - \mathbf{C}`$ expressed in the contravariant basis $`(-\mathbf{g}_a, -\mathbf{g}_b)`$ via the inverse Gram matrix $`\mathrm{Gram}(\mathbf{g}_a, \mathbf{g}_b)^{-1} = \frac{1}{\sin^2\theta}\begin{pmatrix} 1 & -\cos\theta \\ -\cos\theta & 1 \end{pmatrix}`$ yields contravariant coordinates:
 ```math
 \alpha = \frac{(r - d_a) - (r - d_b)\cos\theta}{\sin^2\theta}, \qquad \beta = \frac{(r - d_b) - (r - d_a)\cos\theta}{\sin^2\theta}
 ```

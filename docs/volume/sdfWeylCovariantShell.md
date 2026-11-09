@@ -104,7 +104,7 @@ Over a discrete ray slab $`[t_0, t_1]`$ between sample points with distances $`(
 The discrete Weyl-covariant slab opacity is evaluated using the geometric-mean gauge:
 
 ```math
-\alpha_{\text{Weyl}}(d_0, d_1, s_0, s_1) = \operatorname{clamp}\!\left(\frac{\Phi_1(\bar{s}_{01} d_0) - \Phi_1(\bar{s}_{01} d_1)}{\max(\Phi_1(\bar{s}_{01} d_0), 10^{-6})},\ 0.0,\ 1.0\right)
+\alpha_{\text{Weyl}}(d_0, d_1, s_0, s_1) = \mathrm{clamp}\!\left(\frac{\Phi_1(\bar{s}_{01} d_0) - \Phi_1(\bar{s}_{01} d_1)}{\max(\Phi_1(\bar{s}_{01} d_0), 10^{-6})},\ 0.0,\ 1.0\right)
 ```
 
 where $`\Phi_1(u) = (1 + e^{-u})^{-1}`$. In `glsl/volume/sdfWeylCovariantShell.glsl`, exponents are clamped to $`[-35, 35]`$ to guarantee zero FP32 overflow.

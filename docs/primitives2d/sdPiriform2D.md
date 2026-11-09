@@ -29,14 +29,14 @@
 Teardrops, water droplets, and pear-shaped curves (from the Latin *pirum*, pear) represent fundamental profiles in fluid dynamics, aerodynamics, surface tension physics, and decorative geometric modeling. Two historical curves govern this geometry:
 
 1. **Tschirnhausen's Nodal Cubic Teardrop (1682)**:
-   ```math
-   a^3 y^2 = b^2 x^2 (a - x), \qquad x \in [0, a].
-   ```
+```math
+a^3 y^2 = b^2 x^2 (a - x), \qquad x \in [0, a].
+```
    A degree-3 rational algebraic curve featuring a sharp nodal point at the origin $`(0, 0)`$ with tangent slopes $`\pm b/a`$ and a smooth convex base at $`x = a`$.
 2. **Wallis's Quartic Piriform (1685)**:
-   ```math
-   a^4 y^2 = b^2 x^3 (2a - x), \qquad x \in [0, 2a].
-   ```
+```math
+a^4 y^2 = b^2 x^3 (2a - x), \qquad x \in [0, 2a].
+```
    A degree-4 algebraic curve introduced by mathematician John Wallis in 1685, possessing an authentic semicubical parabolic cusp at the origin ($`y \propto \pm x^{3/2}`$) and a rounded blunt nose at $`x = 2a`$.
 
 ### Prior Art & Limitations
@@ -85,8 +85,8 @@ The exact derivative $`g'(t) = F''(t)/2`$ is:
 g'(t) = q_x'(t)^2 + q_y'(t)^2 - 2a\,\Delta x - 6bt\,\Delta y.
 ```
 
-Newton-Raphson iterations $`t \leftarrow \operatorname{clamp}\bigl(t - g(t)/\max(g'(t), 10^{-12}), 0, 1\bigr)`$ converge quadratically with **zero trigonometric evaluations**. We seed the solver with three geometrically targeted values:
-1. $`t_x = \sqrt{\operatorname{clamp}(1 - p_x/a, 0, 1)}`$ (orthogonal $`x`$-axis projection).
+Newton-Raphson iterations $`t \leftarrow \mathrm{clamp}\bigl(t - g(t)/\max(g'(t), 10^{-12}), 0, 1\bigr)`$ converge quadratically with **zero trigonometric evaluations**. We seed the solver with three geometrically targeted values:
+1. $`t_x = \sqrt{\mathrm{clamp}(1 - p_x/a, 0, 1)}`$ (orthogonal $`x`$-axis projection).
 2. $`t_{\text{mid}} = 1/\sqrt{3} \approx 0.57735027`$ (crest of maximum teardrop half-width).
 3. $`t_{\text{apex}} = 0.95`$ (near-apex nodal basin).
 
@@ -160,7 +160,7 @@ At the cusp $`\alpha = 0`$, $`\mathbf{T}(0) = (a, 0) \ne \mathbf{0}`$. The regul
 
 Revolving Tschirnhausen's teardrop around its symmetry axis ($`x`$-axis) sweeps a 3D aerodynamic raindrop. For any 3D query point $`\mathbf{p} = (x, y, z)`$:
 - The cylindrical radial distance from the symmetry axis is $`\rho = \sqrt{y^2 + z^2}`$.
-- The 2D cross-sectional distance is $`d = \operatorname{sdTeardrop2D}\bigl((x, \rho), a, b\bigr)`$.
+- The 2D cross-sectional distance is $`d = \mathrm{sdTeardrop2D}\bigl((x, \rho), a, b\bigr)`$.
 - The analytical 3D normal gradient is obtained via the chain rule:
 
 ```math

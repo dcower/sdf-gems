@@ -63,7 +63,7 @@ with analytical unit surface normal $`\nabla d = (\mathbf{p} - \mathbf{q}(t^*)) 
 
 For an $`n`$-wave spherical sinusoid with $`\theta(t) = \alpha\cos(nt)`$, the curve possesses full $`D_n`$ dihedral symmetry. Its fundamental wavelength is $`2\Delta = 2\pi/n`$, and each half-wave spans $`\Delta = \pi/n`$.
 
-Rather than searching across the full circle $`[0, 2\pi)`$, we fold the query point's longitude $`\phi = \operatorname{atan2}(p_y, p_x)`$ into the fundamental half-wave $`[0, \Delta]`$:
+Rather than searching across the full circle $`[0, 2\pi)`$, we fold the query point's longitude $`\phi = \mathrm{atan2}(p_y, p_x)`$ into the fundamental half-wave $`[0, \Delta]`$:
 ```math
 k = \left\lfloor \frac{\phi}{\Delta} \right\rfloor, \qquad k_{\text{odd}} = |k| \bmod 2
 ```
@@ -72,7 +72,7 @@ k = \left\lfloor \frac{\phi}{\Delta} \right\rfloor, \qquad k_{\text{odd}} = |k| 
 ```
 Under this reflection, $`\theta(t)`$ and $`q_z(t)`$ remain invariant, allowing us to solve for $`t \in [0, \Delta]`$ using a vectorized 3-seed Newton solver initialized at:
 - $`t_0 = \phi_{\text{fold}}`$ (longitudinal projection seed)
-- $`t_1 = \frac{1}{n} \arccos\left(\operatorname{clamp}\left(\frac{\arcsin(p_z / \|\mathbf{p}\|)}{\alpha}, -1, 1\right)\right)`$ (latitudinal projection seed)
+- $`t_1 = \frac{1}{n} \arccos\left(\mathrm{clamp}\left(\frac{\arcsin(p_z / \|\mathbf{p}\|)}{\alpha}, -1, 1\right)\right)`$ (latitudinal projection seed)
 - $`t_2 = \frac{1}{2}\Delta`$ (midpoint seed)
 
 After finding the optimal $`t^* \in [0, \Delta]`$, the global parameter is recovered via:

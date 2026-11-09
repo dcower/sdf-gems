@@ -28,28 +28,28 @@ Bean-shaped contours, renal cross-sections, and botanical double-leaf profiles a
 
 1. **Cundy & Rollett's Quartic Bean Curve (1961)**:
    In *Mathematical Models* (Oxford University Press, 1961), British mathematicians **H. Martyn Cundy** and **A. P. Rollett** investigated the classic smooth **Quartic Bean Curve**:
-   ```math
-   x^4 + x^2 y^2 + y^4 = a x \bigl(x^2 + y^2\bigr), \qquad a > 0.
-   ```
+```math
+x^4 + x^2 y^2 + y^4 = a x \bigl(x^2 + y^2\bigr), \qquad a > 0.
+```
    In polar coordinates $`(r, \theta)`$, substituting $`x = r\cos\theta`$ and $`y = r\sin\theta`$ yields:
-   ```math
-   r^4 \bigl(\cos^4\theta + \cos^2\theta\sin^2\theta + \sin^4\theta\bigr) = a r^3 \cos\theta.
-   ```
+```math
+r^4 \bigl(\cos^4\theta + \cos^2\theta\sin^2\theta + \sin^4\theta\bigr) = a r^3 \cos\theta.
+```
    Using the algebraic identity $`\cos^4\theta + \cos^2\theta\sin^2\theta + \sin^4\theta = (\cos^2\theta + \sin^2\theta)^2 - \cos^2\theta\sin^2\theta = 1 - \cos^2\theta\sin^2\theta`$, dividing by $`r^3`$ produces the nonsingular polar radius equation:
-   ```math
-   r(\theta) = \frac{a \cos\theta}{1 - \cos^2\theta\sin^2\theta} = \frac{4 a \cos\theta}{3 + \cos(4\theta)}, \qquad \theta \in \left[-\frac{\pi}{2},\; \frac{\pi}{2}\right].
-   ```
+```math
+r(\theta) = \frac{a \cos\theta}{1 - \cos^2\theta\sin^2\theta} = \frac{4 a \cos\theta}{3 + \cos(4\theta)}, \qquad \theta \in \left[-\frac{\pi}{2},\; \frac{\pi}{2}\right].
+```
    Related historical literature also considers the asymmetric Cartesian variant $`x^4 + x^2 y^2 + y^4 = a (x^3 + y^3)`$, which in polar coordinates corresponds to $`r(\theta) = a \cos\theta (\sin^3\theta + \cos^3\theta) / (1 - \cos^2\theta\sin^2\theta)`$. The canonical Cundy-Rollett symmetric quartic bean curve $`x^4 + x^2 y^2 + y^4 = a x (x^2 + y^2)`$ forms a convex outer silhouette spanning $`x \in [0, a]`$ with a re-entrant renal notch (dimple) at the coordinate origin $`(0, 0)`$.
 
 2. **Longchamps & Viviani's Quartic Bifolium (1886)**:
    The **Bifolium** (double leaf or double heart), first investigated by Vincenzo Viviani and formalized by Gohierre de Longchamps (1886), is defined implicitly by:
-   ```math
-   \bigl(x^2 + y^2\bigr)^2 = 4 a x y^2, \qquad a > 0.
-   ```
+```math
+\bigl(x^2 + y^2\bigr)^2 = 4 a x y^2, \qquad a > 0.
+```
    In polar coordinates, dividing by $`r^3`$ yields the pure trigonometric monomial:
-   ```math
-   r(\theta) = 4 a \cos\theta \sin^2\theta, \qquad \theta \in \left[-\frac{\pi}{2},\; \frac{\pi}{2}\right].
-   ```
+```math
+r(\theta) = 4 a \cos\theta \sin^2\theta, \qquad \theta \in \left[-\frac{\pi}{2},\; \frac{\pi}{2}\right].
+```
    The bifolium consists of two symmetric teardrop-shaped lobes touching at a singular cuspidal pinch at the origin $`(0, 0)`$.
 
 3. **3D Revolved Kidney-Bean Solid (`sdBean3D`)**:
@@ -103,7 +103,7 @@ g'(\theta) = \|\mathbf{q}'(\theta)\|^2 + \bigl(q_x - p_x\bigr) q_pp_x + \bigl(q_
 
 A 4-lane SIMD vector `vec4 th = vec4(0.15, 0.52, 0.95, 1.38)` seeded across $`[0, \pi/2]`$ executes 7 Newton steps:
 ```math
-\theta \leftarrow \operatorname{clamp}\left(\theta - \frac{g(\theta)}{\max(g'(\theta), 10^{-20})},\; 0,\; \frac{\pi}{2}\right),
+\theta \leftarrow \mathrm{clamp}\left(\theta - \frac{g(\theta)}{\max(g'(\theta), 10^{-20})},\; 0,\; \frac{\pi}{2}\right),
 ```
 converging unconditionally to $`4.7 \times 10^{-7}`$ Euclidean accuracy across the entire plane.
 
@@ -142,13 +142,13 @@ Evaluating whether an arbitrary query point $`(x, y)`$ lies inside or outside th
 
 1. **Quartic Bean Curve (`sdBeanCurve2D`)**:
    For any ray from the origin at angle $`\theta \in (-\pi/2, \pi/2)`$, the boundary radius is $`r(\theta) = a \cos\theta / (1 - \cos^2\theta\sin^2\theta)`$. A point $`(x, y)`$ is strictly inside if and only if:
-   ```math
-   x > 0 \qquad \text{and} \qquad r < r(\theta).
-   ```
+```math
+x > 0 \qquad \text{and} \qquad r < r(\theta).
+```
    Multiplying by $`r^3 (1 - \cos^2\theta\sin^2\theta) > 0`$:
-   ```math
-   r^4 \bigl(1 - \cos^2\theta\sin^2\theta\bigr) < a (r\cos\theta) r^2 \iff x^4 + x^2 y^2 + y^4 < a x \bigl(x^2 + y^2\bigr).
-   ```
+```math
+r^4 \bigl(1 - \cos^2\theta\sin^2\theta\bigr) < a (r\cos\theta) r^2 \iff x^4 + x^2 y^2 + y^4 < a x \bigl(x^2 + y^2\bigr).
+```
    Letting $`x_2 = x^2`$ and $`y_2 = y^2`$, this evaluates in 5 multiplications:
    ```glsl
    float x2 = px * px, y2 = ay * ay;
@@ -157,9 +157,9 @@ Evaluating whether an arbitrary query point $`(x, y)`$ lies inside or outside th
 
 2. **Quartic Bifolium (`sdBifolium2D`)**:
    Similarly, for the bifolium $`r(\theta) = 4 a \cos\theta \sin^2\theta`$, multiplying by $`r^3`$:
-   ```math
-   r^4 < 4 a (r\cos\theta) (r\sin\theta)^2 \iff \bigl(x^2 + y^2\bigr)^2 < 4 a x y^2.
-   ```
+```math
+r^4 < 4 a (r\cos\theta) (r\sin\theta)^2 \iff \bigl(x^2 + y^2\bigr)^2 < 4 a x y^2.
+```
    Evaluated algebraically in 4 multiplications:
    ```glsl
    float r2 = px * px + ay * ay;

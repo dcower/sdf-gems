@@ -32,7 +32,7 @@ The full octahedral point group $`O_h \cong B_3`$ has order $`|O_h| = 48`$, cons
 1. **Octant Sign Folding**:
    Record the initial octant reflection signs and fold into the non-negative octant:
 
-   $`\displaystyle \mathbf{s}_0 = \Big(\operatorname{sgn}(p_x), \, \operatorname{sgn}(p_y), \, \operatorname{sgn}(p_z)\Big) \in \{-1, +1\}^3, \qquad \mathbf{q} = |\mathbf{p}| \ge \mathbf{0}.`$
+   $`\displaystyle \mathbf{s}_0 = \Big(\mathrm{sgn}(p_x), \, \mathrm{sgn}(p_y), \, \mathrm{sgn}(p_z)\Big) \in \{-1, +1\}^3, \qquad \mathbf{q} = |\mathbf{p}| \ge \mathbf{0}.`$
 
 2. **3-Comparator Sorting Network**:
    An optimal 3-comparator sorting network sorts the coordinates descendingly into the fundamental $`B_3`$ Weyl chamber $`q_x \ge q_y \ge q_z \ge 0`$:
@@ -62,11 +62,11 @@ The Euclidean Voronoi partition divides the Weyl chamber into two disjoint regim
    Outside the face cones, the nearest point lies on one of two candidate boundary segments:
    - Hexagon-Square Edge: Segment connecting $`(s, 0.5s, 0)`$ to $`(s, 0.25s, 0.25s)`$, with projection parameter:
 
-     $`\displaystyle t_1 = \operatorname{clamp}\left(\frac{0.5s - q_y + q_z}{2}, \; 0, \; 0.25s\right), \quad \mathbf{d}_1 = \Big(\max(q_x - s, 0), \; q_y - (0.5s - t_1), \; q_z - t_1\Big).`$
+     $`\displaystyle t_1 = \mathrm{clamp}\left(\frac{0.5s - q_y + q_z}{2}, \; 0, \; 0.25s\right), \quad \mathbf{d}_1 = \Big(\max(q_x - s, 0), \; q_y - (0.5s - t_1), \; q_z - t_1\Big).`$
 
    - Hexagon-Hexagon Edge: Segment connecting $`(s, 0.5s, 0)`$ to $`(0.75s, 0.75s, 0)`$, with projection parameter:
 
-     $`\displaystyle t_2 = \operatorname{clamp}\left(\frac{0.5s - q_x + q_y}{2}, \; 0, \; 0.25s\right), \quad \mathbf{d}_2 = \Big(q_x - (s - t_2), \; q_y - (0.5s + t_2), \; q_z\Big).`$
+     $`\displaystyle t_2 = \mathrm{clamp}\left(\frac{0.5s - q_x + q_y}{2}, \; 0, \; 0.25s\right), \quad \mathbf{d}_2 = \Big(q_x - (s - t_2), \; q_y - (0.5s + t_2), \; q_z\Big).`$
 
    Selecting the closest displacement $`\mathbf{v} = \arg\min_{\mathbf{d} \in \{\mathbf{d}_1, \mathbf{d}_2\}} \|\mathbf{d}\|_2^2`$, the distance and unit gradient are simultaneously evaluated via a single fused `inversesqrt`:
 
@@ -83,7 +83,7 @@ The cuboctahedron is bounded by 6 square faces ($`q_x \le s`$) and 8 equilateral
 - **Edge Cone (1 SFU)**:
   The shared edge connects $`(s, s, 0)`$ to $`(s, 0.5s, 0.5s)`$, parameterized by:
 
-  $`\displaystyle t = \operatorname{clamp}\left(\frac{s - q_y + q_z}{2}, \; 0, \; 0.5s\right), \qquad \mathbf{v} = \Big(q_x - s, \; q_y - (s - t), \; q_z - t\Big).`$
+  $`\displaystyle t = \mathrm{clamp}\left(\frac{s - q_y + q_z}{2}, \; 0, \; 0.5s\right), \qquad \mathbf{v} = \Big(q_x - s, \; q_y - (s - t), \; q_z - t\Big).`$
 
 ---
 
@@ -97,7 +97,7 @@ In the sorted Weyl chamber $`q_x \ge q_y \ge q_z \ge 0`$, the face plane signed 
 
 - Otherwise, the nearest boundary feature is the acute edge connecting $`(s, 0, 0)`$ to $`(0.5s, 0.5s, 0.5s)`$:
 
-  $`\displaystyle t = \operatorname{clamp}\left(\frac{s - q_x + q_y + q_z}{3}, \; 0, \; 0.5s\right), \qquad \mathbf{v} = \Big(q_x - (s - t), \; q_y - t, \; q_z - t\Big).`$
+  $`\displaystyle t = \mathrm{clamp}\left(\frac{s - q_x + q_y + q_z}{3}, \; 0, \; 0.5s\right), \qquad \mathbf{v} = \Big(q_x - (s - t), \; q_y - t, \; q_z - t\Big).`$
 
 ---
 

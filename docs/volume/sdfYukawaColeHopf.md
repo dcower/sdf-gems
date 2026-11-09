@@ -25,9 +25,9 @@ The semiclassical log-exponential duality connects distance geometry (the Hamilt
 2. **Varadhan Screened-Poisson Ray Integrals (`sdfBesselK0`, `sdfYukawaRayIntegral`, `sdYukawaPotential`)**:
    The 3D Screened-Poisson (Yukawa) Green's function $`G_\lambda(\mathbf{x}, \mathbf{c}) = \frac{e^{-\lambda\lVert\mathbf{x}-\mathbf{c}\rVert}}{4\pi\lVert\mathbf{x}-\mathbf{c}\rVert}`$ solves $`(\Delta - \lambda^2)G_\lambda = -\delta`$. Its line integral along an entire infinite ray $`\mathbf{o} + t\mathbf{d}`$ ($`t \in (-\infty, \infty)`$) possesses an exact closed-form solution:
 
-   ```math
-   \int_{-\infty}^{\infty} \frac{e^{-\lambda\lVert\mathbf{o} + t\mathbf{d} - \mathbf{c}\rVert}}{4\pi\lVert\mathbf{o} + t\mathbf{d} - \mathbf{c}\rVert}\,dt = \frac{1}{2\pi}\,K_0(\lambda b), \qquad b = \lVert(\mathbf{o} - \mathbf{c}) - ((\mathbf{o}-\mathbf{c})\cdot\mathbf{d})\mathbf{d}\rVert_2
-   ```
+```math
+\int_{-\infty}^{\infty} \frac{e^{-\lambda\lVert\mathbf{o} + t\mathbf{d} - \mathbf{c}\rVert}}{4\pi\lVert\mathbf{o} + t\mathbf{d} - \mathbf{c}\rVert}\,dt = \frac{1}{2\pi}\,K_0(\lambda b), \qquad b = \lVert(\mathbf{o} - \mathbf{c}) - ((\mathbf{o}-\mathbf{c})\cdot\mathbf{d})\mathbf{d}\rVert_2
+```
 
    where $`b`$ is the ray impact parameter and $`K_0`$ is the Modified Bessel function of the second kind of order 0. Multi-center molecular clouds and emissive volumetric coronas evaluate in **zero raymarching steps** in $`O(1)`$ arithmetic.
 
@@ -183,7 +183,7 @@ Evaluated via `tools/gpu_eval.py` on macOS GPU FP32 transform feedback:
 1. Litvinov, G. L., & Maslov, V. P. (1998). *The Correspondence Principle for Idempotent Calculus and Some Computer Applications*. Idempotency, 420–443.
 2. Viro, O. (2001). *Dequantization of Real Algebraic Geometry on Logarithmic Paper*. European Congress of Mathematics, 135–146.
 3. Varadhan, S. R. S. (1967). *On the Behavior of the Fundamental Solution of the Heat Equation with Variable Coefficients*. Communications on Pure and Applied Mathematics, 20(2), 431–455.
-4. Hopf, E. (1950). *The Partial Differential Equation $`u_t + u u_x = \mu u_{xx}`$*. Communications on Pure and Applied Mathematics, 3(3), 201–230.
+4. Hopf, E. (1950). "The Partial Differential Equation $`u_t + u u_x = \mu u_{xx}`$". *Communications on Pure and Applied Mathematics*, 3(3), 201–230.
 5. Cole, J. D. (1951). *On a Quasi-Linear Parabolic Equation Occurring in Aerodynamics*. Quarterly of Applied Mathematics, 9(3), 225–236.
 6. Kardar, M., Parisi, G., & Zhang, Y.-C. (1986). *Dynamic Scaling of Growing Interfaces*. Physical Review Letters, 56(9), 889–892.
 7. Abramowitz, M., & Stegun, I. A. (1964). *Handbook of Mathematical Functions with Formulas, Graphs, and Mathematical Tables*. Applied Mathematics Series 55, National Bureau of Standards.

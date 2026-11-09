@@ -27,9 +27,9 @@ where $`\theta_k = \frac{2\pi}{N}k + \phi`$.
 
 The closest sphere index $`k`$ can be bounded directly from a point $`\mathbf{p} = (x, y, z)`$ in $`\mathbb{R}^3`$. We use the generalized $`O(1)`$ inverse spherical aberration phase mapping:
 ```math
-\displaystyle \theta^* = \operatorname{atan2}\left(\sqrt{1-\beta^2}y, x - \beta\rho\right)
+\displaystyle \theta^* = \mathrm{atan2}\left(\sqrt{1-\beta^2}y, x - \beta\rho\right)
 ```
-This maps directly to the continuous envelope, providing a tight exact bound! Minimizing the continuous Dupin canal envelope $`f(\theta) = \|\mathbf{p} - \mathbf{C}(\theta)\| - A(\theta)`$ via 3 Newton steps from 2 seeds and checking $`\{k_0 - 1, k_0, k_0 + 1\}`$ around $`k_0 = \operatorname{round}\left(\frac{\theta^* - \phi}{2\pi/N}\right)`$ yields the exact Euclidean SDF in $`O(1)`$ independent of $`N`$.
+This maps directly to the continuous envelope, providing a tight exact bound! Minimizing the continuous Dupin canal envelope $`f(\theta) = \|\mathbf{p} - \mathbf{C}(\theta)\| - A(\theta)`$ via 3 Newton steps from 2 seeds and checking $`\{k_0 - 1, k_0, k_0 + 1\}`$ around $`k_0 = \mathrm{round}\left(\frac{\theta^* - \phi}{2\pi/N}\right)`$ yields the exact Euclidean SDF in $`O(1)`$ independent of $`N`$.
 
 ## GLSL Implementation
 

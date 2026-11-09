@@ -64,11 +64,11 @@ h''(t) = -2x\cos(2t) - 2|y|\sin(2t) - |z|\sin t
 ```
 Two initial seeds `` $`t_0 \in \{0.32, 1.18\}`$ `` together with the boundaries `` $`\{0, \pi/2\}`$ `` guarantee global convergence in 4 damped Newton steps:
 ```math
-t_{k+1} = \operatorname{clamp}\left(t_k - \frac{h'(t_k)}{\min(h''(t_k), -10^{-7})},\; 0,\; \frac{\pi}{2}\right)
+t_{k+1} = \mathrm{clamp}\left(t_k - \frac{h'(t_k)}{\min(h''(t_k), -10^{-7})},\; 0,\; \frac{\pi}{2}\right)
 ```
 Reconstructing the footpoint `` $`\mathbf{q}_{\text{sym}} = R(\cos^2 t^*, \cos t^*\sin t^*, \sin t^*)`$ `` yields the exact Euclidean distance `` $`d = \|\mathbf{p}_{\text{sym}} - \mathbf{q}_{\text{sym}}\| - r_{\text{tube}}`$ `` and analytical unit gradient:
 ```math
-\nabla d(\mathbf{p}) = \left(\frac{p_x - q_x^*}{d + r_{\text{tube}}},\; \operatorname{sgn}(y)\frac{|y| - q_y^*}{d + r_{\text{tube}}},\; \operatorname{sgn}(z)\frac{|z| - q_z^*}{d + r_{\text{tube}}}\right)
+\nabla d(\mathbf{p}) = \left(\frac{p_x - q_x^*}{d + r_{\text{tube}}},\; \mathrm{sgn}(y)\frac{|y| - q_y^*}{d + r_{\text{tube}}},\; \mathrm{sgn}(z)\frac{|z| - q_z^*}{d + r_{\text{tube}}}\right)
 ```
 
 ---

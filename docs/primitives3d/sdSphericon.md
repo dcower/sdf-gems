@@ -50,7 +50,7 @@ vec3 q = flip ? vec3(p.y, p.x, -p.z) : p;
 ### 2. The Seam-Dominance Theorem
 Let $`S_+`$ denote the upper half-bicone ($`z \ge 0`$) and $`S_-`$ the lower half-bicone ($`z \le 0`$). The shared seam in the plane $`z = 0`$ is $`\Gamma = S_+ \cap S_- = \{(x, y, 0) : |x| + |y| \le r\}`$.
 
-**Theorem**: *For any point $`\mathbf{q} = (x, y, z)`$ with $`z \ge 0`$ and any surface point $`\mathbf{m} = (R_m \cos\phi, y_m, R_m \sin\phi)`$ on the lower half-surface ($`\sin\phi \le 0`$), the projected seam point $`\tilde{\mathbf{m}} = (R_m \operatorname{sgn}(x), y_m, 0)`$ belongs to $`\Gamma \subset \partial S_+`$ and satisfies:*
+**Theorem**: *For any point $`\mathbf{q} = (x, y, z)`$ with $`z \ge 0`$ and any surface point $`\mathbf{m} = (R_m \cos\phi, y_m, R_m \sin\phi)`$ on the lower half-surface ($`\sin\phi \le 0`$), the projected seam point $`\tilde{\mathbf{m}} = (R_m \mathrm{sgn}(x), y_m, 0)`$ belongs to $`\Gamma \subset \partial S_+`$ and satisfies:*
 ```math
 \|\mathbf{q} - \tilde{\mathbf{m}}\|^2 \le \|\mathbf{q} - \mathbf{m}\|^2
 ```
@@ -60,7 +60,7 @@ Let $`S_+`$ denote the upper half-bicone ($`z \ge 0`$) and $`S_-`$ the lower hal
 \|\mathbf{q} - \mathbf{m}\|^2 = (x - R_m \cos\phi)^2 + (y - y_m)^2 + (z - R_m \sin\phi)^2
 ```
 ```math
-\|\mathbf{q} - \tilde{\mathbf{m}}\|^2 = (x - R_m \operatorname{sgn}(x))^2 + (y - y_m)^2 + z^2
+\|\mathbf{q} - \tilde{\mathbf{m}}\|^2 = (x - R_m \mathrm{sgn}(x))^2 + (y - y_m)^2 + z^2
 ```
 Subtracting the two equations yields:
 ```math
@@ -71,15 +71,11 @@ Since $`x \cos\phi \le |x|`$ for all $`\phi`$, the first term satisfies $`-2 R_m
 ### 3. Exact 3D Distance Reduction
 Because every point on the lower surface is strictly dominated by a seam point on the upper surface, the closest surface point to any $`\mathbf{q}`$ ($`z \ge 0`$) lies entirely on the upper half-bicone $`\partial S_+`$.
 
-Furthermore, because a bicone around the $`x`$-axis is rotationally symmetric, the closest point on the full bicone surface to any point with $`z \ge 0`$ preserves its cylindrical polar angle $`\theta = \operatorname{atan2}(z, y) \in [0, \pi]`$, meaning the nearest point never crosses into $`z < 0`$.
+Furthermore, because a bicone around the $`x`$-axis is rotationally symmetric, the closest point on the full bicone surface to any point with $`z \ge 0`$ preserves its cylindrical polar angle $`\theta = \mathrm{atan2}(z, y) \in [0, \pi]`$, meaning the nearest point never crosses into $`z < 0`$.
 
 Therefore, across all $`\mathbb{R}^3`$, the exact Euclidean distance to the Sphericon is identically the 2D distance from $`(u, \rho) = (|q_x|, \sqrt{q_y^2 + q_z^2})`$ to the segment between $`(r, 0)`$ and $`(0, r)`$:
 ```math
-d_{\text{Sphericon}}(\mathbf{p}, r) = \begin{cases} 
-\frac{u + \rho - r}{\sqrt{2}} & |u - \rho| \le r, \\ 
-\sqrt{(u - r)^2 + \rho^2} & u - \rho > r, \\ 
-\sqrt{u^2 + (\rho - r)^2} & \rho - u > r. 
-\end{cases}
+d_{\text{Sphericon}}(\mathbf{p}, r) = \begin{cases} \frac{u + \rho - r}{\sqrt{2}} & |u - \rho| \le r, \\ \sqrt{(u - r)^2 + \rho^2} & u - \rho > r, \\ \sqrt{u^2 + (\rho - r)^2} & \rho - u > r. \end{cases}
 ```
 
 ### 4. Generalization to Octasphericon & Developable Rollers

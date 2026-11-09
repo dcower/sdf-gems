@@ -103,11 +103,25 @@ def pipe_free(tex):
 
 
 MD_ONLY = "*[]()-+/<@?"  # backslash escapes that only mean something to Markdown, not inside TeX math
+GITHUB_DISALLOWED_MACROS = {
+    "operatorname", "DeclareMathOperator", "colorbox", "fcolorbox", "bbox",
+    "href", "url", "class", "style", "cssId", "unicode", "htmlData",
+    "newcommand", "renewcommand", "def", "let", "gdef", "edef", "xdef", "mathchoice",
+}
+
+
+def sanitize_github_tex(tex):
+    """Replace GitHub-disallowed macros (e.g. \\operatorname -> \\mathrm) and non-ASCII characters inside TeX."""
+    tex = re.sub(r"\\operatorname\*?\s*\{", r"\\mathrm{", tex)
+    tex = re.sub(r"\\operatorname\*?\s+([A-Za-z]+)", r"\\mathrm{\1}", tex)
+    for k, v in [("ü", "u"), ("ö", "o"), ("ä", "a"), ("é", "e"), ("è", "e"), ("ê", "e"), ("à", "a"), ("â", "a"), ("ô", "o"), ("î", "i"), ("ç", "c"), ("–", "-"), ("—", "-"), ("−", "-")]:
+        tex = tex.replace(k, v)
+    return tex
 
 
 def strip_markdown_escapes(tex):
     """`y^\\*` / `\\[-2, 2]` were Markdown escapes; inside verbatim $`...`$ they would be invalid TeX."""
-    return re.sub(r"\\([A-Za-z]+|.)", lambda m: m.group(1) if m.group(1) in MD_ONLY else m.group(0), tex)
+    return sanitize_github_tex(re.sub(r"\\([A-Za-z]+|.)", lambda m: m.group(1) if m.group(1) in MD_ONLY else m.group(0), tex))
 
 
 def _row_code_spans(row):
@@ -162,12 +176,14 @@ def table_code_pipes(text):
 
 def convert(text):
     """Return (new_text, n_converted, problems) with all $...$ / $$...$$ math in GitHub-safe syntax."""
+    # Fix typo pattern $`...$ (missing closing backtick before $) on a single line
+    text, n_typo = re.subn(r"\$`([^`\n$]+)\$(?!`)", r"$`\1`$", text)
     problems, edits = [], []
     for sp in find_math(text):
         body = text[sp.bstart:sp.bend]
         ln = line_of(text, sp.start)
         if sp.kind in ("dollar", "code"):
-            tex = body.strip() if sp.kind == "code" else strip_markdown_escapes(body.strip())
+            tex = sanitize_github_tex(body.strip()) if sp.kind == "code" else strip_markdown_escapes(body.strip())
             if in_table_row(text, sp.start) and "|" in tex:
                 tex = pipe_free(tex)
             if "`" in tex:
@@ -176,41 +192,49 @@ def convert(text):
             new = f"$`{tex}`$"
             if new != text[sp.start:sp.end]:
                 edits.append((sp.start, sp.end, new))
-        elif sp.kind == "display":
+        elif sp.kind in ("display", "fence"):
             ls = text.rfind("\n", 0, sp.start) + 1
             le = text.find("\n", sp.end)
             le = len(text) if le < 0 else le
             prefix, suffix = text[ls:sp.start], text[sp.end:le]
-            if prefix.strip() or suffix.strip():
+            clean_body = sanitize_github_tex(body.strip()) if sp.kind == "fence" else strip_markdown_escapes(body.strip())
+            if sp.kind == "display" and (prefix.strip() or suffix.strip()):
                 # display math sharing its line with text: GitHub renders it inline-style anyway
-                tex = strip_markdown_escapes(body.strip())
+                tex = clean_body
                 if "`" in tex:
                     problems.append((ln, "math contains a backtick; rewrite manually", body))
                     continue
                 edits.append((sp.start, sp.end, f"$`{tex}`$"))
             else:
-                lines = [ln_.strip() for ln_ in strip_markdown_escapes(body.strip()).split("\n")]
+                lines = [ln_.strip() for ln_ in clean_body.split("\n") if ln_.strip()]
                 if prefix:
                     # Indented (list item): GitHub does not render ```math blocks nested in lists when the
                     # document also has inline math, so use a display-style inline formula on its own line.
-                    if "`" in body:
+                    if "`" in clean_body:
                         problems.append((ln, "math contains a backtick; rewrite manually", body))
                         continue
-                    edits.append((ls, le, prefix + "$`\\displaystyle " + " ".join(l for l in lines if l) + "`$"))
+                    rep = prefix + "$`\\displaystyle " + " ".join(lines) + "`$"
+                    if rep != text[ls:le]:
+                        edits.append((ls, le, rep))
                 else:
-                    block = "\n".join(l for l in lines if l)
-                    edits.append((ls, le, f"```math\n{block}\n```"))
+                    # Join multi-line ```math blocks where lines end with \\ so GitHub never turns \\\n into \\\
+                    joined = " ".join(lines) if any(l.endswith("\\\\") for l in lines) else "\n".join(lines)
+                    rep = f"```math\n{joined}\n```"
+                    if rep != text[ls:le]:
+                        edits.append((ls, le, rep))
     for s, e, r in sorted(edits, reverse=True):
         text = text[:s] + r + text[e:]
     pipes = table_code_pipes(text)
     for s, e, r in sorted(pipes, reverse=True):
         text = text[:s] + r + text[e:]
-    return text, len(edits) + len(pipes), problems
+    return text, len(edits) + len(pipes) + n_typo, problems
 
 
 def lint(text):
     """Problems in already-converted text."""
     out = []
+    for m in re.finditer(r"\$`([^`\n$]+)\$(?!`)", text):
+        out.append((line_of(text, m.start()), "unclosed $`...$ math span (missing closing backtick before $)", m.group(0)))
     for sp in find_math(text):
         body = text[sp.bstart:sp.bend]
         ln = line_of(text, sp.start)
@@ -218,6 +242,17 @@ def lint(text):
             out.append((ln, "use $`...`$ (inline) or a ```math block (display) instead of $-delimited math", body))
         elif sp.kind == "code" and in_table_row(text, sp.start) and "|" in body:
             out.append((ln, "`|` inside math in a table row splits the cell; use \\Vert / \\vert", body))
+        elif sp.kind == "fence":
+            ls = text.rfind("\n", 0, sp.start) + 1
+            if text[ls:sp.start].strip() != "" or len(text[ls:sp.start]) > 0:
+                out.append((ln, "indented ```math block inside list item is not rendered by GitHub; use $`\\displaystyle ...`$", body[:80]))
+            if re.search(r"\\\\[ \t]*\n", body):
+                out.append((ln, "line ending with \\\\ inside ```math is corrupted into \\\\\\ by GitHub; join rows onto one line", body[:80]))
+        for mac in re.findall(r"\\([A-Za-z]+)", body):
+            if mac in GITHUB_DISALLOWED_MACROS:
+                out.append((ln, f"GitHub disallows macro \\{mac}; use \\mathrm{{...}} instead", body[:80]))
+        if any(ord(ch) > 127 for ch in body):
+            out.append((ln, "non-ASCII character inside math; use ASCII/LaTeX accents", body[:80]))
     for s, e, r in table_code_pipes(text):
         out.append((line_of(text, s), "unescaped `|` in a code span in a table row splits the cell; write \\|", text[s:e]))
     lines = text.split("\n")

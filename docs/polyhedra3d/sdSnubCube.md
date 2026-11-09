@@ -61,7 +61,7 @@ Brute-force candidate analysis (400k points, radii 0 to 200) shows that for all 
 
 *For every exterior point, the closest surface point lies in the star (incident faces, edges, or the vertex itself) of the closest vertex.* (Proof sketch below. Also checked by brute force: the FP64 algorithm built on this lemma matches the exact convex-hull distance to `2.8e-14` over 200k points, with 0 violations.) Two facts give this. All edges have equal length $`L`$, so the apex of every adjacent triangle is $`\frac{\sqrt3}{2}L`$ from an edge, while a point on a face or edge is at most $`L/\sqrt2`$ (square) or $`L/\sqrt3`$ (triangle) from that feature's own vertices. And moving along an outward normal only adds distance $`2h\,|n\cdot(w - x)|`$ to off-feature vertices. Since $`p - x`$ then lies in the normal cone of $`x`$ for both the polytope and the **tangent cone $`K_{v}`$** at that vertex, the projection onto $`K_v`$ coincides with the projection onto the polytope:
 ```math
-d_S(p) = \operatorname{dist}(p, K_{v^*}), \qquad v^* = \arg\max_v \langle p, v\rangle.
+d_S(p) = \mathrm{dist}(p, K_{v^*}), \qquad v^* = \arg\max_v \langle p, v\rangle.
 ```
 In $`D`$, $`v^* \in \{\mathbf{v}_0, \mathbf{v}_{16}, \mathbf{v}_8\}`$, found with 2 dot products and mapped to $`\mathbf{v}_0`$ by a proper-rotation swizzle (`p.yzx` or `vec3(p.x, -p.z, p.y)`). The exact distance to the 5-face cone at $`\mathbf{v}_0`$ is then:
 

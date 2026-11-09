@@ -10,7 +10,7 @@
 
 ## Overview & Motivation
 
-Classic Shadertoy approaches to the Möbius strip heavily rely on domain repetition or naive meridional rotation—taking a cross-sectional box and rotating it continuously around a circular spine. While this gives a visually recognizable shape, the resulting SDF is heavily distorted because rotation angle $`\phi = \operatorname{atan2}(y, x)`$ is purely an ambient space coordinate, not the exact nearest-point projection. This distortion breaks the Eikonal equation ($`\|\nabla d\| \neq 1`$), causing raymarching artifacts, slow convergence, and overstepping. 
+Classic Shadertoy approaches to the Möbius strip heavily rely on domain repetition or naive meridional rotation—taking a cross-sectional box and rotating it continuously around a circular spine. While this gives a visually recognizable shape, the resulting SDF is heavily distorted because rotation angle $`\phi = \mathrm{atan2}(y, x)`$ is purely an ambient space coordinate, not the exact nearest-point projection. This distortion breaks the Eikonal equation ($`\|\nabla d\| \neq 1`$), causing raymarching artifacts, slow convergence, and overstepping. 
 
 `sdMobiusStrip` solves this definitively by providing the exact 3D Euclidean distance to a ruled ribbon with any number of half-twists $`n`$. By reducing the nearest-point problem to an envelope theorem on the ruling angle, we can efficiently find the closest point with an exact gradient using a short, vectorized Newton iteration, achieving machine precision across $`\mathbb{R}^3`$.
 
@@ -30,7 +30,7 @@ P(v) = x\cos v + y\sin v - R, \quad Q(v) = -x\sin v + y\cos v
 ```
 The exact projection $`u^*(v)`$ onto the ruling segment at angle $`v`$ is:
 ```math
-U(v) = P(v)\cos\alpha + z\sin\alpha, \quad u^*(v) = \operatorname{clamp}(U(v), -w, w)
+U(v) = P(v)\cos\alpha + z\sin\alpha, \quad u^*(v) = \mathrm{clamp}(U(v), -w, w)
 ```
 Using the Envelope Theorem, the exact first and second derivatives of the squared distance $`\frac{1}{2}D^2(v)`$ with respect to $`v`$ can be analytically computed without differentiating the `clamp` operation itself:
 ```math

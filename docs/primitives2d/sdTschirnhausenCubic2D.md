@@ -55,7 +55,7 @@ In real-time procedural rendering and shader programming:
 - **Transcendental & Rational Spline Penalties**: Previous approximations relied on trigonometric angle parameters ($`t = \arccos(...)`$) or rational Bézier splines requiring expensive scalar divisions at every step of an iterative loop.
 
 `sdTschirnhausenCubic2D.glsl` introduces a breakthrough formulation based on a **Pure Degree-3 Polynomial Parameterization**:
-- **0 Trigonometric Evaluations**: No $`\sin`$, $`\cos`$, or $`\operatorname{atan2}`$ calls.
+- **0 Trigonometric Evaluations**: No $`\sin`$, $`\cos`$, or $`\mathrm{atan2}`$ calls.
 - **0 Divisions in Iterative Polynomial Evaluations**: Evaluating $`\mathbf{q}(s)`$, $`\mathbf{q}'(s)`$, and $`\mathbf{q}''(s)`$ requires strictly additions and multiplications.
 - **0 Square Roots in the Sign Test**: A purely algebraic degree-3 test resolves inside/outside status with machine exactness.
 - **Unified Branch Architecture**: A single branch solver computes closest points on both the closed teardrop loop and the infinite crunodal tails.
@@ -121,7 +121,7 @@ f'(s) = \bigl[q_x'(s)\bigr]^2 + \bigl[q_y'(s)\bigr]^2 + \bigl(q_x(s) - p_x\bigr)
 #### Multi-Seed SIMD Newton Solver:
 To guarantee convergence across the entire plane, we evaluate 6 Newton-Raphson iterations across three geometric seeds $`s \in \{0.2 \Delta s, 0.5 \Delta s, 0.8 \Delta s\}`$ alongside boundary bracket endpoints $`s_{\min}`$ and $`s_{\max}`$:
 ```math
-s_{k+1} = \operatorname{clamp}\left(s_k - \frac{f(s_k)}{\max\bigl(f'(s_k),\, 10^{-12}\bigr)},\; s_{\min},\; s_{\max}\right)
+s_{k+1} = \mathrm{clamp}\left(s_k - \frac{f(s_k)}{\max\bigl(f'(s_k),\, 10^{-12}\bigr)},\; s_{\min},\; s_{\max}\right)
 ```
 Because the degree-5 distance stationarity polynomial is well-behaved on the bounded interval, 6 iterations achieve floating-point precision ($`< 4 \times 10^{-7}`$) everywhere.
 

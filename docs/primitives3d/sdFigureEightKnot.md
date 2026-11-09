@@ -20,7 +20,7 @@
 
 Johann Benedict Listing (1847) first studied the **figure-eight knot** ($`4_1`$), the unique prime knot with crossing number 4. In 1978, William Thurston proved that the complement of $`4_1`$ in the 3-sphere, $`S^3 \setminus 4_1`$, is a complete finite-volume hyperbolic 3-manifold—establishing the figure-eight knot as the simplest and most fundamental hyperbolic knot in topology, with minimal hyperbolic volume:
 ```math
-\operatorname{Vol}(S^3 \setminus 4_1) = 2 \Lambda\left(\frac{\pi}{3}\right) = 6 \cdot \sum_{n=1}^\infty \frac{\sin(2n\pi/3)}{2n^2} \approx 2.0298832128
+\mathrm{Vol}(S^3 \setminus 4_1) = 2 \Lambda\left(\frac{\pi}{3}\right) = 6 \cdot \sum_{n=1}^\infty \frac{\sin(2n\pi/3)}{2n^2} \approx 2.0298832128
 ```
 where $`\Lambda(\theta)`$ is the Lobachevsky function.
 
@@ -64,7 +64,7 @@ Because the vertical harmonic frequency $`2 q`$ has twice the period of radial m
 
 #### 3. Exact Azimuthal Strand Seeding
 
-Given an arbitrary query point $`\mathbf{p} = (x, y, z) \in \mathbb{R}^3`$, let $`\rho = \sqrt{x^2 + y^2}`$ and $`\phi = \operatorname{atan2}(y, x)`$.
+Given an arbitrary query point $`\mathbf{p} = (x, y, z) \in \mathbb{R}^3`$, let $`\rho = \sqrt{x^2 + y^2}`$ and $`\phi = \mathrm{atan2}(y, x)`$.
 
 The squared Euclidean distance from $`\mathbf{p}`$ to $`\mathbf{q}(t)`$ is:
 ```math
@@ -106,7 +106,7 @@ we compute all derivatives from a **single evaluation** of $`\cos(q t)`$ and $`\
 
 Near the origin ($`\rho \to 0`$) or inflection points, $`g'(t)`$ can become small. We apply a **Levenberg-Marquardt-style positive curvature floor** $`\max(g', 0.4)`$ and clamp the Newton step to $`[-0.3, 0.3]`$:
 ```math
-t_{i+1} = t_i - \operatorname{clamp}\left(\frac{g(t_i)}{\max(g'(t_i), 0.4)},\; -0.3,\; 0.3\right)
+t_{i+1} = t_i - \mathrm{clamp}\left(\frac{g(t_i)}{\max(g'(t_i), 0.4)},\; -0.3,\; 0.3\right)
 ```
 This guarantees monotonic quadratic convergence across the entire 3D domain in 5 iterations.
 

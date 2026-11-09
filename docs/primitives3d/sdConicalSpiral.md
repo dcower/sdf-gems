@@ -29,13 +29,13 @@ where $`a`$ controls the radial expansion, $`c`$ controls the vertical rise, and
 
 ### Orthogonal Cone-Generator Turn Projection
 The curve lies exactly on the cone $`z = (c/a)\rho`$. To find the nearest point on the helix without branching, we project the query point $`\mathbf{p}`$ onto the unrolled cone to find the best continuous turn $`\theta_{\text{cone}}`$.
-Let $`\rho = \|\mathbf{p}_{xy}\|`$ and $`\phi = \operatorname{atan2}(p_y, p_x)`$. The projection onto the generating cone yields:
+Let $`\rho = \|\mathbf{p}_{xy}\|`$ and $`\phi = \mathrm{atan2}(p_y, p_x)`$. The projection onto the generating cone yields:
 ```math
-\theta_{\text{cone}} = \operatorname{clamp}\left(\frac{a \rho + c p_z}{a^2 + c^2}, 0, \frac{h}{c}\right)
+\theta_{\text{cone}} = \mathrm{clamp}\left(\frac{a \rho + c p_z}{a^2 + c^2}, 0, \frac{h}{c}\right)
 ```
 The closest integer turn index is therefore:
 ```math
-k_0 = \operatorname{round}\left(\frac{\theta_{\text{cone}} - \phi}{2\pi}\right)
+k_0 = \mathrm{round}\left(\frac{\theta_{\text{cone}} - \phi}{2\pi}\right)
 ```
 We search $`k \in \{k_0-2, \dots, k_0+2\}`$ and evaluate the half-turns $`s \in \{0, 1\}`$. From these seeds, Newton's method rapidly converges to the exact nearest points on the space curve.
 
@@ -66,10 +66,10 @@ r^*_\pi = \frac{-\rho + h p_z + \gamma_{\text{factor}} |-h \rho - p_z|}{1 + h^2}
 ```
 Taking the logarithm of the radii yields the continuous turn indices for the front and back sides:
 ```math
-k_0 = \operatorname{round}\left(\frac{\ln(r^*_0 / a) - b \phi}{2\pi}\right)
+k_0 = \mathrm{round}\left(\frac{\ln(r^*_0 / a) - b \phi}{2\pi}\right)
 ```
 ```math
-k_\pi = \operatorname{round}\left(\frac{\ln(r^*_\pi / a) - b (\phi + \pi)}{2\pi}\right)
+k_\pi = \mathrm{round}\left(\frac{\ln(r^*_\pi / a) - b (\phi + \pi)}{2\pi}\right)
 ```
 By testing a tight window of integer turns around $`k_0`$ and $`k_\pi`$, we iteratively solve the distance equation for the expanding spheres and take the minimum.
 

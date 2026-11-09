@@ -43,7 +43,7 @@ For any spatial query point $`\mathbf{p} = (x, y, z) \in \mathbb{R}^3`$, the clo
 Every ruling passes through the $`z`$-axis at height $`h \sin(n\theta) \in [-h, h]`$. Consequently, the union of all ruling origins forms the vertical segment from $`(0, 0, -h)`$ to $`(0, 0, h)`$. The exact distance from $`\mathbf{p}`$ to this spine is available in closed form:
 
 ```math
-z_{\text{spine}} = \operatorname{clamp}(z, -h, h), \qquad D_{\text{spine}}^2 = x^2 + y^2 + (z - z_{\text{spine}})^2
+z_{\text{spine}} = \mathrm{clamp}(z, -h, h), \qquad D_{\text{spine}}^2 = x^2 + y^2 + (z - z_{\text{spine}})^2
 ```
 
 This closed-form candidate guarantees that the singular self-intersection at $`x=y=0`$ is unconditionally bounded and exact, desingularizing the medial seam.
@@ -59,7 +59,7 @@ For a fixed ruling angle $`\theta`$, the distance squared from $`\mathbf{p}`$ to
 Letting $`w(\theta) = x \cos\theta + y \sin\theta`$ and $`q(\theta) = -x \sin\theta + y \cos\theta`$, the optimal radial coordinate along the segment $`[0, R]`$ is given by:
 
 ```math
-u^*(\theta) = \operatorname{clamp}(w(\theta), 0, R)
+u^*(\theta) = \mathrm{clamp}(w(\theta), 0, R)
 ```
 
 The minimum squared distance to the ruling at angle $`\theta`$ is:
@@ -85,7 +85,7 @@ Notice that $`\cos(2n\theta) = \cos^2(n\theta) - \sin^2(n\theta)`$, so the trigo
 ### 3. Four-Feature Vectorized Bracket Seeds
 
 To guarantee global convergence across arbitrary spatial query points, we observe that the objective $`D^2(\theta)`$ can possess local extrema driven by:
-- Horizontal azimuth alignment: $`\phi = \operatorname{atan2}(y, x)`$
+- Horizontal azimuth alignment: $`\phi = \mathrm{atan2}(y, x)`$
 - Vertical crest proximity: heights near $`z = +h`$ where $`\sin(n\theta) = +1`$
 - Vertical trough proximity: heights near $`z = -h`$ where $`\sin(n\theta) = -1`$
 - Midplane crossings: nodes where $`z = 0`$ and $`\sin(n\theta) = 0`$
@@ -93,10 +93,10 @@ To guarantee global convergence across arbitrary spatial query points, we observ
 With period $`T = 2\pi / n`$ and quarter-period $`\Delta = \pi / (2n)`$, we construct four simultaneous seeds in a single `vec4`:
 
 ```math
-\theta_{\text{azimuth}} = \phi, \qquad \theta_{\text{crest}} = \Delta + T \operatorname{round}\left(\frac{\phi - \Delta}{T}\right)
+\theta_{\text{azimuth}} = \phi, \qquad \theta_{\text{crest}} = \Delta + T \mathrm{round}\left(\frac{\phi - \Delta}{T}\right)
 ```
 ```math
-\theta_{\text{trough}} = -\Delta + T \operatorname{round}\left(\frac{\phi + \Delta}{T}\right), \qquad \theta_{\text{node}} = 2\Delta \operatorname{round}\left(\frac{\phi}{2\Delta}\right)
+\theta_{\text{trough}} = -\Delta + T \mathrm{round}\left(\frac{\phi + \Delta}{T}\right), \qquad \theta_{\text{node}} = 2\Delta \mathrm{round}\left(\frac{\phi}{2\Delta}\right)
 ```
 
 Refining all 4 seeds in lockstep via 6 vectorized Newton-Raphson iterations with guarded step damping converges to machine precision everywhere in $`\mathbb{R}^3`$ with zero thread divergence.

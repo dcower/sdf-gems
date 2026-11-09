@@ -31,9 +31,9 @@ Because the spiral's curvature varies exponentially with radius, the true Euclid
 
 ### 1. Conformal Log-Turn Bracketing & Desingularized Exponential Stationarity (`sdLogSpiral2D`)
 
-For any point $`\mathbf{p} = (\rho\cos\phi, \rho\sin\phi) \in \mathbb{R}^2 \setminus \{\mathbf{0}\}`$ with $`\rho = \|\mathbf{p}\|`$ and $`\phi = \operatorname{atan2}(p_y, p_x) \in (-\pi, \pi]`$, the logarithmic spiral intersects the ray at angle $`\phi`$ at turn indices $`\theta_k = \phi + 2\pi k`$ ($`k \in \mathbb{Z}`$), where the nearest radial turn index is:
+For any point $`\mathbf{p} = (\rho\cos\phi, \rho\sin\phi) \in \mathbb{R}^2 \setminus \{\mathbf{0}\}`$ with $`\rho = \|\mathbf{p}\|`$ and $`\phi = \mathrm{atan2}(p_y, p_x) \in (-\pi, \pi]`$, the logarithmic spiral intersects the ray at angle $`\phi`$ at turn indices $`\theta_k = \phi + 2\pi k`$ ($`k \in \mathbb{Z}`$), where the nearest radial turn index is:
 ```math
-k_0 = \operatorname{round}\!\left(\frac{\ln(\rho / a) - b\phi}{2\pi b}\right)
+k_0 = \mathrm{round}\!\left(\frac{\ln(\rho / a) - b\phi}{2\pi b}\right)
 ```
 Writing $`\theta = \theta_k + \delta`$ with local angular offset $`\delta \in [-\pi, \pi]`$ and base turn radius $`r_k = a e^{b\theta_k}`$, the squared Euclidean distance from $`\mathbf{p}`$ to $`\mathbf{S}(\theta) = r(\theta)(\cos\theta, \sin\theta)`$ is:
 ```math

@@ -28,7 +28,7 @@ By the **Orthogonal Eikonal Composition Theorem**, given $`(u, v) = (d_{\text{2D
 | :--- | :---: | :---: | :---: | :---: |
 | `opExtrudeCove` / `sdgExtrudeCove` | $`1`$ | `0.000e+00` | `2.220e-16` | `0.3142` |
 | `opExtrudeBead` / `sdgExtrudeBead` | $`1`$ | `0.000e+00` | `2.220e-16` | `0.1050` ($`29.3\%`$ interior) |
-| `opExtrudeOgee` / `sdgExtrudeOgee` | $`0\text{–}1`$ | `4.441e-16` | `2.220e-16` | `0.2828` |
+| `opExtrudeOgee` / `sdgExtrudeOgee` | $`0\text{-}1`$ | `4.441e-16` | `2.220e-16` | `0.2828` |
 
 ---
 

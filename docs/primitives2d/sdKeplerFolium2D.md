@@ -110,7 +110,7 @@ f'(\theta) = \left(\frac{dq_x}{d\theta}\right)^2 + \left(\frac{dq_y}{d\theta}\ri
 ```
 Since $`\frac{ds}{d\theta} = \frac{1}{2}\sec^2(\theta/2) = \frac{1}{2}(1 + s^2)`$, the Newton-Raphson update in the rational parameter $`s`$ is:
 ```math
-\Delta s = \frac{ds}{d\theta} \Delta\theta = \frac{1}{2}\bigl(1 + s^2\bigr) \frac{f(\theta)}{f'(\theta)}, \qquad s_{k+1} = \operatorname{clamp}\left(s_k - \Delta s,\; 0,\; s_{\max}\right).
+\Delta s = \frac{ds}{d\theta} \Delta\theta = \frac{1}{2}\bigl(1 + s^2\bigr) \frac{f(\theta)}{f'(\theta)}, \qquad s_{k+1} = \mathrm{clamp}\left(s_k - \Delta s,\; 0,\; s_{\max}\right).
 ```
 We evaluate 3 vectorized initial seeds $`s_0 \in \{0.15 s_{\max}, 0.50 s_{\max}, 0.85 s_{\max}\}`$ in parallel inside `vec3` SIMD lanes for 6 iterations, followed by selecting the seed achieving the minimum distance $`\|\mathbf{p} - \mathbf{q}_j\|^2`$ (also checking the cuspidal origin $`(0, 0)`$ and horizontal apex $`(\alpha, 0)`$).
 
@@ -133,11 +133,11 @@ After computing the local gradient vector $`\mathbf{g}_{\text{folded}}`$, the re
 
 Because the folium algebraic equations are quartics, the interior domain test can be evaluated with pure additions and multiplications, requiring zero square roots or trigonometric functions:
 - **Kepler Oviform Folium**:
-  $`\displaystyle \operatorname{inside}(\mathbf{p}) \iff (p_x > 0) \;\land\; \bigl(p_x^2 + p_y^2\bigr)^2 < p_x \bigl(a p_x^2 + (a - b) p_y^2\bigr).`$
+  $`\displaystyle \mathrm{inside}(\mathbf{p}) \iff (p_x > 0) \;\land\; \bigl(p_x^2 + p_y^2\bigr)^2 < p_x \bigl(a p_x^2 + (a - b) p_y^2\bigr).`$
 - **Dürer Double Folium**:
-  $`\displaystyle \operatorname{inside}(\mathbf{p}) \iff (p_x > 0) \;\land\; \bigl(p_x^2 + p_y^2\bigr)^2 < 4 a p_x p_y^2.`$
+  $`\displaystyle \mathrm{inside}(\mathbf{p}) \iff (p_x > 0) \;\land\; \bigl(p_x^2 + p_y^2\bigr)^2 < 4 a p_x p_y^2.`$
 - **Regular Trifolium**: In the $`D_3`$-folded coordinates $`\mathbf{q}`$:
-  $`\displaystyle \operatorname{inside}(\mathbf{p}) \iff \bigl(a q_x (q_x^2 - 3 q_y^2) > 0\bigr) \;\land\; \bigl(q_x^2 + q_y^2\bigr)^2 < a q_x \bigl(q_x^2 - 3 q_y^2\bigr).`$
+  $`\displaystyle \mathrm{inside}(\mathbf{p}) \iff \bigl(a q_x (q_x^2 - 3 q_y^2) > 0\bigr) \;\land\; \bigl(q_x^2 + q_y^2\bigr)^2 < a q_x \bigl(q_x^2 - 3 q_y^2\bigr).`$
 
 ### 5. 3D Revolved Kepler Egg Solid (`sdKeplerEgg3D`)
 

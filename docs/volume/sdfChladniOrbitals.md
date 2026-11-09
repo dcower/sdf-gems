@@ -38,11 +38,7 @@ While standing waves $`\psi(x)`$ generate intricate organic manifolds, convertin
 Consider the three fundamental cubic Helmholtz modes at wavenumber $`q`$ with total eigenvalue $`k^2 = 3q^2`$:
 
 ```math
-\begin{aligned}
-\psi_1(x) &= \cos(qx)\cos(qy)\cos(qz) \\
-\psi_2(x) &= \sin(qx)\sin(qy)\sin(qz) \\
-\psi_3(x) &= \cos(qx)\sin(qy)\cos(qz) + \cos(qy)\sin(qz)\cos(qx) + \cos(qz)\sin(qx)\cos(qy)
-\end{aligned}
+\begin{aligned} \psi_1(x) &= \cos(qx)\cos(qy)\cos(qz) \\ \psi_2(x) &= \sin(qx)\sin(qy)\sin(qz) \\ \psi_3(x) &= \cos(qx)\sin(qy)\cos(qz) + \cos(qy)\sin(qz)\cos(qx) + \cos(qz)\sin(qx)\cos(qy) \end{aligned}
 ```
 
 The general standing wave is parameterized by mode weights $`\mathbf{w} = (w_1, w_2, w_3)`$:
@@ -60,7 +56,7 @@ To construct a unit-speed distance metric without saddle degeneracy, define the 
 E(x) = k^2 \psi(x)^2 + \lVert\nabla\psi(x)\rVert^2 + \frac{1}{2k^2} \lVert H(x)\rVert_F^2 + \varepsilon
 ```
 
-where $`H(x) = \nabla^2\psi(x)`$ is the Hessian matrix and $`\lVert H\rVert_F^2 = \operatorname{tr}(H^T H)`$. Because $`\Delta\psi = -k^2\psi`$, the diagonal of $`H`$ satisfies $`H_{ii} = -q^2\psi`$. Thus:
+where $`H(x) = \nabla^2\psi(x)`$ is the Hessian matrix and $`\lVert H\rVert_F^2 = \mathrm{tr}(H^T H)`$. Because $`\Delta\psi = -k^2\psi`$, the diagonal of $`H`$ satisfies $`H_{ii} = -q^2\psi`$. Thus:
 
 ```math
 \lVert H\rVert_F^2 = 3q^4\psi^2 + 2\big(H_{yz}^2 + H_{xz}^2 + H_{xy}^2\big)
@@ -104,14 +100,14 @@ Along a ray $`x(t) = \mathbf{r}_o + t\mathbf{r}_d`$, let $`\omega_i = \mathbf{k}
 \int_{t_a}^{t_b} \rho(\mathbf{r}_o + t\mathbf{r}_d)\,dt = \frac{1}{16}\sum_{i=1}^4 \int_{t_a}^{t_b}\cos^2(\omega_i t + \phi_i)\,dt + \frac{1}{8}\sum_{1\le i < j\le 4} \int_{t_a}^{t_b}\cos(\omega_i t + \phi_i)\cos(\omega_j t + \phi_j)\,dt
 ```
 
-Each slab integral is evaluated in closed form via FP32-safe unnormalized sinc $`\operatorname{sinc}(u) = \sin(u)/u`$:
+Each slab integral is evaluated in closed form via FP32-safe unnormalized sinc $`\mathrm{sinc}(u) = \sin(u)/u`$:
 
 ```math
-\int_{t_a}^{t_b} \cos(\omega t + \phi)\,dt = \Delta t \operatorname{sinc}\Big(\frac{1}{2}\omega\Delta t\Big)\cos(\omega t_{\text{mid}} + \phi)
+\int_{t_a}^{t_b} \cos(\omega t + \phi)\,dt = \Delta t \mathrm{sinc}\Big(\frac{1}{2}\omega\Delta t\Big)\cos(\omega t_{\text{mid}} + \phi)
 ```
 
 ```math
-\int_{t_a}^{t_b} \cos^2(\omega t + \phi)\,dt = \frac{1}{2}\Delta t \left(1 + \operatorname{sinc}(\omega\Delta t)\cos(2(\omega t_{\text{mid}} + \phi))\right)
+\int_{t_a}^{t_b} \cos^2(\omega t + \phi)\,dt = \frac{1}{2}\Delta t \left(1 + \mathrm{sinc}(\omega\Delta t)\cos(2(\omega t_{\text{mid}} + \phi))\right)
 ```
 
 ---

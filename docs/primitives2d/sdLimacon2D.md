@@ -88,7 +88,7 @@ q_x''(\theta) = -b\cos\theta - 2a(\cos^2\theta - \sin^2\theta)
 q_y''(\theta) = -b\sin\theta - 4a\sin\theta\cos\theta
 ```
 
-To account for the sign of $`r(\theta)`$ when $`b < a`$, we define $`s_y(\theta) = \operatorname{sgn}(q_y(\theta))`$. The stationarity condition $`g(\theta) = \frac{1}{2} D'(\theta) = 0`$ becomes:
+To account for the sign of $`r(\theta)`$ when $`b < a`$, we define $`s_y(\theta) = \mathrm{sgn}(q_y(\theta))`$. The stationarity condition $`g(\theta) = \frac{1}{2} D'(\theta) = 0`$ becomes:
 ```math
 g(\theta) = (q_x(\theta) - p_x) q_x'(\theta) + (q_y(\theta) - |p_y| s_y(\theta)) q_y'(\theta) = 0
 ```
@@ -102,13 +102,13 @@ g'(\theta) = (q_x')^2 + (q_y')^2 + (q_x(\theta) - p_x) q_x''(\theta) + (q_y(\the
 The function $`g(\theta)`$ can have up to 4 roots on $`[0, \pi]`$ due to the quartic geometry. To achieve deterministic global convergence without branching:
 1. **Bracket Endpoints**: We evaluate $`\theta = 0`$ ($`\mathbf{q} = (b+a, 0)`$) and $`\theta = \pi`$ ($`\mathbf{q} = (a-b, 0)`$).
 2. **SIMD Newton Iteration**: We launch 4 parallel Newton iterations in a `vec4`:
-   ```math
-   \vec{\theta}_0 = (0.22, 1.00, 2.20, 2.85)
-   ```
+```math
+\vec{\theta}_0 = (0.22, 1.00, 2.20, 2.85)
+```
    Each iteration updates:
-   ```math
-   \Delta\theta = \operatorname{clamp}\left( \frac{g(\theta)}{\max(g'(\theta), 10^{-12})},\; -0.25,\; 0.25 \right)
-   ```
+```math
+\Delta\theta = \mathrm{clamp}\left( \frac{g(\theta)}{\max(g'(\theta), 10^{-12})},\; -0.25,\; 0.25 \right)
+```
    clamped to $`[0, \pi]`$. Over 7 iterations, the quadratic convergence of Newton's method refines all roots to machine precision.
 3. **Global Minimum Selection**: The minimal distance among the 4 seeds and 2 endpoints identifies the exact global projection point $`\mathbf{q}^* = (q_x^*, |q_y^*|)`$.
 
@@ -127,7 +127,7 @@ F(x, y) = (x^2 + y^2 - ax)^2 - b^2(x^2 + y^2)
 1. *The zero level-set $`F(x, y) = 0`$ is identical to the Euclidean limaçon $`\mathcal{C}`$.*
 2. *For $`b \ge a`$ (convex, dimpled, and cardioid regimes), $`F(x, y) < 0`$ if and only if $`(x, y)`$ lies strictly in the interior of the limaçon.*
 3. *For $`b < a`$ (inner-loop regime), $`F(x, y) < 0`$ defines the region between the outer loop and the inner loop, while $`F(x, y) > 0`$ holds strictly outside the outer loop and inside the inner loop.*
-4. *At the origin $`(0, 0)`$ for $`b > a`$, the origin is strictly interior, where $`F(0, 0) = 0`$ is resolved by $`b > a \implies \operatorname{sgn} = -1`$.*
+4. *At the origin $`(0, 0)`$ for $`b > a`$, the origin is strictly interior, where $`F(0, 0) = 0`$ is resolved by $`b > a \implies \mathrm{sgn} = -1`$.*
 
 ### Proof
 In polar coordinates $`x = r\cos\theta, y = r\sin\theta`$:

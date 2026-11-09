@@ -71,7 +71,7 @@ Let $`a = \tfrac{\sqrt3}{2}q_x`$, $`b = q_y`$ and $`e = \sqrt3 q_z`$. Then
 F'(\theta) = -a\,s + \frac{c}{R^3}\Big(e + 3s - \tfrac92\,b\,s(1+s^2)\Big).
 ```
 
-In terms of $`s`$, $`\operatorname{sign}F' = \operatorname{sign} g(s)`$ with $`g(s) = e + (3-\tfrac92 b)s - \tfrac92 b s^3 - a\,\varphi(s)`$ and $`\varphi(s) = s(1+3s^2)^{3/2}/\sqrt{1-s^2}`$. The function $`\varphi`$ is a product of non-negative, increasing, convex factors, so it is convex.
+In terms of $`s`$, $`\mathrm{sign}F' = \mathrm{sign} g(s)`$ with $`g(s) = e + (3-\tfrac92 b)s - \tfrac92 b s^3 - a\,\varphi(s)`$ and $`\varphi(s) = s(1+3s^2)^{3/2}/\sqrt{1-s^2}`$. The function $`\varphi`$ is a product of non-negative, increasing, convex factors, so it is convex.
 
 - **Case $`b \ge 0`$**: $`g`$ is concave and $`g(0)=e\ge0`$, so it changes sign at most once.
 - **Case $`b<0`$**: $`g>0`$ exactly when $`a < \psi(s) = \big[e/s + 3 + \tfrac92|b|(1+s^2)\big]\sqrt{1-s^2}\,(1+3s^2)^{-3/2}`$. Every term of $`\psi`$ is positive and strictly decreasing. For the last term, the log-derivative of $`(1+x)^2(1-x)/(1+3x)^3`$ is $`\tfrac{2}{1+x}-\tfrac{1}{1-x}-\tfrac{9}{1+3x}<0`$.

@@ -22,46 +22,42 @@ This header provides exact $`O(1)`$ 3D Euclidean signed distance functions and a
 
 ## 1. Spherical Loxodrome (Rhumb-Line Spiral)
 
-The Spherical Loxodrome, studied by Pedro Nunes (1537) and Gerardus Mercator (1569), is a curve on the sphere $`S^2(R)`$ that crosses every meridian at a constant bearing angle $`\beta = \operatorname{atan}(1/a)`$.
+The Spherical Loxodrome, studied by Pedro Nunes (1537) and Gerardus Mercator (1569), is a curve on the sphere $`S^2(R)`$ that crosses every meridian at a constant bearing angle $`\beta = \mathrm{atan}(1/a)`$.
 
 ### Geometric Definition
 
 The parametric equation is given by:
 ```math
-\mathbf{q}(\theta) = R\begin{pmatrix}
-\operatorname{sech}(a\theta)\cos\theta \\
-\operatorname{sech}(a\theta)\sin\theta \\
-\tanh(a\theta)
-\end{pmatrix}
+\mathbf{q}(\theta) = R\begin{pmatrix} \mathrm{sech}(a\theta)\cos\theta \\ \mathrm{sech}(a\theta)\sin\theta \\ \tanh(a\theta) \end{pmatrix}
 ```
 where $`a`$ controls the pitch of the spiral.
 
 ### $`S^2`$ Dot-Product Linearization
 
-Because $`\operatorname{sech}^2(a\theta)(\cos^2\theta + \sin^2\theta) + \tanh^2(a\theta) \equiv 1`$, the curve lies entirely on the sphere $`\mathbf{q}(\theta) \subset S^2(R)`$. Thus:
+Because $`\mathrm{sech}^2(a\theta)(\cos^2\theta + \sin^2\theta) + \tanh^2(a\theta) \equiv 1`$, the curve lies entirely on the sphere $`\mathbf{q}(\theta) \subset S^2(R)`$. Thus:
 ```math
 \|\mathbf{p} - \mathbf{q}(\theta)\|^2 = \|\mathbf{p}\|^2 + R^2 - 2\mathbf{p}\cdot\mathbf{q}(\theta)
 ```
 Minimizing the 3D Euclidean distance reduces to maximizing the linear projection:
 ```math
-h(\theta) = \mathbf{p}\cdot\mathbf{q}(\theta) = R \bigl( \rho\operatorname{sech}(a\theta)\cos(\theta - \phi) + z\tanh(a\theta) \bigr)
+h(\theta) = \mathbf{p}\cdot\mathbf{q}(\theta) = R \bigl( \rho\mathrm{sech}(a\theta)\cos(\theta - \phi) + z\tanh(a\theta) \bigr)
 ```
-where $`\rho = \sqrt{x^2 + y^2}`$ and $`\phi = \operatorname{atan2}(y, x)`$.
+where $`\rho = \sqrt{x^2 + y^2}`$ and $`\phi = \mathrm{atan2}(y, x)`$.
 
 ### Mercator Initialization & Hyperbolic Secant Desingularization
 
-Under the conformal Mercator projection $`\psi = \operatorname{asinh}(z/\rho)`$, the loxodrome straightens into the line $`\psi = a\theta`$. This provides the exact analytical turn index:
+Under the conformal Mercator projection $`\psi = \mathrm{asinh}(z/\rho)`$, the loxodrome straightens into the line $`\psi = a\theta`$. This provides the exact analytical turn index:
 ```math
-k_{\text{merc}} = \operatorname{round}\!\left(\frac{\frac{1}{a}\operatorname{asinh}(z/\max(\rho, 10^{-12})) - \phi}{2\pi}\right)
+k_{\text{merc}} = \mathrm{round}\!\left(\frac{\frac{1}{a}\mathrm{asinh}(z/\max(\rho, 10^{-12})) - \phi}{2\pi}\right)
 ```
 
-Writing $`\theta = \theta_k + \delta`$ with $`\theta_k = \phi + 2\pi k`$ and factoring out $`\operatorname{sech}(a\theta) > 0`$ yields a robust, zero-singularity solver equation:
+Writing $`\theta = \theta_k + \delta`$ with $`\theta_k = \phi + 2\pi k`$ and factoring out $`\mathrm{sech}(a\theta) > 0`$ yields a robust, zero-singularity solver equation:
 ```math
-g(\delta) = \rho\bigl(\sin\delta + a\tanh(a\theta)\cos\delta\bigr) - a z\operatorname{sech}(a\theta) = 0
+g(\delta) = \rho\bigl(\sin\delta + a\tanh(a\theta)\cos\delta\bigr) - a z\mathrm{sech}(a\theta) = 0
 ```
 Its exact analytical derivative is:
 ```math
-g'(\delta) = \rho\Bigl(\bigl(1 + a^2\operatorname{sech}^2(a\theta)\bigr)\cos\delta - a\tanh(a\theta)\sin\delta\Bigr) + a^2 z\operatorname{sech}(a\theta)\tanh(a\theta)
+g'(\delta) = \rho\Bigl(\bigl(1 + a^2\mathrm{sech}^2(a\theta)\bigr)\cos\delta - a\tanh(a\theta)\sin\delta\Bigr) + a^2 z\mathrm{sech}(a\theta)\tanh(a\theta)
 ```
 
 ---
@@ -74,11 +70,7 @@ Studied by Luigi Guido Grandi (1728), the Spherical Clelia or Rhodonea curve des
 
 The parametric equation for frequency $`m > 0`$ is:
 ```math
-\mathbf{q}(t) = R\begin{pmatrix}
-\cos t\cos(m t) \\
-\cos t\sin(m t) \\
-\sin t
-\end{pmatrix}
+\mathbf{q}(t) = R\begin{pmatrix} \cos t\cos(m t) \\ \cos t\sin(m t) \\ \sin t \end{pmatrix}
 ```
 
 ### Meridional Half-Period Azimuthal Reflection Identity

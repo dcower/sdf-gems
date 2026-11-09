@@ -26,9 +26,9 @@ In real-time SDF and volumetric field rendering, indirect illumination (global i
 `sdfEikonalRadiativeTransfer` establishes a closed-form radiative transfer framework by treating any certified 1-Lipschitz SDF $`d_A(\mathbf{p})`$ and its analytical gradient $`\mathbf{g}_A(\mathbf{p}) = \nabla d_A(\mathbf{p})`$ directly as a **0-ray radiative Green's function**:
 
 1. **Zero-Ray Footpoint Projection**: Projects any query point $`\mathbf{p}`$ on Object $`B`$ onto the closest surface point $`\mathbf{q}_A \in \partial\Omega_A$` in exactly zero raymarching steps:
-   ```math
-   \mathbf{q}_A = \mathbf{p} - d_A(\mathbf{p})\,\nabla d_A(\mathbf{p})
-   ```
+```math
+\mathbf{q}_A = \mathbf{p} - d_A(\mathbf{p})\,\nabla d_A(\mathbf{p})
+```
 2. **Differential-to-Cap Configuration Factor (View Factor)**: Evaluates the subtended solid angle spherical cap with half-angle $`\sin\theta_{\max}`$ and computes the exact cosine-weighted view factor $`F_{B \to A}(\mathbf{p}, \mathbf{n}_B) \in [0, 1]`$ with smooth $`C^1`$ horizon wrap.
 3. **Legendre Zonal Harmonic (SH-3) Moments**: Evaluates the exact analytical zonal moments $`(Z_0, Z_1, Z_2)`$ over the subtended cap to compute ambient contact occlusion and bent normals.
 4. **Bent Normal & Contact Occlusion**: Deflects the receiver normal away from the occluder using the dipole ($`Z_1`$) moment, routing indirect ambient irradiance into crevices.
@@ -64,7 +64,7 @@ Because this evaluates in $`O(1)`$ operations without iterating or stepping alon
 When an occluder or emitter $`A`$ of characteristic radius $`R_A`$ is situated at certified distance $`d_A`$, it subtends a spherical cap on the receiver's unit sphere with half-angle $`\theta_{\max}`$:
 
 ```math
-\sin\theta_{\max} = \operatorname{clamp}\!\left(\frac{R_A}{\max(R_A + \max(d_A, 0.0), 10^{-4})},\; 0.0,\; 1.0\right)
+\sin\theta_{\max} = \mathrm{clamp}\!\left(\frac{R_A}{\max(R_A + \max(d_A, 0.0), 10^{-4})},\; 0.0,\; 1.0\right)
 ```
 
 Let $`\mu = \cos\theta_{\max} = \sqrt{\max(1 - \sin^2\theta_{\max}, 0)}`$. Integrating the first three Legendre polynomials $`P_0(t) = 1`$, $`P_1(t) = t`$, $`P_2(t) = \frac{1}{2}(3t^2 - 1)`$ analytically over the subtended cap $`[\mu, 1]`$ yields the exact Zonal Harmonic moments:
@@ -96,11 +96,11 @@ F_{B \to A} = \int_{\text{cap}} \frac{\cos\gamma}{\pi}\,d\omega
 For unclipped caps ($`\cos\gamma = \mathbf{n}_B \cdot \mathbf{d}_{BA} \ge \sin\theta_{\max}`$), this equals $`F = \cos\gamma \sin^2\theta_{\max}`$. When tilted across the receiver horizon ($`-\sin\theta_{\max} < \cos\gamma < \sin\theta_{\max}`$), `sdfEikonalViewFactor` applies a $`C^1`$ smooth Hermite horizon wrap:
 
 ```math
-u = \operatorname{clamp}\!\left(\frac{\cos\gamma + \sin\theta_{\max}}{2\max(\sin\theta_{\max}, 10^{-4})},\; 0.0,\; 1.0\right)
+u = \mathrm{clamp}\!\left(\frac{\cos\gamma + \sin\theta_{\max}}{2\max(\sin\theta_{\max}, 10^{-4})},\; 0.0,\; 1.0\right)
 ```
 
 ```math
-h(u) = u^2 (3 - 2u), \qquad F_{B \to A} = \operatorname{clamp}\!\Big(h(u)\,\max\big(\cos\gamma + \tfrac{1}{2}\sin\theta_{\max}(1 - u),\, 0.0\big)\,\sin^2\theta_{\max},\; 0.0,\; 1.0\Big)
+h(u) = u^2 (3 - 2u), \qquad F_{B \to A} = \mathrm{clamp}\!\Big(h(u)\,\max\big(\cos\gamma + \tfrac{1}{2}\sin\theta_{\max}(1 - u),\, 0.0\big)\,\sin^2\theta_{\max},\; 0.0,\; 1.0\Big)
 ```
 
 This guarantees that $`F \to 0`$ smoothly with zero derivative at horizon touchdown ($`u = 0`$), eliminating dark popping artifacts as emitters rotate around receiver silhouettes.
@@ -110,11 +110,11 @@ This guarantees that $`F \to 0`$ smoothly with zero derivative at horizon touchd
 Ambient occlusion from directional occluders pulls the effective unoccluded direction away from the occluder. Using the dipole moment $`Z_1(\mu)`$:
 
 ```math
-\mathbf{n}_{\text{bent}} = \operatorname{normalize}\big(\mathbf{n}_B - 2\,Z_1(\mu)\,\max(\mathbf{n}_B \cdot \mathbf{d}_{\text{occ}}, 0)\,\mathbf{d}_{\text{occ}}\big)
+\mathbf{n}_{\text{bent}} = \mathrm{normalize}\big(\mathbf{n}_B - 2\,Z_1(\mu)\,\max(\mathbf{n}_B \cdot \mathbf{d}_{\text{occ}}, 0)\,\mathbf{d}_{\text{occ}}\big)
 ```
 
 ```math
-V_{\text{contact}} = \operatorname{clamp}\big(1 - 2\,Z_1(\mu)\,\max(\mathbf{n}_B \cdot \mathbf{d}_{\text{occ}}, 0),\; 0.0,\; 1.0\big)
+V_{\text{contact}} = \mathrm{clamp}\big(1 - 2\,Z_1(\mu)\,\max(\mathbf{n}_B \cdot \mathbf{d}_{\text{occ}}, 0),\; 0.0,\; 1.0\big)
 ```
 
 Sampling environment irradiance along $`\mathbf{n}_{\text{bent}}`$ naturally bends indirect light into unoccluded sky directions while darkening occluded crevices.

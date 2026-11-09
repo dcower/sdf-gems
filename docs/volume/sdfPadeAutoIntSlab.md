@@ -74,12 +74,7 @@ Substituting these expansions into the Stieltjes integral yields:
 where $`\mathbf{w} = \mathbf{M}_{\text{Stieltjes}}\, \mathbf{T}_{\text{bern}}`$. The matrix elements $`M_{ij} = \int_0^1 B_i^3(u) (- (B_j^3)'(u))\, du`$ evaluate analytically to exact rational fractions:
 
 ```math
-\mathbf{M}_{\text{Stieltjes}} = \frac{1}{20} \begin{bmatrix}
- 10 & -6 & -3 & -1 \\
-  6 &  0 & -3 & -3 \\
-  3 &  3 &  0 & -6 \\
-  1 &  3 &  6 & -10
-\end{bmatrix}.
+\mathbf{M}_{\text{Stieltjes}} = \frac{1}{20} \begin{bmatrix} 10 & -6 & -3 & -1 \\ 6 &  0 & -3 & -3 \\ 3 &  3 &  0 & -6 \\ 1 &  3 &  6 & -10 \end{bmatrix}.
 ```
 
 #### Exact Column-Sum Identity (Unit Slab Opacity)
@@ -113,13 +108,13 @@ In GLSL, matrices are column-major. `SDF_STIELTJES_BERNSTEIN_MAT4` is stored suc
 `sdfTransmittanceBernstein` constructs the cubic control vector $`\mathbf{T}_{\text{bern}} = (1.0, T_1, T_2, T_3)`$ from the boundary distances and ray derivatives $`(d_0, \dot{d}_0, d_1, \dot{d}_1)`$:
 
 1. $`T_0 = 1.0`$.
-2. Endpoint transmittance: $`T_3 = \operatorname{clamp}(\Phi_s(d_1) / \max(\Phi_s(d_0), 10^{-6}), 0.0, 1.0)`$.
+2. Endpoint transmittance: $`T_3 = \mathrm{clamp}(\Phi_s(d_1) / \max(\Phi_s(d_0), 10^{-6}), 0.0, 1.0)`$.
 3. Directional derivatives:
    $`\frac{dT}{dt}\big|_0 = \frac{s \dot{d}_0}{1 + e^{s d_0}}`$, $`\frac{dT}{dt}\big|_1 = T_3 \frac{s \dot{d}_1}{1 + e^{s d_1}}`$.
 4. Bernstein derivative relations $`T'(0) = 3(T_1 - T_0)`$ and $`T'(1) = 3(T_3 - T_2)`$ yield:
 
 ```math
-T_1 = \operatorname{clamp}\!\left(1.0 + \frac{\Delta t}{3} \frac{s \dot{d}_0}{1 + e^{s d_0}},\; T_3,\; 1.0\right), \qquad T_2 = \operatorname{clamp}\!\left(T_3 - \frac{\Delta t}{3} T_3 \frac{s \dot{d}_1}{1 + e^{s d_1}},\; T_3,\; T_1\right).
+T_1 = \mathrm{clamp}\!\left(1.0 + \frac{\Delta t}{3} \frac{s \dot{d}_0}{1 + e^{s d_0}},\; T_3,\; 1.0\right), \qquad T_2 = \mathrm{clamp}\!\left(T_3 - \frac{\Delta t}{3} T_3 \frac{s \dot{d}_1}{1 + e^{s d_1}},\; T_3,\; T_1\right).
 ```
 
 Clamping guarantees $`1.0 \ge T_1 \ge T_2 \ge T_3 \ge 0.0`$, ensuring that all weights $`w_i \ge 0`$ are non-negative.

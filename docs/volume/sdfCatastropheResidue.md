@@ -96,7 +96,7 @@ z_*^\pm = \pm i\,\sqrt{\frac{2\,(\epsilon + u_1)}{\kappa}}.
 Closing the contour in the upper half-plane $`\mathbb{C}_+`$ through an infinite semicircular arc, Cauchy's Residue Theorem yields the **exact closed form**:
 
 ```math
-I_{\text{residue}} = 2\pi i\,\operatorname{Res}_{z = z_*^+} \left[ \frac{\epsilon}{(\epsilon + u_1) + \frac{1}{2}\kappa\,z^2} \right] = \frac{\pi\,\epsilon}{\sqrt{\frac{1}{2}\kappa\,(\epsilon + \max(u_1, 0))}}.
+I_{\text{residue}} = 2\pi i\,\mathrm{Res}_{z = z_*^+} \left[ \frac{\epsilon}{(\epsilon + u_1) + \frac{1}{2}\kappa\,z^2} \right] = \frac{\pi\,\epsilon}{\sqrt{\frac{1}{2}\kappa\,(\epsilon + \max(u_1, 0))}}.
 ```
 
 For a finite slab $`[s_a, s_b]`$ ($`s_a = t_a - t^*`$, $`s_b = t_b - t^*`$), the antiderivative evaluates in 1 tap via:
@@ -114,10 +114,10 @@ As $`s_a \to -\infty`$ and $`s_b \to +\infty`$, $`I_{\text{slab}} \to I_{\text{r
 Near a silhouette caustic, physical wave optics replaces the discontinuous geometric shadow with the diffraction catastrophe integral:
 
 ```math
-\Psi(u_1) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \exp\!\left(i\left(\frac{1}{3}s^3 - k_{\text{wave}}^{2/3} u_1 s\right)\right) ds = k_{\text{wave}}^{-1/3} \operatorname{Ai}\!\left(-k_{\text{wave}}^{2/3} u_1\right).
+\Psi(u_1) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \exp\!\left(i\left(\frac{1}{3}s^3 - k_{\text{wave}}^{2/3} u_1 s\right)\right) ds = k_{\text{wave}}^{-1/3} \mathrm{Ai}\!\left(-k_{\text{wave}}^{2/3} u_1\right).
 ```
 
-The observed intensity follows the squared Airy pattern $`\operatorname{Ai}^2(-k_{\text{wave}}^{2/3} u_1)`$:
+The observed intensity follows the squared Airy pattern $`\mathrm{Ai}^2(-k_{\text{wave}}^{2/3} u_1)`$:
 - **Shadow zone ($`u_1 > 0`$)**: Evanescent exponential decay into geometric shadow without hard cutoffs.
 - **Illuminated zone ($`u_1 < 0`$)**: Supernumerary oscillatory interference fringes.
 - By assigning wave numbers $`k_{\text{wave}} = 2\pi/\lambda`$ to red, green, and blue wavelengths ($`k_R < k_G < kB`$), the diffraction pattern renders physical chromatic dispersion fringes.
@@ -132,7 +132,7 @@ When rays traverse compound shapes or overlapping lobes $`A`$ and $`B`$, indepen
 \chi(A \cup B) = \chi(A) + \chi(B) - \chi(A \cap B).
 ```
 
-Each tangential critical point $`\dot{\psi}(t_k^*) = 0`$ is signed by its 1D Morse index $`(-1)^{\mu_k} = \operatorname{sign}(\ddot{\psi})`$:
+Each tangential critical point $`\dot{\psi}(t_k^*) = 0`$ is signed by its 1D Morse index $`(-1)^{\mu_k} = \mathrm{sign}(\ddot{\psi})`$:
 - Local minima ($`\ddot{\psi} > 0`$, $`\mu = 0`$, sign $`+1`$): lobe silhouettes.
 - Intervening saddle maxima ($`\ddot{\psi} < 0`$, $`\mu = 1`$, sign $`-1`$): intersection ridges.
 
@@ -151,7 +151,7 @@ Evaluated via `tools/verify_catastrophe_residue.py` using platform OpenGL 4.1 / 
 | **1-Tap Cauchy Slab Integral** | 2,048-step FP64 Simpson quadrature | Rel $`L_2 = 1.33\times 10^{-2}`$, Max $`1.85\times 10^{-2}`$ | **PASS** |
 | **Quadrature Speedup** | 2,048 marching taps | $`2048\times`$ fewer taps vs GT, $`64\times`$ vs coarse march | **PASS** |
 | **Euler-Morse Seam Cancellation** | Numeric union density on dimer | Over-brightening reduced from $`+54.7\%`$ to $`2.9\%`$ ($`18.6\times`$) | **PASS** |
-| **Airy $`\operatorname{Ai}(x)`$ Approximation** ($`x \in [-8, 4]`$) | `scipy.special.airy` FP64 | Mean $`2.85\times 10^{-4}`$, Max $`3.50\times 10^{-3}`$ | **PASS** |
+| **Airy $`\mathrm{Ai}(x)`$ Approximation** ($`x \in [-8, 4]`$) | `scipy.special.airy` FP64 | Mean $`2.85\times 10^{-4}`$, Max $`3.50\times 10^{-3}`$ | **PASS** |
 | **Airy Caustic Intensity** ($`x \in [-8, 4]`$) | `scipy.special.airy` squared | Mean $`9.41\times 10^{-5}`$, Max $`1.08\times 10^{-3}`$ | **PASS** |
 | **Singular/Extreme Inputs** ($`x \in [-10^4, 10^4]`$) | FP32 dynamic range check | Zero NaNs, zero Infs, smooth bounded decay | **PASS** |
 | **Single-Translation-Unit Compilation** | 207 GLSL files via `tools/gpu_eval.py` | 0 errors in forward, reverse, new-file-first | **PASS** |

@@ -80,13 +80,13 @@ Downstream along the outgoing ray $`\mathbf{x}(s) = \mathbf{x}_0 + s \mathbf{d}_
 The ray-bundle area expansion Jacobian is $`J(s) = \det(I + s K_{\text{out}}) = (1 + s \kappa_1)(1 + s \kappa_2)`$.
 
 - **Caustic Singularities**: When $`1 + s \kappa_i = 0`$, the ray tube collapses along principal direction $`i`$, producing a caustic fold ($`J = 0`$) or cusp focus. The physical intensity is regularized by Airy smoothing:
-  ```math
-  I(s) = \frac{1}{\sqrt{J(s)^2 + \epsilon_{\text{Airy}}^2}}
-  ```
+```math
+I(s) = \frac{1}{\sqrt{J(s)^2 + \epsilon_{\text{Airy}}^2}}
+```
 - **WKB Maslov Index**: Each time the ray crosses a focal caustic ($`1 + s \kappa_i < 0`$), the geometric phase undergoes a topological $`\pi/2`$ phase shift (Maslov & Fedoriuk 1981):
-  ```math
-  \mu(s) = \mathbf{1}_{\{1 + s \kappa_1 < 0\}} + \mathbf{1}_{\{1 + s \kappa_2 < 0\}} \in \{0, 1, 2\}
-  ```
+```math
+\mu(s) = \mathbf{1}_{\{1 + s \kappa_1 < 0\}} + \mathbf{1}_{\{1 + s \kappa_2 < 0\}} \in \{0, 1, 2\}
+```
 
 ### 3. Closed-Form $`O(1)`$ TPMS Gyroid Bragg Iridescence
 

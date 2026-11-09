@@ -17,15 +17,15 @@ This module introduces an exact, globally 1-Lipschitz mapping that converts any 
 
 ## Mathematical Derivation
 
-The hyperbolic distance from the origin in the Poincaré ball `` $`B^3_R`$ `` is `` $`\rho = 2\operatorname{atanh}(r/R)`$ ``, so Euclidean radius is `` $`r = R\tanh(\rho/2)`$ ``. The function `` $`\phi(\rho) = R\tanh(\rho/2)`$ `` is strictly concave. 
+The hyperbolic distance from the origin in the Poincaré ball `` $`B^3_R`$ `` is `` $`\rho = 2\mathrm{atanh}(r/R)`$ ``, so Euclidean radius is `` $`r = R\tanh(\rho/2)`$ ``. The function `` $`\phi(\rho) = R\tanh(\rho/2)`$ `` is strictly concave. 
 
 Across any empty hyperbolic ball of radius `` $`|d_{\mathbb{H}}|`$ `` centered at `` $`\mathbf{p}`$ ``, the minimum Euclidean distance to its boundary is achieved by stepping radially outward. Thus, the exact Euclidean secant distance is:
 
 ```math
-d_{\text{Poincaré}}(d_{\mathbb{H}}, r, R) = R\,\frac{\bigl(1 - (r/R)^2\bigr)\tanh(d_{\mathbb{H}}/2)}{1 + (r/R)\tanh(|d_{\mathbb{H}}|/2)}
+d_{\text{Poincare}}(d_{\mathbb{H}}, r, R) = R\,\frac{\bigl(1 - (r/R)^2\bigr)\tanh(d_{\mathbb{H}}/2)}{1 + (r/R)\tanh(|d_{\mathbb{H}}|/2)}
 ```
 
-This mapping guarantees that `` $`d_{\text{Poincaré}}`$ `` is globally 1-Lipschitz in Euclidean space, avoiding all oversteps.
+This mapping guarantees that `` $`d_{\text{Poincare}}`$ `` is globally 1-Lipschitz in Euclidean space, avoiding all oversteps.
 
 Furthermore, we provide Ungar's 0-trig Möbius gyrovector translation for exact hyperbolic isometries, a geodesic sphere SDF, and the `{4, 3, 5}` hyperbolic order-5 cubic honeycomb folded inside the Poincaré ball.
 

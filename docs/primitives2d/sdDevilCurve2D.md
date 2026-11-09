@@ -71,13 +71,13 @@ b^4 + 4x^2(x^2 - a^2) \ge b^4 - a^4 > 0
 Consequently, the radical $`M(x)`$ is smooth, strictly real, and strictly bounded from below by $`M(x) \ge b/\sqrt{2} > 0`$ everywhere on $`\mathbb{R}`$.
 
 - **Outer Stator Branch**: The upper root corresponds directly to the smooth explicit graph:
-  ```math
-  y_{\mathrm{stator}}(x) = \pm M(x)
-  ```
+```math
+y_{\mathrm{stator}}(x) = \pm M(x)
+```
 - **Inner Rotor Loop**: By Vieta's formulas, the product of the two biquadratic roots is the constant term $`y_+^2 y_-^2 = x^2(a^2 - x^2)`$. Therefore, the lower root factors as:
-  ```math
-  y_-^2 = \frac{x^2(a^2 - x^2)}{M(x)^2} \implies y_{\mathrm{rotor}}(x) = \pm \frac{x \sqrt{a^2 - x^2}}{M(x)}
-  ```
+```math
+y_-^2 = \frac{x^2(a^2 - x^2)}{M(x)^2} \implies y_{\mathrm{rotor}}(x) = \pm \frac{x \sqrt{a^2 - x^2}}{M(x)}
+```
   Since $`M(x) \ge b/\sqrt{2}`$ is non-vanishing, the division is unconditionally stable everywhere on $`|x| \le a`$.
 
 ---
@@ -114,7 +114,7 @@ The point coordinate derivatives are:
 ```
 The distance minimization objective $`f(\theta) = (\mathbf{q}(\theta) - \mathbf{p}) \cdot \mathbf{q}'(\theta)`$ produces an exact Newton step $`\Delta\theta = -f / f'`$. Because $`\frac{ds}{d\theta} = \frac{1}{2}(1 + s^2)`$, the parameter update in $`s`$ is:
 ```math
-s \leftarrow \operatorname{clamp}\left(s - \frac{1}{2}(1 + s^2) \frac{f}{f'},\; 0,\; 1\right)
+s \leftarrow \mathrm{clamp}\left(s - \frac{1}{2}(1 + s^2) \frac{f}{f'},\; 0,\; 1\right)
 ```
 This converges to machine single precision in 6 steps with **zero calls to trigonometric functions**.
 

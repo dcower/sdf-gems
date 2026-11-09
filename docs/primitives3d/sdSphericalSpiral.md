@@ -29,13 +29,13 @@ where $`\theta \in [0, \pi/a]`$.
 
 To evaluate the exact Signed Distance Function (SDF) efficiently, we avoid finding all roots of the distance function globally. Instead, we use an $`O(1)`$ bracketing method that bounds the nearest point to a finite number of candidate turns.
 
-Given a query point $`\mathbf{p} = (x, y, z)`$, its cylindrical radius is $`\rho = \sqrt{x^2 + y^2}`$, its azimuthal angle is $`\phi_0 = \operatorname{atan2}(y, x)`$, and its spherical colatitude is $`\psi_0 = \operatorname{atan2}(\rho, z)`$.
+Given a query point $`\mathbf{p} = (x, y, z)`$, its cylindrical radius is $`\rho = \sqrt{x^2 + y^2}`$, its azimuthal angle is $`\phi_0 = \mathrm{atan2}(y, x)`$, and its spherical colatitude is $`\psi_0 = \mathrm{atan2}(\rho, z)`$.
 
 We can isolate the candidate turns by evaluating the local bracketing indices on the front, back, and polar meridians:
-- Front meridian index: $`k_0 = \operatorname{round}\left( \frac{\psi_0 / a - \phi_0}{2\pi} \right)`$
-- Back meridian index: $`k_\pi = \operatorname{round}\left( \frac{\psi_0 / a - (\phi_0 + \pi)}{2\pi} \right)`$
-- North polar bound: $`k_{\text{north}} = \operatorname{ceil}\left( \frac{-\phi_0 - \pi}{2\pi} \right)`$
-- South polar bound: $`k_{\text{south}} = \operatorname{floor}\left( \frac{\pi/a - \phi_0 - \pi}{2\pi} \right)`$
+- Front meridian index: $`k_0 = \mathrm{round}\left( \frac{\psi_0 / a - \phi_0}{2\pi} \right)`$
+- Back meridian index: $`k_\pi = \mathrm{round}\left( \frac{\psi_0 / a - (\phi_0 + \pi)}{2\pi} \right)`$
+- North polar bound: $`k_{\text{north}} = \mathrm{ceil}\left( \frac{-\phi_0 - \pi}{2\pi} \right)`$
+- South polar bound: $`k_{\text{south}} = \mathrm{floor}\left( \frac{\pi/a - \phi_0 - \pi}{2\pi} \right)`$
 
 We clamp the resulting angles $`\theta`$ to the valid range $`[0, \pi/a]`$.
 

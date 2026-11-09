@@ -20,11 +20,11 @@ The pseudosphere is formed by revolving **Christiaan Huygens's (1692) Tractrix**
 In cylindrical coordinates $`(\rho, \phi, z)`$ with $`\rho = \sqrt{x^2 + y^2}`$, the Tractrix meridional profile is parameterized by hyperbolic arc parameter $`t \ge 0`$:
 
 ```math
-\mathbf{q}(t) = \begin{pmatrix} \rho(t) \\ z(t) \end{pmatrix} = \begin{pmatrix} R \operatorname{sech} t \\ R (t - \tanh t) \end{pmatrix}, \qquad t \in [0, t_{\max}]
+\mathbf{q}(t) = \begin{pmatrix} \rho(t) \\ z(t) \end{pmatrix} = \begin{pmatrix} R \mathrm{sech} t \\ R (t - \tanh t) \end{pmatrix}, \qquad t \in [0, t_{\max}]
 ```
 
 Despite its foundational importance across mathematics, differential geometry, acoustic horn waveguide design, and relativistic spacetime embeddings, the pseudosphere has never previously possessed an exact Euclidean signed distance function or analytical gradient in computer graphics or real-time GLSL libraries:
-1. **Transcendental Inversion Barrier**: The parameterization mixes linear $`t`$ with hyperbolic functions $`\tanh t`$ and $`\operatorname{sech} t`$. Inverting $`z = R(t - \tanh t)`$ cannot be expressed in elementary radicals.
+1. **Transcendental Inversion Barrier**: The parameterization mixes linear $`t`$ with hyperbolic functions $`\tanh t`$ and $`\mathrm{sech} t`$. Inverting $`z = R(t - \tanh t)`$ cannot be expressed in elementary radicals.
 2. **Radial Projection Breakdown**: Prior shaders or raymarchers approximated the distance by horizontal radial offset $`\vert\rho - \rho_{\text{surf}}(z)\vert`$ or algebraic Taubin estimates. Because the Tractrix normal sweeps a full $`90^\circ`$ between the equator and the spires, horizontal radial projection misjudges the true orthogonal distance by up to $`0.41 R`$, causing catastrophic raymarching overstepping and visual tearing.
 3. **Equatorial Cusp & Flat Cap Singularities**: The equatorial rim is a non-differentiable $`C^0`$ cusp ridge, while the truncated spires at $`t = t_{\max}`$ terminate in flat circular boundary discs.
 
@@ -39,39 +39,39 @@ This module introduces the **Pythagorean Hyperbolic Tangent-Normal Collapse Theo
 Consider the Tractrix curve in the meridional half-plane $`\rho \ge 0, z \ge 0`$:
 
 ```math
-\rho(t) = R \operatorname{sech} t = \frac{R}{\cosh t}, \qquad z(t) = R (t - \tanh t)
+\rho(t) = R \mathrm{sech} t = \frac{R}{\cosh t}, \qquad z(t) = R (t - \tanh t)
 ```
 
 Differentiating with respect to $`t`$:
 
 ```math
-\frac{d\rho}{dt} = -R \operatorname{sech} t \tanh t, \qquad \frac{dz}{dt} = R (1 - \operatorname{sech}^2 t) = R \tanh^2 t
+\frac{d\rho}{dt} = -R \mathrm{sech} t \tanh t, \qquad \frac{dz}{dt} = R (1 - \mathrm{sech}^2 t) = R \tanh^2 t
 ```
 
 The velocity vector is:
 
 ```math
-\mathbf{q}'(t) = R \tanh t \begin{pmatrix} -\operatorname{sech} t \\ \tanh t \end{pmatrix}
+\mathbf{q}'(t) = R \tanh t \begin{pmatrix} -\mathrm{sech} t \\ \tanh t \end{pmatrix}
 ```
 
 Its Euclidean speed is:
 
 ```math
-\|\mathbf{q}'(t)\| = R \tanh t \sqrt{\operatorname{sech}^2 t + \tanh^2 t} \equiv R \tanh t
+\|\mathbf{q}'(t)\| = R \tanh t \sqrt{\mathrm{sech}^2 t + \tanh^2 t} \equiv R \tanh t
 ```
 
-by virtue of the fundamental hyperbolic Pythagorean identity $`\operatorname{sech}^2 t + \tanh^2 t \equiv 1`$.
+by virtue of the fundamental hyperbolic Pythagorean identity $`\mathrm{sech}^2 t + \tanh^2 t \equiv 1`$.
 
 Consequently, the **unit tangent vector** pointing in the direction of increasing $`t`$ is:
 
 ```math
-\mathbf{T}(t) = \begin{pmatrix} -\operatorname{sech} t \\ \tanh t \end{pmatrix}
+\mathbf{T}(t) = \begin{pmatrix} -\mathrm{sech} t \\ \tanh t \end{pmatrix}
 ```
 
 and the **outward unit normal vector** in the meridional plane is:
 
 ```math
-\mathbf{N}(t) = \begin{pmatrix} \tanh t \\ \operatorname{sech} t \end{pmatrix}, \qquad \|\mathbf{N}(t)\|^2 = \tanh^2 t + \operatorname{sech}^2 t \equiv 1
+\mathbf{N}(t) = \begin{pmatrix} \tanh t \\ \mathrm{sech} t \end{pmatrix}, \qquad \|\mathbf{N}(t)\|^2 = \tanh^2 t + \mathrm{sech}^2 t \equiv 1
 ```
 
 ---
@@ -87,35 +87,35 @@ For any spatial query point $`\mathbf{p} = (\rho, z)`$ with $`\rho = \sqrt{x^2 +
 Expanding this dot product explicitly:
 
 ```math
-\bigl(\rho - R \operatorname{sech} t\bigr)(-\operatorname{sech} t) + \bigl(z - R(t - \tanh t)\bigr)(\tanh t) = 0
+\bigl(\rho - R \mathrm{sech} t\bigr)(-\mathrm{sech} t) + \bigl(z - R(t - \tanh t)\bigr)(\tanh t) = 0
 ```
 
 Expanding both products:
 
 ```math
--\rho \operatorname{sech} t + R \operatorname{sech}^2 t + (z - R t)\tanh t + R \tanh^2 t = 0
+-\rho \mathrm{sech} t + R \mathrm{sech}^2 t + (z - R t)\tanh t + R \tanh^2 t = 0
 ```
 
 Grouping the terms proportional to $`R`$:
 
 ```math
-R\bigl(\operatorname{sech}^2 t + \tanh^2 t\bigr) - \rho \operatorname{sech} t - (R t - z)\tanh t = 0
+R\bigl(\mathrm{sech}^2 t + \tanh^2 t\bigr) - \rho \mathrm{sech} t - (R t - z)\tanh t = 0
 ```
 
-Applying the Pythagorean identity $`\operatorname{sech}^2 t + \tanh^2 t \equiv 1`$, the non-linear quadratic terms collapse identically into a single constant $`R`$:
+Applying the Pythagorean identity $`\mathrm{sech}^2 t + \tanh^2 t \equiv 1`$, the non-linear quadratic terms collapse identically into a single constant $`R`$:
 
 ```math
-R - \rho \operatorname{sech} t - (R t - z)\tanh t = 0
+R - \rho \mathrm{sech} t - (R t - z)\tanh t = 0
 ```
 
 Multiplying by $`-1`$ yields the **Pythagorean Hyperbolic Tangent-Normal Collapse equation**:
 
 ```math
-G(t) = \rho \operatorname{sech} t + (R t - z) \tanh t - R = 0
+G(t) = \rho \mathrm{sech} t + (R t - z) \tanh t - R = 0
 ```
 
 > [!NOTE]
-> Unlike standard curve projection equations which require computing $`\|\mathbf{p} - \mathbf{q}(t)\|^2`$ and involve bulky rational fractions of square roots, $`G(t) = 0`$ involves only the basic hyperbolic functions $`\operatorname{sech} t`$ and $`\tanh t`$ with **zero square roots and zero divisions**!
+> Unlike standard curve projection equations which require computing $`\|\mathbf{p} - \mathbf{q}(t)\|^2`$ and involve bulky rational fractions of square roots, $`G(t) = 0`$ involves only the basic hyperbolic functions $`\mathrm{sech} t`$ and $`\tanh t`$ with **zero square roots and zero divisions**!
 
 ---
 
@@ -124,19 +124,19 @@ G(t) = \rho \operatorname{sech} t + (R t - z) \tanh t - R = 0
 Differentiating $`G(t)`$ with respect to $`t`$:
 
 ```math
-\frac{dG}{dt} = \rho \frac{d}{dt}(\operatorname{sech} t) + R \tanh t + (R t - z)\frac{d}{dt}(\tanh t)
+\frac{dG}{dt} = \rho \frac{d}{dt}(\mathrm{sech} t) + R \tanh t + (R t - z)\frac{d}{dt}(\tanh t)
 ```
 
-Recalling $`\frac{d}{dt}(\operatorname{sech} t) = -\operatorname{sech} t \tanh t`$ and $`\frac{d}{dt}(\tanh t) = \operatorname{sech}^2 t`$:
+Recalling $`\frac{d}{dt}(\mathrm{sech} t) = -\mathrm{sech} t \tanh t`$ and $`\frac{d}{dt}(\tanh t) = \mathrm{sech}^2 t`$:
 
 ```math
-G'(t) = -\rho \operatorname{sech} t \tanh t + R \tanh t + (R t - z)\operatorname{sech}^2 t
+G'(t) = -\rho \mathrm{sech} t \tanh t + R \tanh t + (R t - z)\mathrm{sech}^2 t
 ```
 
-Factoring out $`\operatorname{sech} t`$:
+Factoring out $`\mathrm{sech} t`$:
 
 ```math
-G'(t) = R \tanh t + \operatorname{sech} t \bigl( (R t - z)\operatorname{sech} t - \rho \tanh t \bigr)
+G'(t) = R \tanh t + \mathrm{sech} t \bigl( (R t - z)\mathrm{sech} t - \rho \tanh t \bigr)
 ```
 
 In GLSL, this requires only two shared evaluations (`sech` and `tnh`):
@@ -151,32 +151,32 @@ t = clamp(t - clamp(G / max(Gp, 1e-12), -0.6, 0.6), 0.0, tMax);
 ### 4. Tri-Seed Initialization & Convergence
 
 To ensure global convergence across the entire $`\mathbb{R}^3`$ domain, we seed the 1D solver with three complementary starting estimates:
-1. **Equatorial Radial Seed**: $`t_\rho = \operatorname{acosh}(\max(R / \rho, 1))`$, solving the equatorial radius level set $`\rho(t) \approx \rho`$.
+1. **Equatorial Radial Seed**: $`t_\rho = \mathrm{acosh}(\max(R / \rho, 1))`$, solving the equatorial radius level set $`\rho(t) \approx \rho`$.
 2. **Axial Elevation Seed**: Approximating $`z(t) = R(t - \tanh t)`$ via $`u = z / R`$ as $`t_z = u + \tanh u`$.
 3. **Mid-Horn Symmetry Seed**: $`t_{\text{mid}} = 0.5\,t_{\max}`$.
 
-At $`\mathbf{p} = (0, 0, 0)`$, $`\rho = 0`$ and $`z = 0`$, which reduces $`G(t) = 0`$ to $`R(t \tanh t - 1) = 0`$. The unique positive root is $`t^* \approx 1.19967864`$, where the distance from the origin to the pseudosphere horn reaches its global interior minimum $`D(t^*) = R \sqrt{\operatorname{sech}^2 t^* + (t^* - \tanh t^*)^2} \approx 0.66274\,R`$. The mid-horn seed ($`1.15`$ for $`t_{\max} = 2.3`$) converges to machine precision in just two iterations!
+At $`\mathbf{p} = (0, 0, 0)`$, $`\rho = 0`$ and $`z = 0`$, which reduces $`G(t) = 0`$ to $`R(t \tanh t - 1) = 0`$. The unique positive root is $`t^* \approx 1.19967864`$, where the distance from the origin to the pseudosphere horn reaches its global interior minimum $`D(t^*) = R \sqrt{\mathrm{sech}^2 t^* + (t^* - \tanh t^*)^2} \approx 0.66274\,R`$. The mid-horn seed ($`1.15`$ for $`t_{\max} = 2.3`$) converges to machine precision in just two iterations!
 
 ---
 
 ### 5. Closed-Form Tractrix Solid Interior Test
 
-To determine the exact sign $`\operatorname{sgn}(d)`$ of the solid pseudosphere double-horn, we invert the meridional profile:
+To determine the exact sign $`\mathrm{sgn}(d)`$ of the solid pseudosphere double-horn, we invert the meridional profile:
 
 ```math
-\rho = R \operatorname{sech} t \implies \cosh t = \frac{R}{\rho} \implies t = \operatorname{acosh}\left(\frac{R}{\rho}\right)
+\rho = R \mathrm{sech} t \implies \cosh t = \frac{R}{\rho} \implies t = \mathrm{acosh}\left(\frac{R}{\rho}\right)
 ```
 
-Then $`\tanh t = \sqrt{1 - \operatorname{sech}^2 t} = \frac{\sqrt{R^2 - \rho^2}}{R}`$. Substituting into $`z(t)`$:
+Then $`\tanh t = \sqrt{1 - \mathrm{sech}^2 t} = \frac{\sqrt{R^2 - \rho^2}}{R}`$. Substituting into $`z(t)`$:
 
 ```math
-z_{\text{surf}}(\rho) = R \operatorname{acosh}\left(\frac{R}{\rho}\right) - \sqrt{R^2 - \rho^2}
+z_{\text{surf}}(\rho) = R \mathrm{acosh}\left(\frac{R}{\rho}\right) - \sqrt{R^2 - \rho^2}
 ```
 
 Since $`z_{\text{surf}}(\rho)`$ is a strictly decreasing monotonic bijection from $`(0, R]`$ to $`[0, \infty)`$:
 
 ```math
-\mathbf{p} \in \operatorname{Interior} \iff |z| < z_{\max} \quad \text{and} \quad \rho < R \quad \text{and} \quad |z| < z_{\text{surf}}(\rho)
+\mathbf{p} \in \mathrm{Interior} \iff |z| < z_{\max} \quad \text{and} \quad \rho < R \quad \text{and} \quad |z| < z_{\text{surf}}(\rho)
 ```
 
 This test is 100% exact, closed-form, and completely free of numerical iterative drift.
@@ -339,7 +339,7 @@ The literal GLSL shader `glsl/primitives3d/sdPseudosphere.glsl` was numerically 
 ![Comparison of Pseudosphere Distance Fields](../images/comparisons/sdPseudosphere_comparison.png)
 
 1. **Panel A (Naive Radial Tractrix Error)**:
-   Estimating distance by horizontal radial offset $`\vert\rho - \rho_{\text{surf}}(z)\vert`$ yields massive errors up to $`0.25`$ across the volume. Because the Tractrix normal vector $`\mathbf{N}(t) = (\tanh t, \operatorname{sech} t)`$ tilts substantially off-horizontal, naive radial methods produce huge overestimations (orange/white flare) that trigger raymarcher step corruption.
+   Estimating distance by horizontal radial offset $`\vert\rho - \rho_{\text{surf}}(z)\vert`$ yields massive errors up to $`0.25`$ across the volume. Because the Tractrix normal vector $`\mathbf{N}(t) = (\tanh t, \mathrm{sech} t)`$ tilts substantially off-horizontal, naive radial methods produce huge overestimations (orange/white flare) that trigger raymarcher step corruption.
 2. **Panel B (Exact `sdPseudosphere` Error Heatmap)**:
    The Pythagorean Hyperbolic Tangent-Normal Collapse solver exhibits uniform pitch-black machine precision ($`< 1.9 \times 10^{-7}`$ error across the entire slice) with a sharp, exact zero-contour (cyan boundary).
 3. **Panel C (Beltrami Pseudosphere 3D Cutaway)**:
@@ -352,6 +352,6 @@ The literal GLSL shader `glsl/primitives3d/sdPseudosphere.glsl` was numerically 
 * **Differential Geometry**: Classical textbooks (Beltrami 1868, Eisenhart 1909) study the pseudosphere purely via its intrinsic metric $`ds^2 = \frac{R^2}{v^2}(du^2 + dv^2)`$ in the Poincaré upper half-plane.
 * **Prior Art in Shaders**: Prior to this work, no exact 3D Euclidean SDF or analytical gradient for Beltrami's Pseudosphere or Huygens's Tractrix existed in GLSL, shader repositories, or on Shadertoy. Shaders previously relied on heuristic radial approximations or avoided negative-curvature surfaces altogether.
 * **Core Theoretical Contributions**:
-  1. **Pythagorean Hyperbolic Tangent-Normal Collapse Theorem**: Proving that the non-linear normal projection equation collapses into $`G(t) = \rho\operatorname{sech} t + (R t - |z|)\tanh t - R = 0`$, completely removing square roots and rational divisions.
-  2. **Closed-Form Monotonic Interior Test**: Establishing that the pseudosphere interior is defined by $`|z| < R\operatorname{acosh}(R/\rho) - \sqrt{R^2 - \rho^2}`$.
-  3. **Analytical Unit Gradients for 2D & 3D**: Deriving exact $`C^0`$-bounded gradients $`\mathbf{N} = (\tanh t, \operatorname{sech} t)`$ that preserve exact distance step integrity in raymarchers and physics simulators.
+  1. **Pythagorean Hyperbolic Tangent-Normal Collapse Theorem**: Proving that the non-linear normal projection equation collapses into $`G(t) = \rho\mathrm{sech} t + (R t - |z|)\tanh t - R = 0`$, completely removing square roots and rational divisions.
+  2. **Closed-Form Monotonic Interior Test**: Establishing that the pseudosphere interior is defined by $`|z| < R\mathrm{acosh}(R/\rho) - \sqrt{R^2 - \rho^2}`$.
+  3. **Analytical Unit Gradients for 2D & 3D**: Deriving exact $`C^0`$-bounded gradients $`\mathbf{N} = (\tanh t, \mathrm{sech} t)`$ that preserve exact distance step integrity in raymarchers and physics simulators.

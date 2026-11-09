@@ -116,7 +116,7 @@ For 4 solitons in 3D, $`\mathbf{A}`$ is a positive-definite $`4\times 4`$ matrix
 The velocity potential $`\Phi`$ and soliton volumetric density $`\rho`$ along a ray $`\mathbf{x}(s) = \mathbf{o} + s\,\mathbf{d}`$ are:
 
 ```math
-\Phi(s) = 2\,\frac{d}{ds}\ln\det(\mathbf{A}(s)) = 2\operatorname{tr}(\mathbf{A}^{-1}\mathbf{A}'), \qquad \rho(s) = 2\,\frac{d^2}{ds^2}\ln\det(\mathbf{A}(s)) = \frac{d\Phi}{ds}
+\Phi(s) = 2\,\frac{d}{ds}\ln\det(\mathbf{A}(s)) = 2\mathrm{tr}(\mathbf{A}^{-1}\mathbf{A}'), \qquad \rho(s) = 2\,\frac{d^2}{ds^2}\ln\det(\mathbf{A}(s)) = \frac{d\Phi}{ds}
 ```
 
 ### The 0-Loop Ray Collapse Miracle

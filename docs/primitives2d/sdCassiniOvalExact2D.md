@@ -131,7 +131,7 @@ G'(t) = \text{speed}(t) - \theta_T'(t) \, (\mathbf{q}(t) - \mathbf{p}_{\text{sym
 where $`\text{speed}(t) = \frac{b^2}{2\sqrt{M(t)}}`$ and $`\theta_T'(t) = 1 - \frac{b^2((b^2 - a^2) + 2 a^2 \cos^2(t/2))}{2 M(t)^2}`$.
 
 We initialize four seeds across the parameter domain in a single `vec4`:
-- Seed 0: $`t_0 = \operatorname{atan2}(2 |x| |y|, x^2 - y^2 - a^2)`$ (the exact forward conformal image angle)
+- Seed 0: $`t_0 = \mathrm{atan2}(2 |x| |y|, x^2 - y^2 - a^2)`$ (the exact forward conformal image angle)
 - Seed 1: $`0.5 \pi`$ (midpoint)
 - Seed 2: $`0.15`$ (near outer vertex)
 - Seed 3: $`\pi - 0.10`$ (near inner vertex/node)

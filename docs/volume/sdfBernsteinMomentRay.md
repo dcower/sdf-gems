@@ -140,7 +140,7 @@ Because $`\mathbf{u}_\perp \perp \mathbf{u}_1`$, the quadratic is cancellation-f
 Let $`d_a = t_a - t^*`$, $`d_b = t_b - t^*`$, $`\xi_a = s d_a / h`$, $`\xi_b = s d_b / h`$. The angle difference $`\Delta\theta = \arctan(\xi_b) - \arctan(\xi_a)`$ is evaluated in a single two-argument arctangent:
 
 ```math
-\Delta\theta = \operatorname{atan}(s\, h\, \Delta t,\; h^2 + c_2\, d_a\, d_b).
+\Delta\theta = \mathrm{atan}(s\, h\, \Delta t,\; h^2 + c_2\, d_a\, d_b).
 ```
 
 The slab integrals of $`P_2^{-1}`$ (returned in `.x`) and $`P_2^{-2}`$ (returned in `.y`) are:

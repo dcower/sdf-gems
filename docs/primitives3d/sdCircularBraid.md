@@ -98,24 +98,24 @@ However, the union of the 3 strands possesses a rich dihedral symmetry group of 
 
 1. **Discrete Rotational Invariance ($`\mathbb{Z}_{3N}`$):**
    Advancing the azimuthal angle by the fundamental cell width $`\Delta\phi = \frac{2\pi}{3N}`$:
-   ```math
-   \phi \mapsto \phi + \frac{2\pi}{3N} \implies \theta_k \mapsto N\Bigl(\phi + \frac{2\pi}{3N}\Bigr) + \delta_k = N\phi + \delta_k + \frac{2\pi}{3} = \theta_{k+1 \pmod 3}
-   ```
+```math
+\phi \mapsto \phi + \frac{2\pi}{3N} \implies \theta_k \mapsto N\Bigl(\phi + \frac{2\pi}{3N}\Bigr) + \delta_k = N\phi + \delta_k + \frac{2\pi}{3} = \theta_{k+1 \pmod 3}
+```
    A spatial rotation by $`\frac{2\pi}{3N}`$ around the $`Z`$-axis cyclically permutes the three strands:
-   ```math
-   \mathbf{q}_0 \mapsto \mathbf{q}_1, \quad \mathbf{q}_1 \mapsto \mathbf{q}_2, \quad \mathbf{q}_2 \mapsto \mathbf{q}_0
-   ```
+```math
+\mathbf{q}_0 \mapsto \mathbf{q}_1, \quad \mathbf{q}_1 \mapsto \mathbf{q}_2, \quad \mathbf{q}_2 \mapsto \mathbf{q}_0
+```
    Consequently, the **union of the three strands** $`\mathcal{S} = \bigcup_{k=0}^2 \mathbf{q}_k`$ is invariant under rotation by $`\frac{2\pi}{3N}`$.
 
 2. **Reflectional Invariance ($`\mathbb{Z}_2`$):**
    Reflecting across the ray $`\phi_m = \frac{\pi}{3N}`$ and inverting the vertical coordinate $`z \mapsto -z`$:
-   ```math
-   \phi' = \frac{2\pi}{3N} - \phi, \quad z' = -z
-   ```
+```math
+\phi' = \frac{2\pi}{3N} - \phi, \quad z' = -z
+```
    Under this transformation:
-   ```math
-   N\phi' + \delta_k = \frac{2\pi}{3} - N\phi + \delta_k = -\Bigl(N\phi - \delta_k - \frac{2\pi}{3}\Bigr)
-   ```
+```math
+N\phi' + \delta_k = \frac{2\pi}{3} - N\phi + \delta_k = -\Bigl(N\phi - \delta_k - \frac{2\pi}{3}\Bigr)
+```
    Evaluating the phases for $`k \in \{0, 1, 2\}`$:
    * $`k = 0 \implies \frac{2\pi}{3} - N\phi = -(N\phi + \delta_2)`$
    * $`k = 1 \implies \frac{4\pi}{3} - N\phi = -(N\phi + \delta_1)`$
@@ -129,7 +129,7 @@ By combining cell rotation and mid-cell reflection, any query point $`\mathbf{p}
 ```math
 \phi_{\text{fold}} \in \Bigl[0,\, \frac{\pi}{3N}\Bigr]
 ```
-Let $`\rho = \sqrt{x^2 + y^2}`$ and $`\phi = \operatorname{atan2}(y, x)`$. The folding algorithm is:
+Let $`\rho = \sqrt{x^2 + y^2}`$ and $`\phi = \mathrm{atan2}(y, x)`$. The folding algorithm is:
 ```math
 \text{period} = \frac{2\pi}{3N}, \quad k_{\text{cell}} = \lfloor\phi / \text{period}\rfloor, \quad \phi_{\text{loc}} = \phi - k_{\text{cell}} \cdot \text{period}
 ```
@@ -177,10 +177,7 @@ f'(t) = \bigl(r_k'(t)\bigr)^2 + \bigl(r_k(t) - u(t)\bigr) r_k''(t) - 2 r_k'(t) v
 ```
 where the derivatives of the Lemniscate profile are:
 ```math
-\begin{aligned}
-r_k'(t) &= -N a \sin(Nt + \delta_k), &\quad r_k''(t) &= -N^2 a \cos(Nt + \delta_k) \\
-Z_k'(t) &= 2 N b \cos(2(Nt + \delta_k)), &\quad Z_k''(t) &= -4 N^2 b \sin(2(Nt + \delta_k))
-\end{aligned}
+\begin{aligned} r_k'(t) &= -N a \sin(Nt + \delta_k), &\quad r_k''(t) &= -N^2 a \cos(Nt + \delta_k) \\ Z_k'(t) &= 2 N b \cos(2(Nt + \delta_k)), &\quad Z_k''(t) &= -4 N^2 b \sin(2(Nt + \delta_k)) \end{aligned}
 ```
 
 ### SIMD Vectorization
@@ -217,13 +214,13 @@ Let $`\mathbf{q}^* = (q_x^*, q_y^*, q_z^*)`$ be the closest point on the braid i
 To map $`\mathbf{g}_q`$ back to the original query point $`\mathbf{p}`$:
 
 * If $`\text{refl} = \text{false}`$, the folded frame is related to the global frame by a rotation of $`\alpha_0 = k_{\text{cell}} \cdot \text{period}`$:
-  ```math
-  \nabla_{\mathbf{p}} d = \begin{pmatrix} g_x \cos\alpha_0 - g_y \sin\alpha_0 \\ g_x \sin\alpha_0 + g_y \cos\alpha_0 \\ g_z \end{pmatrix}
-  ```
+```math
+\nabla_{\mathbf{p}} d = \begin{pmatrix} g_x \cos\alpha_0 - g_y \sin\alpha_0 \\ g_x \sin\alpha_0 + g_y \cos\alpha_0 \\ g_z \end{pmatrix}
+```
 * If $`\text{refl} = \text{true}`$, the transformation includes reflection across $`\alpha_1 = (k_{\text{cell}} + 1) \cdot \text{period}`$ combined with vertical inversion:
-  ```math
-  \nabla_{\mathbf{p}} d = \begin{pmatrix} g_x \cos\alpha_1 + g_y \sin\alpha_1 \\ g_x \sin\alpha_1 - g_y \cos\alpha_1 \\ -g_z \end{pmatrix}
-  ```
+```math
+\nabla_{\mathbf{p}} d = \begin{pmatrix} g_x \cos\alpha_1 + g_y \sin\alpha_1 \\ g_x \sin\alpha_1 - g_y \cos\alpha_1 \\ -g_z \end{pmatrix}
+```
 Because both transformation matrices are orthogonal ($`\mathbf{M}^T \mathbf{M} = \mathbf{I}`$), the resulting gradient vector satisfies:
 ```math
 \|\nabla_{\mathbf{p}} d\| = \|\mathbf{g}_q\| = 1
@@ -240,7 +237,7 @@ For a straight 3-strand plait along the $`Y`$-axis bounded to $`|y| \le h`$:
 ```
 The distance function `sdgLinearBraid3D` evaluates:
 1. The 6 end caps at $`y = \pm h`$ for all 3 strands.
-2. The internal curve points via 6 iterations of Newton's method seeded around $`\operatorname{clamp}(p_y, -h, h)`$.
+2. The internal curve points via 6 iterations of Newton's method seeded around $`\mathrm{clamp}(p_y, -h, h)`$.
 
 ---
 

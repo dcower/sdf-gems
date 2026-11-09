@@ -26,7 +26,7 @@ g_{ij}(x) = \lambda^2(x)\,\delta_{ij}, \qquad \lambda(x) = \frac{2R^2}{R^2 - \|x
 For any two points $`x, y \in \mathbb{B}_R^3`$, the exact geodesic hyperbolic distance is given by:
 
 ```math
-d_{\mathbb{H}}(x, y) = R \operatorname{arcosh}\left(1 + \frac{2R^2\|x - y\|^2}{(R^2 - \|x\|^2)(R^2 - \|y\|^2)}\right) = 2R \operatorname{artanh}\left(\frac{\|x \ominus y\|}{R}\right),
+d_{\mathbb{H}}(x, y) = R \mathrm{arcosh}\left(1 + \frac{2R^2\|x - y\|^2}{(R^2 - \|x\|^2)(R^2 - \|y\|^2)}\right) = 2R \mathrm{artanh}\left(\frac{\|x \ominus y\|}{R}\right),
 ```
 
 where $`x \ominus y = x \oplus (-y)`$ denotes Möbius gyrovector subtraction in the Poincaré ball:
@@ -35,10 +35,10 @@ where $`x \ominus y = x \oplus (-y)`$ denotes Möbius gyrovector subtraction in 
 x \oplus y = \frac{\left(1 + \frac{2}{R^2}x\cdot y + \frac{1}{R^2}\|y\|^2\right)x + \left(1 - \frac{1}{R^2}\|x\|^2\right)y}{1 + \frac{2}{R^2}x\cdot y + \frac{1}{R^4}\|x\|^2\|y\|^2}.
 ```
 
-The Riemannian logarithmic map at the origin $`\operatorname{Log}_0 : \mathbb{B}_R^3 \to T_0\mathbb{B}_R^3 \cong \mathbb{R}^3`$ satisfies $`\|\operatorname{Log}_0(x)\|_2 = d_{\mathbb{H}}(0, x)`$ and is given by:
+The Riemannian logarithmic map at the origin $`\mathrm{Log}_0 : \mathbb{B}_R^3 \to T_0\mathbb{B}_R^3 \cong \mathbb{R}^3`$ satisfies $`\|\mathrm{Log}_0(x)\|_2 = d_{\mathbb{H}}(0, x)`$ and is given by:
 
 ```math
-\operatorname{Log}_0(x) = \left(2R\,\frac{\operatorname{artanh}(\|x\|/R)}{\|x\|}\right) x.
+\mathrm{Log}_0(x) = \left(2R\,\frac{\mathrm{artanh}(\|x\|/R)}{\|x\|}\right) x.
 ```
 
 #### Theorem: Exact Schwarz-Pick Safe Step Bound for Sphere-Tracing
@@ -48,11 +48,11 @@ When sphere-tracing an SDF defined in hyperbolic coordinates $`d_{\mathbb{H}}(x)
 1. The conformal scale factor $`\lambda(u)`$ is strictly monotonically increasing with radial distance $`\|u\|`$. Therefore, along any straight Euclidean segment of length $`\Delta r`$ starting at $`x`$, the maximum accumulation of hyperbolic distance occurs when stepping directly radially outward towards the boundary $`\partial \mathbb{B}_R^3`$:
    $`\displaystyle d_{\mathbb{H}}(x, x + \Delta r d) \le d_{\mathbb{H}}\left(x, x + \Delta r \frac{x}{\|x\|}\right).`$
 2. Integrating the conformal metric along the radial geodesic from $`r = \|x\|`$ to $`r + \Delta r`$:
-   $`\displaystyle d_{\mathbb{H}} = \int_r^{r + \Delta r} \frac{2R^2}{R^2 - u^2}\,du = R \ln\left(\frac{R + r + \Delta r}{R - (r + \Delta r)} \cdot \frac{R - r}{R + r}\right) = 2R \operatorname{artanh}\left(\frac{R \Delta r}{R^2 - r(r + \Delta r)}\right).`$
+   $`\displaystyle d_{\mathbb{H}} = \int_r^{r + \Delta r} \frac{2R^2}{R^2 - u^2}\,du = R \ln\left(\frac{R + r + \Delta r}{R - (r + \Delta r)} \cdot \frac{R - r}{R + r}\right) = 2R \mathrm{artanh}\left(\frac{R \Delta r}{R^2 - r(r + \Delta r)}\right).`$
 3. Solving for $`\Delta r`$ with $`\tau = \tanh\left(\frac{d_{\mathbb{H}}}{2R}\right)`$ yields the exact algebraic step bound:
-   ```math
-   \boxed{d_{\text{safe}}(x, d_{\mathbb{H}}, R) = \frac{(R^2 - \|x\|^2)\,\tau}{R + \|x\|\,\tau}.}
-   ```
+```math
+\boxed{d_{\text{safe}}(x, d_{\mathbb{H}}, R) = \frac{(R^2 - \|x\|^2)\,\tau}{R + \|x\|\,\tau}.}
+```
 4. **Guaranteed Boundary Safety**: For all $`r < R`$ and finite $`d_{\mathbb{H}} > 0`$, since $`\tau = \tanh(d_{\mathbb{H}}/(2R)) < 1`$:
    $`\displaystyle r + d_{\text{safe}} = \frac{R(r + R\tau)}{R + r\tau} < R.`$
    Raymarching is unconditionally safe: rays can never cross or touch the boundary $`\partial \mathbb{B}_R`$, preventing coordinate blowout without artificial ray clamping.
@@ -67,31 +67,31 @@ By Brenier's Polar Factorization and Optimal Transport Theorem (Brenier 1991, Be
 y_\tau(x) = \nabla \psi_\tau(x), \qquad \psi_\tau(x) = (1 - \tau)\frac{\|x\|^2}{2} + \tau \psi_1(x).
 ```
 
-Choosing the target potential $`\psi_1(x) = \frac{1}{2} x^T \mathbf{A} x + \alpha \sqrt{\|x\|^2 + b^2}`$ with diagonal anisotropy $`\mathbf{A} = \operatorname{diag}(a_x, a_y, a_z)`$ and regularized radial profile $`R_b = \sqrt{\|x\|^2 + b^2}`$:
+Choosing the target potential $`\psi_1(x) = \frac{1}{2} x^T \mathbf{A} x + \alpha \sqrt{\|x\|^2 + b^2}`$ with diagonal anisotropy $`\mathbf{A} = \mathrm{diag}(a_x, a_y, a_z)`$ and regularized radial profile $`R_b = \sqrt{\|x\|^2 + b^2}`$:
 
 1. **Transport Map**:
-   ```math
-   y_\tau(x) = \nabla \psi_\tau(x) = \mathbf{s}(x) \odot x, \qquad \mathbf{s}(x) = (1 - \tau)\mathbf{1} + \tau \mathbf{a} + \frac{\tau \alpha}{R_b}\mathbf{1}.
-   ```
+```math
+y_\tau(x) = \nabla \psi_\tau(x) = \mathbf{s}(x) \odot x, \qquad \mathbf{s}(x) = (1 - \tau)\mathbf{1} + \tau \mathbf{a} + \frac{\tau \alpha}{R_b}\mathbf{1}.
+```
 2. **Exact Hessian Matrix**:
-   ```math
-   \mathbf{H}_\tau(x) = \nabla^2 \psi_\tau(x) = \operatorname{diag}(\mathbf{s}) - \frac{\tau \alpha}{R_b^3}\,x x^T.
-   ```
+```math
+\mathbf{H}_\tau(x) = \nabla^2 \psi_\tau(x) = \mathrm{diag}(\mathbf{s}) - \frac{\tau \alpha}{R_b^3}\,x x^T.
+```
 3. **Monge-Ampère Determinant via Matrix Determinant Lemma**:
    By the rank-one perturbation formula $`\det(\mathbf{S} - u u^T) = \det(\mathbf{S})(1 - u^T \mathbf{S}^{-1} u)`$:
-   ```math
-   \boxed{\det(\mathbf{H}_\tau(x)) = s_x s_y s_z \left(1 - \frac{\tau \alpha}{R_b^3}\sum_{i=1}^3 \frac{x_i^2}{s_i}\right).}
-   ```
+```math
+\boxed{\det(\mathbf{H}_\tau(x)) = s_x s_y s_z \left(1 - \frac{\tau \alpha}{R_b^3}\sum_{i=1}^3 \frac{x_i^2}{s_i}\right).}
+```
    Under this map, volumetric mass is identically conserved according to the Monge-Ampère equation:
-   ```math
-   \int_{\mathbb{R}^3} \det(\mathbf{H}_\tau(x))\,\rho_0(y_\tau(x))\,dx = \int_{\mathbb{R}^3} \rho_0(y)\,dy \equiv 1.000000.
-   ```
+```math
+\int_{\mathbb{R}^3} \det(\mathbf{H}_\tau(x))\,\rho_0(y_\tau(x))\,dx = \int_{\mathbb{R}^3} \rho_0(y)\,dy \equiv 1.000000.
+```
 4. **Certified 1-Lipschitz Bound via Weyl's Eigenvalue Inequality**:
    For any base 1-Lipschitz SDF $`d_0(y)`$, the warped distance $`d(x) = d_0(y_\tau(x)) / L`$ satisfies $`\|\nabla d\|_2 \le \frac{1}{L} \lambda_{\max}(\mathbf{H}_\tau(x))`$.
    The Hessian decomposes into an affine diagonal part and a radial tensor $`\frac{\tau \alpha}{R_b}\left(\mathbf{I} - \frac{x x^T}{R_b^2}\right)`$ whose eigenvalues are $`\frac{\tau \alpha}{R_b}`$ (tangential) and $`\frac{\tau \alpha b^2}{R_b^3}`$ (radial). By Weyl's inequality:
-   ```math
-   \lambda_{\max}(\mathbf{H}_\tau(x)) \le \max_i(1 - \tau + \tau a_i) + \max\left(\frac{\tau \alpha}{R_b}, \frac{\tau \alpha b^2}{R_b^3}\right) = \text{outSpectralBound}.
-   ```
+```math
+\lambda_{\max}(\mathbf{H}_\tau(x)) \le \max_i(1 - \tau + \tau a_i) + \max\left(\frac{\tau \alpha}{R_b}, \frac{\tau \alpha b^2}{R_b^3}\right) = \text{outSpectralBound}.
+```
    Dividing $`d_0(y)`$ by `outSpectralBound` mathematically guarantees $`\|\nabla d(x)\|_2 \le 1.0`$ everywhere.
 
 ---

@@ -69,20 +69,20 @@ Under conformal inverse stereographic projection $`\pi^{-1}: \mathbb{R}^3 \to S^
 ### The Raymarching Challenge
 
 Prior attempts in computer graphics to render algebraic knots or Seifert surfaces suffered from two major pathologies:
-1. **The $`2\pi`$ Branch-Cut Singularity**: Naively using $`\arg f_{p,q}(u, v) = \operatorname{atan2}(\operatorname{Im} f, \operatorname{Re} f)`$ introduces a violent jump discontinuity of $`2\pi`$ across the negative real axis $`\{\operatorname{Im} f = 0, \operatorname{Re} f < 0\}`$. In raymarching, this causes tearing, missing geometry, and catastrophic sphere-tracer overstepping.
+1. **The $`2\pi`$ Branch-Cut Singularity**: Naively using $`\arg f_{p,q}(u, v) = \mathrm{atan2}(\mathrm{Im} f, \mathrm{Re} f)`$ introduces a violent jump discontinuity of $`2\pi`$ across the negative real axis $`\{\mathrm{Im} f = 0, \mathrm{Re} f < 0\}`$. In raymarching, this causes tearing, missing geometry, and catastrophic sphere-tracer overstepping.
 2. **Singular Gradient Blowup**: Because $`\nabla(f / \|f\|)`$ is orthogonal to the fibers but diverges near the singular knot core $`f = 0`$, naive distance estimates based on standard phase potentials fail to satisfy the 1-Lipschitz condition.
 
 ### The Solution by Gemini 4 Argon
 
 Gemini 4 Argon solved both pathologies simultaneously:
 1. **Branch-Cut-Free Normal-Chart Coordinate System**: Instead of measuring angular distance in phase space, we project into the locally orthogonal 2D normal frame $`(\xi, \eta) \in \mathbb{R}^2`$ spanned by the normalized real and imaginary gradient directions $`\hat{\mathbf{g}}_R, \hat{\mathbf{g}}_I`$ rotated by $`e^{-i\alpha}`$. In this frame, the Seifert soap film corresponds to the positive half-line:
-   ```math
-   \mathcal{H} = \bigl\{(\xi, \eta) \in \mathbb{R}^2 : \xi \ge 0,\;\; \eta = 0\bigr\}.
-   ```
+```math
+\mathcal{H} = \bigl\{(\xi, \eta) \in \mathbb{R}^2 : \xi \ge 0,\;\; \eta = 0\bigr\}.
+```
    The exact Euclidean distance to this half-line in $`(\xi, \eta)`$ is:
-   ```math
-   d_{\mathcal{H}}(\xi, \eta) = \sqrt{\min(\xi, 0)^2 + \eta^2},
-   ```
+```math
+d_{\mathcal{H}}(\xi, \eta) = \sqrt{\min(\xi, 0)^2 + \eta^2},
+```
    which is continuously defined across all $`360^\circ`$, smooth everywhere outside the focal set, and intrinsically branch-cut-free!
 2. **Exact Stereographic Metric Pullback**: The $`4\text{D}`$ Cauchy-Riemann Wirtinger derivatives on $`S^3 \subset \mathbb{C}^2`$ are mapped to $`\mathbb{R}^3`$ via the exact transpose Jacobian of inverse stereographic projection, preserving metric conformity and yielding analytical spatial gradients with zero numerical jitter.
 
@@ -120,10 +120,10 @@ The Milnor polynomial is $`f(u, v) = u^P - v^Q`$. Its complex Wirtinger derivati
 ```math
 \frac{\partial f}{\partial u} = P u^{P-1},\qquad \frac{\partial f}{\partial v} = -Q v^{Q-1}.
 ```
-Writing $`dU = P u^{P-1}`$ and $`dV = -Q v^{Q-1}`$, the Cauchy-Riemann equations determine the $`4\text{D}`$ gradients of $`\operatorname{Re} f`$ and $`\operatorname{Im} f`$ on $`\mathbb{R}^4`$:
+Writing $`dU = P u^{P-1}`$ and $`dV = -Q v^{Q-1}`$, the Cauchy-Riemann equations determine the $`4\text{D}`$ gradients of $`\mathrm{Re} f`$ and $`\mathrm{Im} f`$ on $`\mathbb{R}^4`$:
 ```math
-\nabla_4 \operatorname{Re} f = \begin{pmatrix} \operatorname{Re}(dU) \\ -\operatorname{Im}(dU) \\ \operatorname{Re}(dV) \\ -\operatorname{Im}(dV) \end{pmatrix},\qquad
-\nabla_4 \operatorname{Im} f = \begin{pmatrix} \operatorname{Im}(dU) \\ \operatorname{Re}(dU) \\ \operatorname{Im}(dV) \\ \operatorname{Re}(dV) \end{pmatrix}.
+\nabla_4 \mathrm{Re} f = \begin{pmatrix} \mathrm{Re}(dU) \\ -\mathrm{Im}(dU) \\ \mathrm{Re}(dV) \\ -\mathrm{Im}(dV) \end{pmatrix},\qquad
+\nabla_4 \mathrm{Im} f = \begin{pmatrix} \mathrm{Im}(dU) \\ \mathrm{Re}(dU) \\ \mathrm{Im}(dV) \\ \mathrm{Re}(dV) \end{pmatrix}.
 ```
 
 ### 3. Exact Transpose Jacobian Pullback to $`\mathbb{R}^3`$
@@ -146,7 +146,7 @@ This single vector formula evaluates the exact 3D spatial gradient without const
 
 To construct the Seifert surface at fiber angle $`\alpha`$, we rotate $`f`$ by $`e^{-i\alpha}`$:
 ```math
-f_R + i f_I = e^{-i\alpha}\bigl(\operatorname{Re} f + i\operatorname{Im} f\bigr),\qquad
+f_R + i f_I = e^{-i\alpha}\bigl(\mathrm{Re} f + i\mathrm{Im} f\bigr),\qquad
 \tilde{\mathbf{g}}_R = \mathbf{g}_R \cos\alpha + \mathbf{g}_I \sin\alpha,\qquad
 \tilde{\mathbf{g}}_I = -\mathbf{g}_R \sin\alpha + \mathbf{g}_I \cos\alpha.
 ```
@@ -160,10 +160,7 @@ d = \sqrt{\min(\xi, 0)^2 + \eta^2} - t_{\text{thickness}},
 ```
 with exact unit gradient:
 ```math
-\nabla d = \begin{cases}
-\operatorname{sgn}(\eta)\,\hat{\mathbf{n}}_\eta & \xi \ge 0 \\
-\operatorname{normalize}\bigl(\xi\,\hat{\mathbf{n}}_\xi + \eta\,\hat{\mathbf{n}}_\eta\bigr) & \xi < 0
-\end{cases}
+\nabla d = \begin{cases} \mathrm{sgn}(\eta)\,\hat{\mathbf{n}}_\eta & \xi \ge 0 \\ \mathrm{normalize}\bigl(\xi\,\hat{\mathbf{n}}_\xi + \eta\,\hat{\mathbf{n}}_\eta\bigr) & \xi < 0 \end{cases}
 ```
 where $`\hat{\mathbf{n}}_\xi = \tilde{\mathbf{g}}_R / \|\tilde{\mathbf{g}}_R\|`$ and $`\hat{\mathbf{n}}_\eta = \tilde{\mathbf{g}}_I / \|\tilde{\mathbf{g}}_I\|`$.
 

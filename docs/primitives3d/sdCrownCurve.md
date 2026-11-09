@@ -21,11 +21,7 @@ The equations for these curves are parameterized by the angle `$t$` around the c
 ### The `$S^1 \times \mathbb{R}$` Cylinder Dot-Product Linearization Theorem
 For any curve strictly embedded on a cylinder of radius `$R$`, we have`$q_x(t)^2 + q_y(t)^2 \equiv R^2$`. The squared distance from a query point`$\mathbf{p} = (\rho \cos \phi, \rho \sin \phi, z)$`to the curve point`$\mathbf{q}(t) = (R \cos t, R \sin t, Z(t))$` simplifies exactly to:
 ```math
-\begin{aligned}
-\|\mathbf{p} - \mathbf{q}(t)\|^2 &= (\rho \cos \phi - R \cos t)^2 + (\rho \sin \phi - R \sin t)^2 + (z - Z(t))^2 \\
-&= \rho^2 + R^2 - 2R\rho(\cos \phi \cos t + \sin \phi \sin t) + (Z(t) - z)^2 \\
-&= \rho^2 + R^2 - 2R\rho\cos(t - \phi) + (Z(t) - z)^2
-\end{aligned}
+\begin{aligned} \|\mathbf{p} - \mathbf{q}(t)\|^2 &= (\rho \cos \phi - R \cos t)^2 + (\rho \sin \phi - R \sin t)^2 + (z - Z(t))^2 \\ &= \rho^2 + R^2 - 2R\rho(\cos \phi \cos t + \sin \phi \sin t) + (Z(t) - z)^2 \\ &= \rho^2 + R^2 - 2R\rho\cos(t - \phi) + (Z(t) - z)^2 \end{aligned}
 ```
 This fundamental simplification removes `$x$`and`$y$`entirely from the objective function. Its derivative with respect to`$t$` becomes:
 ```math

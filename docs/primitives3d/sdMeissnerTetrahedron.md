@@ -37,12 +37,12 @@ Shader code on the web models them as a plain intersection of four spheres (the 
 
 **Lemma.** For *any* convex body $`M`$ of constant width $`s`$:
 ```math
-\operatorname{SDF}_M(\mathbf p) \;=\; \max_{\mathbf o\in M}\|\mathbf p-\mathbf o\| \;-\; s \qquad\text{(exact, inside and outside).}
+\mathrm{SDF}_M(\mathbf p) \;=\; \max_{\mathbf o\in M}\|\mathbf p-\mathbf o\| \;-\; s \qquad\text{(exact, inside and outside).}
 ```
 
-*Exterior.* Let $`\mathbf q`$ be the nearest point, $`d = \|\mathbf p-\mathbf q\|`$, $`\mathbf n = (\mathbf p-\mathbf q)/d`$. In a body of constant width every boundary normal is a double normal, so the opposite point $`\mathbf o=\mathbf q-s\mathbf n`$ lies in $`M`$ and $`\|\mathbf p-\mathbf o\| = d+s`$. For any other $`\mathbf o'\in M`$, $`\|\mathbf p-\mathbf o'\|\le \|\mathbf p-\mathbf q\|+\|\mathbf q-\mathbf o'\|\le d+\operatorname{diam}M = d+s`$.
+*Exterior.* Let $`\mathbf q`$ be the nearest point, $`d = \|\mathbf p-\mathbf q\|`$, $`\mathbf n = (\mathbf p-\mathbf q)/d`$. In a body of constant width every boundary normal is a double normal, so the opposite point $`\mathbf o=\mathbf q-s\mathbf n`$ lies in $`M`$ and $`\|\mathbf p-\mathbf o\| = d+s`$. For any other $`\mathbf o'\in M`$, $`\|\mathbf p-\mathbf o'\|\le \|\mathbf p-\mathbf q\|+\|\mathbf q-\mathbf o'\|\le d+\mathrm{diam}M = d+s`$.
 
-*Interior.* Let $`R=\max_{\mathbf o\in M}\|\mathbf p-\mathbf o\|`$. Constant-width bodies are diametrically complete, $`M=\bigcap_{\mathbf x\in M}B(\mathbf x,s)`$, and $`\|\mathbf p-\mathbf x\|\le R`$ for all $`\mathbf x\in M`$ gives $`B(\mathbf p,s-R)\subset M`$, i.e. $`\operatorname{dist}(\mathbf p,\partial M)\ge s-R`$. Conversely the opposite point of the nearest boundary point $`\mathbf q`$ is at distance exactly $`s-\operatorname{dist}(\mathbf p,\partial M)`$ from $`\mathbf p`$. $`\square`$
+*Interior.* Let $`R=\max_{\mathbf o\in M}\|\mathbf p-\mathbf o\|`$. Constant-width bodies are diametrically complete, $`M=\bigcap_{\mathbf x\in M}B(\mathbf x,s)`$, and $`\|\mathbf p-\mathbf x\|\le R`$ for all $`\mathbf x\in M`$ gives $`B(\mathbf p,s-R)\subset M`$, i.e. $`\mathrm{dist}(\mathbf p,\partial M)\ge s-R`$. Conversely the opposite point of the nearest boundary point $`\mathbf q`$ is at distance exactly $`s-\mathrm{dist}(\mathbf p,\partial M)`$ from $`\mathbf p`$. $`\square`$
 
 ### 2. Meissner Bodies as Ball Intersections over Their Sharp Set
 

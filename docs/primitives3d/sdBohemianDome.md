@@ -96,14 +96,14 @@ On the GPU, we initialize 4 parallel root searches simultaneously as a single `v
 * $`u_0 = -1.25`$ (negative flank)
 * $`u_1 = 0.0`$ (central meridian)
 * $`u_2 = 1.25`$ (positive flank)
-* $`u_3 = \arcsin\left(\operatorname{clamp}\left(\frac{y}{b+c}, -1, 1\right)\right)`$ (analytical elevation guess)
+* $`u_3 = \arcsin\left(\mathrm{clamp}\left(\frac{y}{b+c}, -1, 1\right)\right)`$ (analytical elevation guess)
 
-In concave regions ($`g'(u) \le 10^{-4}`$), the solver automatically switches from Newton to a gradient descent step $`\Delta u = -0.15 \operatorname{sgn}(g)`$, guaranteeing unconditional convergence to local minima.
+In concave regions ($`g'(u) \le 10^{-4}`$), the solver automatically switches from Newton to a gradient descent step $`\Delta u = -0.15 \mathrm{sgn}(g)`$, guaranteeing unconditional convergence to local minima.
 
 By the Envelope Theorem (Danskin's Theorem), the analytical unit gradient at the optimal parameter $`u^*`$ is given directly by:
 
 ```math
-\nabla d(\mathbf{p}) = \frac{1}{d} \begin{pmatrix} \operatorname{sgn}(p_x)\,dx^* \\ dy^* \frac{dr^*}{\rho^*} \\ \operatorname{sgn}(p_z)\,z \frac{dr^*}{\rho^*} \end{pmatrix}
+\nabla d(\mathbf{p}) = \frac{1}{d} \begin{pmatrix} \mathrm{sgn}(p_x)\,dx^* \\ dy^* \frac{dr^*}{\rho^*} \\ \mathrm{sgn}(p_z)\,z \frac{dr^*}{\rho^*} \end{pmatrix}
 ```
 
 Because $`dx^{*2} + \left(dy^* \frac{dr^*}{\rho^*}\right)^2 + \left(z \frac{dr^*}{\rho^*}\right)^2 \equiv dx^{*2} + dr^{*2} \left(\frac{dy^{*2} + z^2}{\rho^{*2}}\right) = dx^{*2} + dr^{*2} = d^2`$, the gradient is **identically unit norm** ($`\|\nabla d\| \equiv 1.0`$) without any post-normalization.

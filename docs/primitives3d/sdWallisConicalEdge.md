@@ -73,7 +73,7 @@ For any fixed ruling $`\theta`$, $`D^2(u, \theta)`$ is strictly convex and quadr
 Because $`u \in [0, 1]`$, the optimal generator coordinate along ruling $`\theta`$ is evaluated in closed form:
 
 ```math
-u^*(\theta) = \operatorname{clamp}\left( \frac{p_y b \sin\theta + p_z h}{b^2 \sin^2\theta + h^2},\, 0,\, 1 \right)
+u^*(\theta) = \mathrm{clamp}\left( \frac{p_y b \sin\theta + p_z h}{b^2 \sin^2\theta + h^2},\, 0,\, 1 \right)
 ```
 
 Substituting $`u^*(\theta)`$ into $`D^2(u, \theta)`$ reduces the bivariate surface search to an exact 1D envelope optimization over $`\theta \in [0, 2\pi)`$:

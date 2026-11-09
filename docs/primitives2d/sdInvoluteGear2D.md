@@ -40,7 +40,7 @@ Two classical facts follow:
 
 So the family of rotated involutes forms a **parallel (offset) family**, and the polar-angle offset of $`\mathbf{p}`$ relative to the flank, scaled by $`r_b`$, is a distance. For $`\mathbf{p} = \rho(\cos\varphi, \sin\varphi)`$ with $`\rho \ge r_b`$, the base-circle tangent through $`\mathbf{p}`$ touches at $`\theta = \varphi - \alpha_\rho`$, where $`\alpha_\rho = \arccos(r_b/\rho)`$ is the pressure angle at radius $`\rho`$. The string length there is $`L = \sqrt{\rho^2 - r_b^2} = r_b\tan\alpha_\rho`$. The foot point on the flank has roll $`t^* = \psi_b - \varphi + \alpha_\rho`$, and
 ```math
-\boxed{\,d_{\text{flank}}(\mathbf{p}) = L - r_b t^* = r_b\big(\varphi - \psi(\rho)\big), \qquad \psi(\rho) = \psi_b - \operatorname{inv}(\alpha_\rho),\quad \operatorname{inv}(\alpha) = \tan\alpha - \alpha.\,}
+\boxed{\,d_{\text{flank}}(\mathbf{p}) = L - r_b t^* = r_b\big(\varphi - \psi(\rho)\big), \qquad \psi(\rho) = \psi_b - \mathrm{inv}(\alpha_\rho),\quad \mathrm{inv}(\alpha) = \tan\alpha - \alpha.\,}
 ```
 This is the **exact signed Euclidean distance** to the infinite flank, positive on the gap side, wherever the foot roll $`t^*`$ lies on the flank. $`\psi(\rho)`$ is the standard gear-theory polar angle of the involute at radius $`\rho`$. Fedak's 2013 expression is algebraically this same quantity, but it was used as an implicit separating function. Recognising it as a true Euclidean distance, and completing its Voronoi neighbourhood (§2), is what makes the whole gear exact.
 
@@ -60,13 +60,13 @@ The involute leaves the base circle **radially**: its tangent at $`t = 0`$ is th
 
 `sdgInvoluteGear2D` carries along the unit direction of the winning candidate. On the flank that direction is the base-circle tangent $`\mathbf{e}_\theta(\varphi - \alpha_\rho)`$, so it costs nothing extra. The result is then unmirrored and unrotated.
 
-`sdSpurGear2D(p, n, m, pa)` is the standard full-depth gear in module form: pitch radius $`r_p = mn/2`$, $`r_b = r_p\cos\alpha`$, addendum $`m`$, dedendum $`1.25m`$, and half tooth-angle at the base circle $`\psi_b = \frac{\pi}{2n} + \operatorname{inv}(\alpha)`$. Two such gears with the same module and pressure angle **mesh correctly** at center distance $`r_{p1} + r_{p2}`$.
+`sdSpurGear2D(p, n, m, pa)` is the standard full-depth gear in module form: pitch radius $`r_p = mn/2`$, $`r_b = r_p\cos\alpha`$, addendum $`m`$, dedendum $`1.25m`$, and half tooth-angle at the base circle $`\psi_b = \frac{\pi}{2n} + \mathrm{inv}(\alpha)`$. Two such gears with the same module and pressure angle **mesh correctly** at center distance $`r_{p1} + r_{p2}`$.
 
 ### 3. Constant-Pitch Involute Spiral (`sdInvoluteSpiral2D`)
 
 The same theorem gives the distance to a multi-turn involute $`\mathbf{c}(t) = r_b(\cos t + t\sin t,\; \sin t - t\cos t)`$, $`t \in [0, 2\pi N]`$. Every foot point from $`\mathbf{p}`$ has roll $`t \equiv \varphi + \alpha_\rho \pmod{2\pi}`$. Writing $`u = L/r_b - t_0`$, where $`t_0 = (\varphi + \alpha_\rho) \bmod 2\pi`$, the distance to turn $`k`$ is $`r_b\lvert u - 2\pi k\rvert`$, which is **convex in $`k`$**. So the clamped nearest turn,
 ```math
-k^* = \operatorname{clamp}\!\left(\operatorname{round}\frac{u}{2\pi},\; 0,\; \left\lfloor\frac{2\pi N - t_0}{2\pi}\right\rfloor\right),
+k^* = \mathrm{clamp}\!\left(\mathrm{round}\frac{u}{2\pi},\; 0,\; \left\lfloor\frac{2\pi N - t_0}{2\pi}\right\rfloor\right),
 ```
 is the global minimum over all turns. Two endpoint distances complete the SDF. Points inside the base circle have no foot points, because no base-circle tangent passes through them, so only the endpoints matter there. The spiral's turns are separated by exactly $`2\pi r_b`$ along **every normal**: this is the true geometry of a coiled strip of constant thickness. An Archimedean spiral has constant *radial* pitch but not constant normal pitch. The common "radial distance to the nearest turn" approximation of an Archimedean spiral oversteps by up to `0.075` near the center in the comparison above.
 
@@ -144,7 +144,7 @@ The CSG version gets the zero set right but is not a distance field. Its interio
 
 ## Novelty & Prior Art
 
-- **Classical gear theory**: involutes have base-circle tangents as normals; the base pitch is $`r_b\cdot\frac{2\pi}{n}`$; the involute polar angle is $`\operatorname{inv}(\alpha)`$.
+- **Classical gear theory**: involutes have base-circle tangents as normals; the base pitch is $`r_b\cdot\frac{2\pi}{n}`$; the involute polar angle is $`\mathrm{inv}(\alpha)`$.
 - **Peter Fedak (2013), used in Keeter's MPR gear benchmark**: the same closed-form expression as an *implicit separating function*, combined by CSG with circles. It is not identified as a Euclidean distance, and the CSG oversteps and is inexact (table above).
 - **Shadertoy and web**: gear SDFs found are approximate profiles, CSG composites, or Newton iterations. Several sources explicitly state that exact involute distance requires root finding.
 - **New here**: (1) the observation that $`r_b(\varphi - \psi(\rho))`$ is the **exact signed Euclidean distance** to an involute flank (Involute Parallel-Offset Theorem); (2) a **complete, exact, iteration-free $`D_n`$-chamber Voronoi gear SDF** with tip and root corners, the radial undercut flank, and an analytical gradient; (3) the **exact constant-pitch involute spiral** with the convex clamped-turn selection.

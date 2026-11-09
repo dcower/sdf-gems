@@ -25,7 +25,7 @@ was first investigated by Italian mathematician and monk Luigi Guido Grandi in 1
 
 In real-time computer graphics and procedural modeling, rose curves and orbital shapes are traditionally approximated via naive polar differences:
 ```math
-d_{\text{naive}}(\mathbf{p}) = \bigl|\Vert\mathbf{p}\Vert - a \cos(k \operatorname{atan2}(p_y, p_x))\bigr| - th
+d_{\text{naive}}(\mathbf{p}) = \bigl|\Vert\mathbf{p}\Vert - a \cos(k \mathrm{atan2}(p_y, p_x))\bigr| - th
 ```
 However, naive radial distance fails catastrophically:
 1. **Severe Distance Distortion & Overestimation**: Rays from the origin meet the petal boundaries at acute, non-normal angles. Along the petal flanks and between petals, radial differences overestimate true Euclidean distance by over $`170\%`$ (max error $`> 1.7`$), causing raymarching steps to overshoot, tear, and alias violently.
@@ -44,7 +44,7 @@ This header resolves all these challenges simultaneously by introducing:
 
 ### 1. Grandi Fundamental Half-Petal Folding Theorem (`sdRhodonea2D`, `sdgRhodonea2D`)
 
-Let $`\mathbf{p} = (x, y) \in \mathbb{R}^2`$ with polar representation $`\operatorname{rad} = \Vert\mathbf{p}\Vert`$ and $`\phi = \operatorname{atan2}(y, x) \in (-\pi, \pi]`$.
+Let $`\mathbf{p} = (x, y) \in \mathbb{R}^2`$ with polar representation $`\mathrm{rad} = \Vert\mathbf{p}\Vert`$ and $`\phi = \mathrm{atan2}(y, x) \in (-\pi, \pi]`$.
 
 #### Dihedral Symmetry Orbit Reduction
 The curve $`r(t) = a \cos(k t)`$ is invariant under rotations by the petal pitch:
@@ -62,26 +62,26 @@ t \in \left[0, \, \frac{\pi}{2k}\right]
 where $`r(t) = a \cos(k t) \ge 0`$. At the boundary $`t = 0`$, the petal reaches its apex $`(a, 0)`$; at $`t = \pi / (2k)`$, $`r(t) = 0`$, intersecting the origin.
 
 #### Stationarity Condition & Exact 2nd Derivative
-In the canonical frame, the folded query point is $`\mathbf{q}_p = \operatorname{rad}(\cos\theta, \sin\theta)`$. The Euclidean distance squared to a point $`\mathbf{c}(t) = r(t)(\cos t, \sin t)`$ on the rose curve is:
+In the canonical frame, the folded query point is $`\mathbf{q}_p = \mathrm{rad}(\cos\theta, \sin\theta)`$. The Euclidean distance squared to a point $`\mathbf{c}(t) = r(t)(\cos t, \sin t)`$ on the rose curve is:
 ```math
-D^2(t) = \Vert\mathbf{q}_p - \mathbf{c}(t)\Vert^2 = \operatorname{rad}^2 + r(t)^2 - 2 \operatorname{rad} \, r(t) \cos(t - \theta)
+D^2(t) = \Vert\mathbf{q}_p - \mathbf{c}(t)\Vert^2 = \mathrm{rad}^2 + r(t)^2 - 2 \mathrm{rad} \, r(t) \cos(t - \theta)
 ```
 Differentiating with respect to $`t`$ and dividing by $`2a`$:
 ```math
-g(t) = \frac{1}{2a} \frac{d}{dt} D^2(t) = -a k \cos(kt)\sin(kt) + \operatorname{rad} \bigl[ k \sin(kt)\cos(t - \theta) + \cos(kt)\sin(t - \theta) \bigr] = 0
+g(t) = \frac{1}{2a} \frac{d}{dt} D^2(t) = -a k \cos(kt)\sin(kt) + \mathrm{rad} \bigl[ k \sin(kt)\cos(t - \theta) + \cos(kt)\sin(t - \theta) \bigr] = 0
 ```
 Differentiating once more yields the exact second derivative:
 ```math
-g'(t) = -a k^2 \bigl(\cos^2(kt) - \sin^2(kt)\bigr) + \operatorname{rad} \Bigl[ (k^2 + 1)\cos(kt)\cos(t - \theta) - 2k\sin(kt)\sin(t - \theta) \Bigr]
+g'(t) = -a k^2 \bigl(\cos^2(kt) - \sin^2(kt)\bigr) + \mathrm{rad} \Bigl[ (k^2 + 1)\cos(kt)\cos(t - \theta) - 2k\sin(kt)\sin(t - \theta) \Bigr]
 ```
 Because $`g(t)`$ and $`g'(t)`$ evaluate simultaneously for all candidate roots, a 3-way SIMD vector $`\mathbf{t} = (t_x, t_y, t_z)`$ initialized with:
-1. $`t_x = \operatorname{clamp}(\theta, 0, t_{\max})`$ (angular projection seed),
+1. $`t_x = \mathrm{clamp}(\theta, 0, t_{\max})`$ (angular projection seed),
 2. $`t_y = 0.5 \, t_{\max}`$ (petal midpoint seed),
-3. $`t_z = \frac{1}{k} \arccos\left(\operatorname{clamp}\left(\frac{\operatorname{rad}}{a}, 0, 1\right)\right)`$ (radial inversion seed),
+3. $`t_z = \frac{1}{k} \arccos\left(\mathrm{clamp}\left(\frac{\mathrm{rad}}{a}, 0, 1\right)\right)`$ (radial inversion seed),
 
 executes 6 stabilized SIMD Newton-Raphson iterations:
 ```math
-\mathbf{t} \leftarrow \operatorname{clamp}\left(\mathbf{t} - \frac{g(\mathbf{t})}{\max(|g'(\mathbf{t})|, 10^{-6})}, \, 0, \, t_{\max}\right)
+\mathbf{t} \leftarrow \mathrm{clamp}\left(\mathbf{t} - \frac{g(\mathbf{t})}{\max(|g'(\mathbf{t})|, 10^{-6})}, \, 0, \, t_{\max}\right)
 ```
 Bracketted with endpoints $`t = 0`$ (petal tip) and $`t = t_{\max}`$ (origin), testing the 5 candidate distances selects the global Euclidean minimum with zero loop overhead.
 
@@ -90,7 +90,7 @@ Let $`\mathbf{q}_* = \mathbf{c}(t_*)`$ be the closest point on the fundamental p
 ```math
 g_r = \mathbf{g}_q \cdot (\cos\theta, \sin\theta), \qquad g_\theta = \mathbf{g}_q \cdot (-\sin\theta, \cos\theta) \times (\text{reflected} \; ? \; -1 : 1)
 ```
-Rotating back to the original query point $`\mathbf{p}`$ via unit radial vector $`\hat{\mathbf{e}}_r = \mathbf{p} / \operatorname{rad}`$ and azimuthal vector $`\hat{\mathbf{e}}_\phi = (-p_y, p_x) / \operatorname{rad}`$:
+Rotating back to the original query point $`\mathbf{p}`$ via unit radial vector $`\hat{\mathbf{e}}_r = \mathbf{p} / \mathrm{rad}`$ and azimuthal vector $`\hat{\mathbf{e}}_\phi = (-p_y, p_x) / \mathrm{rad}`$:
 ```math
 \nabla d(\mathbf{p}) = g_r \hat{\mathbf{e}}_r + g_\theta \hat{\mathbf{e}}_\phi = \begin{pmatrix} g_r \hat{e}_{r,x} - g_\theta \hat{e}_{r,y} \\ g_r \hat{e}_{r,y} + g_\theta \hat{e}_{r,x} \end{pmatrix}
 ```
@@ -104,7 +104,7 @@ In quantum mechanics, the angular boundary of the hydrogenic $`3d_{z^2}`$ atomic
 ```math
 r(\theta) = a \left|3\cos^2\theta - 1\right|, \qquad \theta \in \left[0, \, \frac{\pi}{2}\right]
 ```
-where $`\theta = \operatorname{atan2}(\rho, |z|)`$ is the polar angle in cylindrical coordinates $`(\rho, z) = (\sqrt{x^2+y^2}, z)`$.
+where $`\theta = \mathrm{atan2}(\rho, |z|)`$ is the polar angle in cylindrical coordinates $`(\rho, z) = (\sqrt{x^2+y^2}, z)`$.
 
 #### The Angular Nodal Cone
 Setting $`3\cos^2\theta - 1 = 0`$ yields the exact conical nodal angle:

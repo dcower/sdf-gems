@@ -68,9 +68,9 @@ with analytical gradient directed along the corresponding unit normal $`\mathbf{
 When $`\max(m_0, m_1, m_2) > 0`$, the query point lies outside the pyritohedron. In the positive octant, the boundary consists of:
 - 3 face prisms $`F_i`$: orthogonal projection onto $`x_i + h x_j = s`$.
 - 3 inter-face ridges $`E_{i, i+1} = F_i \cap F_{i+1}`$: parameterized by $`t \in [0, \frac{s}{1+h}]`$:
-  ```math
-  \mathbf{c}(t) = \big(s(1 - h) + h^2 t,\; s - ht,\; t\big)
-  ```
+```math
+\mathbf{c}(t) = \big(s(1 - h) + h^2 t,\; s - ht,\; t\big)
+```
   The line direction is $`(h^2, -h, 1)`$ with squared magnitude $`1 + h^2 + h^4`$.
 - 3 axial roof ridges along the coordinate planes $`x_j = 0`$: segments connecting $`(s, 0, 0)`$ to $`(s, 0, s(1-h))`$.
 

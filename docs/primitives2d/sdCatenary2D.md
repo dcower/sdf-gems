@@ -24,7 +24,7 @@ The hanging chain or catenary curve has the equation:
 ```math
 y(x) = a \left( \cosh\left(\frac{x}{a}\right) - 1 \right)
 ```
-Parameterizing by $`t = x/a`$, the curve is $`\mathbf{q}(t) = a(t, \cosh(t) - 1)`$. We restrict this to a finite height $`y \in [0, h]`$, meaning $`t \in [0, t_{\max}]`$ where $`t_{\max} = \operatorname{acosh}(1 + h/a)`$.
+Parameterizing by $`t = x/a`$, the curve is $`\mathbf{q}(t) = a(t, \cosh(t) - 1)`$. We restrict this to a finite height $`y \in [0, h]`$, meaning $`t \in [0, t_{\max}]`$ where $`t_{\max} = \mathrm{acosh}(1 + h/a)`$.
 
 To find the nearest point from $`\mathbf{p} = (x_p, y_p)`$ to $`\mathbf{q}(t)`$, we must minimize the squared distance. The stationarity condition requires the displacement vector $`\mathbf{d} = \mathbf{p} - \mathbf{q}(t)`$ to be orthogonal to the tangent vector $`\mathbf{q}'(t) = a(1, \sinh t)`$:
 ```math
@@ -34,20 +34,20 @@ This is equivalent to $`x_p - a t + (y_p - a(\cosh t - 1))\sinh t = 0`$. However
 
 We regularize this by projecting onto the normalized unit tangent $`\hat{\mathbf{T}}(t)`$ and unit normal $`\hat{\mathbf{N}}(t)`$. The tangent is proportional to $`(1, \sinh t)`$. Its length is $`\sqrt{1 + \sinh^2 t} = \cosh t`$. Because of this exact Pythagorean identity, the normalization requires **zero square roots**:
 ```math
-\hat{\mathbf{T}}(t) = \frac{1}{\cosh t} (1, \sinh t) = (\operatorname{sech} t, \tanh t)
+\hat{\mathbf{T}}(t) = \frac{1}{\cosh t} (1, \sinh t) = (\mathrm{sech} t, \tanh t)
 ```
 ```math
-\hat{\mathbf{N}}(t) = (-\tanh t, \operatorname{sech} t)
+\hat{\mathbf{N}}(t) = (-\tanh t, \mathrm{sech} t)
 ```
-Notice that $`\|\hat{\mathbf{T}}(t)\|^2 = \operatorname{sech}^2 t + \tanh^2 t \equiv 1`$ and $`\|\hat{\mathbf{N}}(t)\|^2 \equiv 1`$ analytically for all $`t`$.
+Notice that $`\|\hat{\mathbf{T}}(t)\|^2 = \mathrm{sech}^2 t + \tanh^2 t \equiv 1`$ and $`\|\hat{\mathbf{N}}(t)\|^2 \equiv 1`$ analytically for all $`t`$.
 
 Dividing the stationarity condition by $`a \cosh t > 0`$, we get the desingularized root-finding equation:
 ```math
-G(t) = \left( t - \frac{x_p}{a} \right) \operatorname{sech} t + \left( \cosh t - 1 - \frac{y_p}{a} \right) \tanh t = 0
+G(t) = \left( t - \frac{x_p}{a} \right) \mathrm{sech} t + \left( \cosh t - 1 - \frac{y_p}{a} \right) \tanh t = 0
 ```
 Its derivative with respect to $`t`$ is well-behaved:
 ```math
-G'(t) = \cosh t + \operatorname{sech} t \left( -\left(t - \frac{x_p}{a}\right)\tanh t + \left(\cosh t - 1 - \frac{y_p}{a}\right)\operatorname{sech} t \right)
+G'(t) = \cosh t + \mathrm{sech} t \left( -\left(t - \frac{x_p}{a}\right)\tanh t + \left(\cosh t - 1 - \frac{y_p}{a}\right)\mathrm{sech} t \right)
 ```
 This Newton-Raphson iteration is perfectly bounded, taking $`O(1)`$ steps to converge to machine precision.
 
