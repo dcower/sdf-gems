@@ -35,6 +35,7 @@
 #include "glsl/deform/opRevolution.glsl"
 #include "glsl/deform/opRevolutionLim.glsl"
 #include "glsl/deform/opRound.glsl"
+#include "glsl/deform/opShear.glsl"
 #include "glsl/deform/opSphereInvert.glsl"
 #include "glsl/deform/opSphericalExtrude.glsl"
 #include "glsl/deform/opSweep.glsl"
