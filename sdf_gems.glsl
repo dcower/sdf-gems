@@ -280,6 +280,7 @@
 #include "glsl/volume/sdfPauliSpinorSoliton.glsl"
 #include "glsl/volume/sdfStokesExactForms.glsl"
 #include "glsl/volume/sdfWavefrontBragg.glsl"
+#include "glsl/volume/sdfWeylCovariantShell.glsl"
 #include "glsl/volume/sdfYukawaColeHopf.glsl"
 
 #endif // SDF_GEMS_GLSL
