@@ -42,12 +42,17 @@ def main():
         f.write("\n".join(lines))
 
     missing_docs = []
+    missing_readme_links = []
+    with open("README.md") as f:
+        readme_txt = f.read()
     for g in ordered_glsl:
         if g == common_file:
             continue
         doc_path = re.sub(r"^glsl/", "docs/", re.sub(r"\.glsl$", ".md", g))
         if not os.path.exists(doc_path):
             missing_docs.append((g, doc_path))
+        if f"({g})" not in readme_txt and f"({doc_path})" not in readme_txt:
+            missing_readme_links.append(g)
 
     md_files = ["README.md"] + sorted(glob.glob("docs/**/*.md", recursive=True))
     missing_images = []
@@ -73,6 +78,9 @@ def main():
     print(f"Audited {len(md_files)} Markdown files.")
     if missing_docs:
         print("ERROR: Missing documentation files:", missing_docs)
+        sys.exit(1)
+    if missing_readme_links:
+        print("ERROR: GLSL headers missing from README.md tables:", missing_readme_links)
         sys.exit(1)
     if missing_images:
         print("ERROR: Missing image files:", missing_images)
