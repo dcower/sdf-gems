@@ -50,6 +50,8 @@ vec4 sdgOctahedron( vec3 p, float s )
 //      b0 = y + z - x + 0.25*s,  b = sign(b0) * max(abs(b0) - 0.75*s, 0),
 //      d = sign(m) * sqrt((3*m^2 + a^2 + 2*b^2) / 6),
 //      g_sorted = (3*m + a - 2*b,  3*m - a + 2*b,  2*a + 2*b) / (6*d).
+#ifndef SDF_GEMS_HAS_SDG_RHOMBIC_DODECAHEDRON
+#define SDF_GEMS_HAS_SDG_RHOMBIC_DODECAHEDRON
 vec4 sdgRhombicDodecahedron( vec3 p, float s )
 {
     vec3  q, s0;
@@ -67,3 +69,4 @@ vec4 sdgRhombicDodecahedron( vec3 p, float s )
              : vec3(0.70710678, 0.70710678, 0.0);
     return vec4(d, _sdgWeylUnsort(g, s0, sw));
 }
+#endif // SDF_GEMS_HAS_SDG_RHOMBIC_DODECAHEDRON
