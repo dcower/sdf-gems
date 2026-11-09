@@ -272,5 +272,6 @@
 #include "glsl/repetition/opRepPolar.glsl"
 #include "glsl/repetition/sdKelvinFoam.glsl"
 #include "glsl/volume/sdfCatastropheResidue.glsl"
+#include "glsl/volume/sdfYukawaColeHopf.glsl"
 
 #endif // SDF_GEMS_GLSL
