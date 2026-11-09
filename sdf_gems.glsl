@@ -275,6 +275,7 @@
 #include "glsl/volume/sdfCatastropheResidue.glsl"
 #include "glsl/volume/sdfChladniOrbitals.glsl"
 #include "glsl/volume/sdfDavidenkoHomotopy.glsl"
+#include "glsl/volume/sdfEikonalRadiativeTransfer.glsl"
 #include "glsl/volume/sdfFinslerSubsurface.glsl"
 #include "glsl/volume/sdfLevyRieszClouds.glsl"
 #include "glsl/volume/sdfPadeAutoIntSlab.glsl"
