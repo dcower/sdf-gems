@@ -166,6 +166,6 @@ All functions were compiled and evaluated on the GPU in FP32 via `tools/gpu_eval
 ## Reproduction
 
 Run from the repository root via `uv run`:
-- Verification and image generation: `uv run python /Users/dcower/.gemini/antigravity/brain/2373349a-2e9d-4d54-befd-b14f4396c551/scratch/obstacle/verify_and_render.py`
+- Verification and image generation: `uv run python <scratch>/obstacle/verify_and_render.py`
 - Umbrella compilation check: `uv run tools/gpu_eval.py --new glsl/obstacle/obElasticEnvelope.glsl --call "sdgHarmonicCap3D(P, 0.5, 1.0)"`
 - Math linting: `uv run tools/lint_math.py --render docs/obstacle/obElasticEnvelope.md`

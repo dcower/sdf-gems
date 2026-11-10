@@ -1,7 +1,6 @@
 // ============================================================================
 // fmRefractedWavefront — Exact Fermat-Snell Refracted Wavefront Dome & Lens SDFs
 // @author Discovered and derived using Gemini 4 Argon (sdf-gems, 2026)
-// @source https://github.com/dcower/sdf-gems
 // @exact  Yes (`||grad d|| = 1`, `1.29e-9` FP64 / `1.19e-7` FP32 max error, 0-step rim & base early exits, 1-Halley Pade-Snell solver)
 // ============================================================================
 

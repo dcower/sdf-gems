@@ -92,6 +92,7 @@
 #include "glsl/gradients3d/sdgTriPrism.glsl"
 #include "glsl/gradients3d/sdgWedgeIntersection.glsl"
 #include "glsl/gradients3d/sdhJet3D.glsl"
+#include "glsl/greensfunc/gfKelvinMultipole.glsl"
 #include "glsl/grin/grCurvedRays.glsl"
 #include "glsl/hilbert/hiProjectiveMetric.glsl"
 #include "glsl/isotonic/isPermutohedronPAVA.glsl"
