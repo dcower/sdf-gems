@@ -326,6 +326,7 @@
 #include "glsl/volume/sdfPauliSpinorSoliton.glsl"
 #include "glsl/volume/sdfPearceyCuspCaustic.glsl"
 #include "glsl/volume/sdfPhaseSpaceLightField.glsl"
+#include "glsl/volume/sdfSobolevDopplerTransfer.glsl"
 #include "glsl/volume/sdfSteklovYukawaSSS.glsl"
 #include "glsl/volume/sdfStokesExactForms.glsl"
 #include "glsl/volume/sdfWavefrontBragg.glsl"
