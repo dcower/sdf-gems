@@ -320,6 +320,7 @@
 #include "glsl/volume/sdfFockAragoDiffraction.glsl"
 #include "glsl/volume/sdfKhinchinOppositionCloud.glsl"
 #include "glsl/volume/sdfLevyRieszClouds.glsl"
+#include "glsl/volume/sdfMiePlasmonDichroic.glsl"
 #include "glsl/volume/sdfOsculatingTomography.glsl"
 #include "glsl/volume/sdfPadeAutoIntSlab.glsl"
 #include "glsl/volume/sdfPauliSpinorSoliton.glsl"
