@@ -312,6 +312,7 @@
 #include "glsl/volume/sdfBeltramiPhotoelastic.glsl"
 #include "glsl/volume/sdfBernsteinMomentRay.glsl"
 #include "glsl/volume/sdfCatastropheResidue.glsl"
+#include "glsl/volume/sdfCherenkovTransition.glsl"
 #include "glsl/volume/sdfChladniOrbitals.glsl"
 #include "glsl/volume/sdfDavidenkoHomotopy.glsl"
 #include "glsl/volume/sdfEikonalRadiativeTransfer.glsl"
