@@ -28,6 +28,7 @@
 #include "glsl/booleans/sminQuintic.glsl"
 #include "glsl/booleans/sminVaradhan.glsl"
 #include "glsl/cga/cgaRounds.glsl"
+#include "glsl/coxeter/cxWythoffUniversal.glsl"
 #include "glsl/cspace/sdCSpaceRect.glsl"
 #include "glsl/deform/opBend.glsl"
 #include "glsl/deform/opConformal2D.glsl"
