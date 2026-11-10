@@ -81,6 +81,7 @@
 #include "glsl/gradients3d/sdgTriPrism.glsl"
 #include "glsl/gradients3d/sdgWedgeIntersection.glsl"
 #include "glsl/gradients3d/sdhJet3D.glsl"
+#include "glsl/latticesum/sdThetaLattice.glsl"
 #include "glsl/liesphere/opLaguerreBoost.glsl"
 #include "glsl/measure/msSteinerTube.glsl"
 #include "glsl/polyhedra3d/sdCuboctahedron.glsl"
