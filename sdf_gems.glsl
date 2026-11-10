@@ -55,6 +55,7 @@
 #include "glsl/deform/opTwist.glsl"
 #include "glsl/duality/suSupport.glsl"
 #include "glsl/envelopes/evSupportEnvelope.glsl"
+#include "glsl/fermat/fmRefractedWavefront.glsl"
 #include "glsl/fractals/sdFractalExact.glsl"
 #include "glsl/gradients3d/sdgArchimedeanSolid.glsl"
 #include "glsl/gradients3d/sdgBox.glsl"
