@@ -1,4 +1,4 @@
-# `sdgBoxFrame` & `sdgBoxEdges` — Exact 0/1-`sqrt` 3D Wireframe Box Frame & Cylindrical Cage Gradients
+# `sdgBoxFrame` & `sdgBoxEdges` — Exact 1-`sqrt` 3D Wireframe Box Frame & Cylindrical Cage Gradients
 
 ![sdgBoxFrame Preview](../images/gradients3d/sdgBoxFrame.png)
 
@@ -6,7 +6,7 @@
 
 Inigo Quilez's 3D `sdBoxFrame(p, b, e)` evaluates the minimum of three orthogonal wireframe struts, using **3 `length()` (`sqrt`) calls** (12 lines of scalar min/max/length logic) and providing no analytical gradient (`distgradfunctions3d` does not include `sdgBoxFrame` or `sdgTriPrism`).
 
-By combining our **Closest-Strut Reduction** with a new **Interior Longitudinal Exclusion Theorem**, we derive a **0-sorting-swap, 0/1-`sqrt` analytical distance and gradient `sdgBoxFrame(p, b, e)`** (0 `sqrt`s inside the struts, 1 `sqrt` outside) as well as the 1-`sqrt` cylindrical-edge cage gradient `sdgBoxEdges(p, b, r)`.
+By combining our **Closest-Strut Reduction** with a new **Interior Longitudinal Exclusion Theorem**, we derive a **0-sorting-swap, 1-`sqrt` analytical distance and gradient `sdgBoxFrame(p, b, e)`** as well as the 1-`sqrt` cylindrical-edge cage gradient `sdgBoxEdges(p, b, r)`.
 
 ---
 
@@ -24,7 +24,7 @@ Let $`\mathbf{w} = |p| - \mathbf{b}`$, $`\mathbf{u} = \mathbf{w} + e`$, $`\mathb
    Since $`|t + e| - e \ge -|t| = t`$ for all $`t \le 0`$ and $`e \ge 0`$, whenever $`w_{i^*} \le 0`$ and $`j \ne i^*`$:
    - If $`w_j \le 0`$, then $`q_j = |w_j + e| - e \ge w_j \ge w_{i^*}`$.
    - If $`w_j > 0`$, then $`q_j = w_j > 0 \ge w_{i^*}`$.
-   Therefore, $`w_{i^*} \le \min_{j \ne i^*} q_j`$ **holds identically for all $`w_{i^*} \le 0`$**! Consequently, inside the strut ($`\max_{j \ne i^*} q_j \le 0`$), the longitudinal coordinate $`w_{i^*}`$ is **never** the active face — the interior distance $`g = \max_{j \ne i^*} q_j`$ and unit normal are purely transverse with **0 `sqrt`s**, while the exterior uses a single `length(max(c, 0.0))` (**1 `sqrt`**).
+   Therefore, $`w_{i^*} \le \min_{j \ne i^*} q_j`$ **holds identically for all $`w_{i^*} \le 0`$**! Consequently, inside the strut ($`\max_{j \ne i^*} q_j \le 0`$), the longitudinal coordinate $`w_{i^*}`$ is **never** the active face — the interior distance $`g = \max_{j \ne i^*} q_j`$ and unit normal are purely transverse with **0 `sqrt`s**, while the exterior uses a single `length(max(c, 0.0))` (**1 `sqrt`**). **Correction:** the purely transverse interior is exact only outside the 8 corner cubes; the shipped code uses the exact interior described in *Interior Correction* below (1 `sqrt`).
 
 ---
 
@@ -33,8 +33,31 @@ Let $`\mathbf{w} = |p| - \mathbf{b}`$, $`\mathbf{u} = \mathbf{w} + e`$, $`\mathb
 | Function | `sqrt` / SFU Count | Sorting Swaps | Max Distance Error vs Brute Force | Max $`\Vert \nabla d\Vert _2 - 1`$ | Boundary / Axis `NaN`s |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **IQ `sdBoxFrame` (distance only)** | `3` `sqrt`s | 0 | `0.0` | N/A | 0 |
-| **Ours `sdgBoxFrame` (distance + grad)** | **`0` (int) / `1` (ext)** | **0** | **`0.000e+00`** | **`2.22e-16`** | **`0`** |
+| **Ours `sdgBoxFrame` (distance + grad)** | **`1`** | **0** | **`0.000e+00`** outside; interior see *Interior Correction* | **`2.22e-16`** | **`0`** |
 | **Ours `sdgBoxEdges` (cylindrical cage)** | **`1` `sqrt`** | **0** | **`0.000e+00`** | **`2.22e-16`** | **`0`** |
+
+## Interior Correction: Corner Cubes (Claude Fable 5.2, sdf-gems 2026)
+
+The interior term $`\min(\max(q_x, q_y), 0)`$ of the previous `sdgBoxFrame` treats the inner planes $`w_j = -2e`$ as surface everywhere. Inside the 8 corner cubes ($`w_i \in [-2e, 0]`$ on all three axes) those planes lie in the interior of the solid, so the depth was under-estimated there (a conservative bound, not the exact distance) and the implied closest point $`p - d\,\nabla d`$ landed inside the solid.
+
+A point of the hollow needs **two** coordinates below $`b - 2e`$, so with $`\mathbf{t} = \max(\mathbf{w} + 2e, 0)`$ the exact interior depth is
+
+```math
+D = \min\Big(-\max_i w_i,\; \sqrt{t_{(1)}^2 + t_{(2)}^2}\Big), \qquad d = -D,
+```
+
+where $`t_{(1)} \le t_{(2)}`$ are the two smallest components of $`\mathbf{t}`$ (an axis with $`b_i \le 2e`$ has no hollow side and is excluded). Outside the corner cubes $`t_{(1)} = 0`$ and this reduces to the previous formula; the exterior branch is unchanged.
+
+| Check (literal GLSL, FP32) | Before | After |
+| :--- | :---: | :---: |
+| Max interior error vs FP64 closed form (24k points, 3 shapes) | `1.4e-2` to `2.8e-2` | `1.1e-7` |
+| Implied closest point off the surface, interior | up to `9.1e-2` (1.4% to 3.1% of interior points above `1e-2`) | within the `4.5e-3` resolution of the reference cloud |
+| Self-projection $`\vert d(p - d\,\nabla d)\vert`$ (90k points, 4 shapes incl. $`b_i \le 2e`$) | fails in corner cubes | `1.5e-7` |
+| 1-Lipschitz ratio / sign mismatches vs inside predicate | — | `1.00000` / `0` |
+
+The independent reference is a surface point cloud of the union of the 12 struts built from the inside predicate only (spacing `0.003`), which the result matches to its resolution (`3.5e-3`) on both sides. Cost: the interior now uses 1 `sqrt` (previously 0).
+
+In the corner-cube branch the gradient is $`-\mathbf{s} \odot (t_{(1)}, t_{(2)}) / D`$ on the two retained axes (unit length); when an outer face wins it is the axis normal of $`\max_i w_i`$.
 
 ---
 
