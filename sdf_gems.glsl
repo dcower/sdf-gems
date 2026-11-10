@@ -85,6 +85,7 @@
 #include "glsl/gradients3d/sdgWedgeIntersection.glsl"
 #include "glsl/gradients3d/sdhJet3D.glsl"
 #include "glsl/grin/grCurvedRays.glsl"
+#include "glsl/isotonic/isPermutohedronPAVA.glsl"
 #include "glsl/latticesum/sdThetaLattice.glsl"
 #include "glsl/liesphere/opLaguerreBoost.glsl"
 #include "glsl/lipschitzcache/lcBounds.glsl"
