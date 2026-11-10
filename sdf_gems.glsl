@@ -317,6 +317,7 @@
 #include "glsl/volume/sdfEikonalRadiativeTransfer.glsl"
 #include "glsl/volume/sdfEulerMieGodRays.glsl"
 #include "glsl/volume/sdfFinslerSubsurface.glsl"
+#include "glsl/volume/sdfFockAragoDiffraction.glsl"
 #include "glsl/volume/sdfLevyRieszClouds.glsl"
 #include "glsl/volume/sdfOsculatingTomography.glsl"
 #include "glsl/volume/sdfPadeAutoIntSlab.glsl"
