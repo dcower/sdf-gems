@@ -275,6 +275,7 @@
 #include "glsl/primitives3d/sdWallisConicalEdge.glsl"
 #include "glsl/primitives3d/udTriangle.glsl"
 #include "glsl/quasicrystal/opRepQuasicrystal.glsl"
+#include "glsl/randommatrix/rmEigenRepulsion.glsl"
 #include "glsl/rayspace/rcPrimitives.glsl"
 #include "glsl/repetition/opRep.glsl"
 #include "glsl/repetition/opRep2D.glsl"
