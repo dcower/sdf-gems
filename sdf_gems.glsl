@@ -86,6 +86,7 @@
 #include "glsl/grin/grCurvedRays.glsl"
 #include "glsl/latticesum/sdThetaLattice.glsl"
 #include "glsl/liesphere/opLaguerreBoost.glsl"
+#include "glsl/lipschitzcache/lcBounds.glsl"
 #include "glsl/measure/msSteinerTube.glsl"
 #include "glsl/medial/mdMedialRadius.glsl"
 #include "glsl/polyhedra3d/sdCuboctahedron.glsl"
