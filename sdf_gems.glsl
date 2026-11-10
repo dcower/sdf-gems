@@ -309,6 +309,7 @@
 #include "glsl/topology/tpGaussBonnet.glsl"
 #include "glsl/tropical/trAmoeba.glsl"
 #include "glsl/twistor/twHopfSubmersion.glsl"
+#include "glsl/volume/sdfBeltramiPhotoelastic.glsl"
 #include "glsl/volume/sdfBernsteinMomentRay.glsl"
 #include "glsl/volume/sdfCatastropheResidue.glsl"
 #include "glsl/volume/sdfChladniOrbitals.glsl"
