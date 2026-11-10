@@ -132,6 +132,7 @@
 #include "glsl/polyhedra3d/sdTruncatedOctahedron.glsl"
 #include "glsl/polyhedra3d/sdTruncatedTetrahedron.glsl"
 #include "glsl/polytopes4d/sd4Polytopes.glsl"
+#include "glsl/potentials/ptHarmonic.glsl"
 #include "glsl/prefilter/pfGaussOccupancy.glsl"
 #include "glsl/primitives2d/sdAgnesiWitch2D.glsl"
 #include "glsl/primitives2d/sdArchimedeanSpiral2D.glsl"
