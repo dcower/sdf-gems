@@ -93,6 +93,7 @@
 #include "glsl/lipschitzcache/lcBounds.glsl"
 #include "glsl/measure/msSteinerTube.glsl"
 #include "glsl/medial/mdMedialRadius.glsl"
+#include "glsl/padic/paUltrametricTree.glsl"
 #include "glsl/polyhedra3d/sdCuboctahedron.glsl"
 #include "glsl/polyhedra3d/sdDeltoidalHexecontahedron.glsl"
 #include "glsl/polyhedra3d/sdDeltoidalIcositetrahedron.glsl"
