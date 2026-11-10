@@ -17,6 +17,7 @@ Every primitive and operator has:
 6. [**Extrusions & Deformations**](#6-extrusions--deformations-glsldeform--docsdeform) — [`glsl/deform/`](glsl/deform/) · [`docs/deform/`](docs/deform/)
 7. [**Domain Repetition**](#7-domain-repetition-glslrepetition--docsrepetition) — [`glsl/repetition/`](glsl/repetition/) · [`docs/repetition/`](docs/repetition/)
 8. [**Volume, Ray-Tracing & Analytical Shading**](#8-volume-ray-tracing--analytical-shading-glslvolume--docsvolume) — [`glsl/volume/`](glsl/volume/) · [`docs/volume/`](docs/volume/)
+9. [**Experimental Research Categories**](#9-experimental-research-categories) — one new category per experiment: [`glsl/`](glsl/) · [`docs/`](docs/)
 
 ---
 
@@ -359,3 +360,10 @@ Functions returning `vec4(d, grad.xyz)` in 3D (or `vec3(d, grad.xy)` in 2D) enab
 | <img src="docs/images/volume/sdfEikonalRadiativeTransfer.png" width="96"> | [**`sdfEikonalRadiativeTransfer`**](docs/volume/sdfEikonalRadiativeTransfer.md)<br>[`glsl`](glsl/volume/sdfEikonalRadiativeTransfer.glsl) · **Exact** | **Also**: `sdfEikonalFootpoint`, `sdfEikonalViewFactor`, `sdfZonalSH3Weights`, `sdfEikonalBentNormal`, `sdfEikonalIndirectBounce`. 0-ray Eikonal footpoint projection, Legendre zonal harmonic cap moments, and closed-form 1-bounce diffuse GI |
 
 
+## 9. Experimental Research Categories
+
+Exploratory experiments that attach a new kind of mathematical object to an SDF. Each row is its own category (`glsl/<category>/`, `docs/<category>/`). The label states what was measured: **Exact** only where the literal GLSL matched an independent ground truth, otherwise **Bound** or **Approximate**. Every article has a *Findings* section that lists what held, what failed, and open questions.
+
+| Preview | Function | Summary |
+| :---: | :--- | :--- |
+| <img src="docs/images/cspace/sdCSpaceRect.png" width="96"> | [**`sdCSpaceRect`**](docs/cspace/sdCSpaceRect.md)<br>[`glsl`](glsl/cspace/sdCSpaceRect.glsl) · `cspace` · **Exact** slice / Bound in 3D | **Also**: `sdgCSpaceRectRectPose`, `sdCSpaceRectRect`, `stepCSpaceRectRectCA`. Piano-mover configuration-space obstacle (rotating rectangle vs rectangle) in $`(x, y, \rho\theta)`$: exact slice SDF with pose gradient, conservative 3D bound with the tight Lipschitz constant, and continuous collision detection by sphere tracing (0 tunnelling measured) |
