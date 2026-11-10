@@ -279,6 +279,7 @@
 #include "glsl/repetition/opRepPolar.glsl"
 #include "glsl/repetition/sdKelvinFoam.glsl"
 #include "glsl/spacetime/stRetardedTrace.glsl"
+#include "glsl/topology/tpGaussBonnet.glsl"
 #include "glsl/volume/sdfBernsteinMomentRay.glsl"
 #include "glsl/volume/sdfCatastropheResidue.glsl"
 #include "glsl/volume/sdfChladniOrbitals.glsl"
