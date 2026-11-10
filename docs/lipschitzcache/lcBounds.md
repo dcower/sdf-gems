@@ -106,7 +106,7 @@ octahedron and torus (max difference $`3.5 \times 10^{-7}`$). For the ellipsoid,
 | Bound | 5 convex primitives (box, round box, capsule, exact ellipsoid, octahedron) | 3 non-convex (torus, link, box frame) |
 | :--- | :--- | :--- |
 | `lcLower` / `lcUpper` | 0 / 0 | 0 / 0 |
-| `lcUpperClosest` | $`\le 3.1 \times 10^{-7}`$ | $`\le 3.6 \times 10^{-7}`$ torus, link; **0.027** box frame (inside samples, measured before the `sdgBoxFrame` fix, see Findings), $`3.0 \times 10^{-7}`$ with outside samples only |
+| `lcUpperClosest` | $`\le 3.1 \times 10^{-7}`$ | $`\le 3.6 \times 10^{-7}`$ torus, link; $`3.6 \times 10^{-7}`$ box frame with inside and outside samples (was **0.027** before the `sdgBoxFrame` fix, see Findings) |
 | `lcLowerConvex` | $`\le 5.7 \times 10^{-7}`$; capsule $`1.0 \times 10^{-5}`$ (inside samples near the axis) | **fails: 1.2, 1.3, 1.4** on 28.6%, 27.6%, 49.3% of pairs |
 | `lcUpperConvexHull` | $`\le 3.8 \times 10^{-7}`$ | **fails: 0.36, 0.19, 0.44** on 4.4%, 3.5%, 9.4% of pairs |
 | `lcInterval` (lo, hi) | $`\le 3.6 \times 10^{-7}`$ | $`\le 0`$ (torus, link) |
@@ -183,7 +183,7 @@ Single-translation-unit compile: `forward / reverse / new-first: OK (297 files)`
   away from the surface, which broke `lcUpperClosest` (0.027); with outside samples the violation was $`3.0 \times 10^{-7}`$. The cause was in the
   primitive, not the bound: inside the 8 corner cubes the old interior formula of `sdBoxFrame` / `sdgBoxFrame` treated inner strut planes as surface.
   Both functions were corrected afterwards (see [`sdgBoxFrame`](../gradients3d/sdgBoxFrame.md)); the implied closest point now lies on the surface
-  (self-projection $`1.5 \times 10^{-7}`$). The 0.027 entry in the table above predates that fix and was not re-measured.
+  (self-projection $`1.5 \times 10^{-7}`$). Re-measured after the fix on the same 120k pairs: the `lcUpperClosest` violation on the box frame fell from 0.027 to $`3.6 \times 10^{-7}`$.
 - Closest-point and Whitney bounds fail for non-exact (bound) SDFs: up to 0.31 and 1.2.
 - **Bug found and fixed in the inherited code**: `lcIntervalConvex` used $`-\mathrm{lcUpperConvexHull}`$ as a lower bound. Measured before the fix:
   violated by 0.22 to 0.34 on 0.5 to 1.3% of pairs on all 5 convex primitives. The earlier test compared this function only with its own prototype.
