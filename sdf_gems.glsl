@@ -330,6 +330,7 @@
 #include "glsl/volume/sdfStokesExactForms.glsl"
 #include "glsl/volume/sdfWavefrontBragg.glsl"
 #include "glsl/volume/sdfWeylCovariantShell.glsl"
+#include "glsl/volume/sdfWhithamMachSchlieren.glsl"
 #include "glsl/volume/sdfWkbAiryCavity.glsl"
 #include "glsl/volume/sdfYukawaColeHopf.glsl"
 
