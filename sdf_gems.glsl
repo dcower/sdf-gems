@@ -128,6 +128,7 @@
 #include "glsl/polyhedra3d/sdTruncatedIcosidodecahedron.glsl"
 #include "glsl/polyhedra3d/sdTruncatedOctahedron.glsl"
 #include "glsl/polyhedra3d/sdTruncatedTetrahedron.glsl"
+#include "glsl/prefilter/pfGaussOccupancy.glsl"
 #include "glsl/primitives2d/sdAgnesiWitch2D.glsl"
 #include "glsl/primitives2d/sdArchimedeanSpiral2D.glsl"
 #include "glsl/primitives2d/sdAstroid2D.glsl"
