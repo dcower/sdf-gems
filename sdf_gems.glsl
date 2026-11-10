@@ -319,6 +319,7 @@
 #include "glsl/volume/sdfPadeAutoIntSlab.glsl"
 #include "glsl/volume/sdfPauliSpinorSoliton.glsl"
 #include "glsl/volume/sdfPhaseSpaceLightField.glsl"
+#include "glsl/volume/sdfSteklovYukawaSSS.glsl"
 #include "glsl/volume/sdfStokesExactForms.glsl"
 #include "glsl/volume/sdfWavefrontBragg.glsl"
 #include "glsl/volume/sdfWeylCovariantShell.glsl"
