@@ -25,6 +25,7 @@
 #include "glsl/booleans/sminQuadratic.glsl"
 #include "glsl/booleans/sminQuintic.glsl"
 #include "glsl/booleans/sminVaradhan.glsl"
+#include "glsl/cga/cgaRounds.glsl"
 #include "glsl/cspace/sdCSpaceRect.glsl"
 #include "glsl/deform/opBend.glsl"
 #include "glsl/deform/opConformal2D.glsl"
