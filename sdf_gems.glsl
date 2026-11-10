@@ -3,6 +3,7 @@
 #define SDF_GEMS_GLSL
 
 #include "glsl/common/common.glsl"
+#include "glsl/billiards/biPonceletCaustic.glsl"
 #include "glsl/blaschke/blSchwarzPick.glsl"
 #include "glsl/booleans/opEngrave.glsl"
 #include "glsl/booleans/opGroove.glsl"
