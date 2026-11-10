@@ -49,6 +49,7 @@
 #include "glsl/deform/opSweep.glsl"
 #include "glsl/deform/opTaper.glsl"
 #include "glsl/deform/opTwist.glsl"
+#include "glsl/fractals/sdFractalExact.glsl"
 #include "glsl/gradients3d/sdgArchimedeanSolid.glsl"
 #include "glsl/gradients3d/sdgBox.glsl"
 #include "glsl/gradients3d/sdgBoxFrame.glsl"
