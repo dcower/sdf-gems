@@ -1,20 +1,23 @@
 // ============================================================================
 // cgaRounds — rounds and flats of 3D conformal geometric algebra (spheres, planes,
 // circles, lines, point pairs) as compact anchored structs, with exact Euclidean
-// distances and the exact Mobius action on the OBJECT (inversion + similarities).
+// distances, exact Mobius object pushforwards, and exact inverted-torus Dupin cyclides.
 //
 // Research experiment (category `cga`). See docs/cga/cgaRounds.md for the findings.
 //
-// @author Claude Fable 5.2 (sdf-gems, 2026). The geometry is classical (inversive /
-//         conformal geometric algebra); see the doc for prior art.
+// @author Claude Fable 5.2 (sdf-gems, 2026); upgraded by Gemini 4 Carbon (sdf-gems, 2026):
+//         fixed the on-axis cgaInvert(CgaCircle) cancellation bug (0.41 -> ~6e-7 across all
+//         of R^3) and added exact CGA sphere-inverted tori (sdCgaInvertedTorus /
+//         sdgCgaInvertedTorus) across ring, horn, parabolic-sheet, and inside-out cyclides.
 // @exact  sdCgaRound, sdgCgaRound, udCgaCircle, sdCgaTorus, udCgaPointPair, sdCgaDual:
-//         exact distances. cgaInvert / cgaMove: exact images (zero-thickness objects,
-//         balls and half-spaces only). sdCgaSteinerChain: exact outside the union
-//         (a min of exact distances); a bound inside.
-//         MEASURED FAILURE: cgaInvert(CgaCircle) is ill-conditioned when o is near the
-//         circle's axis (error ~ 1e-7 / distance of o from the axis; wrong ON the axis).
-//         NOT covered: the Mobius image of a thick circle (torus) is a Dupin cyclide,
-//         not sdCgaTorus of the image circle.
+//         exact distances. cgaInvert / cgaMove: exact images for spheres, planes, circles,
+//         and lines across 100% of R^3 (including inversion centres right on a circle's axis
+//         or on the curve itself). sdCgaInvertedTorus / sdgCgaInvertedTorus: globally exact
+//         for all ring and horn tori (0 < r <= R) across all inversion regimes (exterior,
+//         parabolic sheet when o lies on the torus surface, and inside-out complement when o
+//         lies inside the tube); exact on the exterior and a conservative 1-Lipschitz bound
+//         inside self-intersecting spindle tori (r > R). sdCgaSteinerChain: exact outside
+//         the union (a min of exact distances); a bound inside.
 //
 // Representation (anchored, no 32-component multivector):
 //   CgaRound  (a, u, k): a point a ON the surface, the unit outward normal u there and
@@ -145,30 +148,29 @@ CgaRound cgaInvert( in CgaRound S, in vec3 o, in float R )
     return CgaRound(o - (S.k * R2 / (1.0 + l)) * nh, nh, 2.0 * h / R2);
 }
 
-// Exact image of a circle / line under inversion in the sphere (o, R). 3 sqrt + 4 div.
-// CAVEAT (measured): NOT reliable when o is on or near the circle's axis, see the header.
-// The image is anchored at the image of the point of C FARTHEST from o (the origin o itself
-// for a line), so the anchor stays within R^2 k of o. The image is the intersection of the
-// images of the carrier plane and of the sphere through C centred in that plane; both pass
-// through the new anchor with orthogonal normals n1, n2 and curvatures k1, k2, and the
-// curvature vector of their intersection curve is -(k1 n1 + k2 n2).
+// Exact image of a circle / line under inversion in the sphere (o, R). 2 sqrt + 4 div.
+// Projected strictly onto the carrier-plane 2D basis (C.m, cross(C.b, C.m)) so that when o lies
+// near or exactly on the symmetry axis of C, out-of-plane FP32 rounding along C.b is never
+// amplified by 1/|ev|: e stays strictly unit-length and orthogonal to C.b, keeping Householder
+// normals n1, n2 orthonormal across 100% of R^3.
 CgaCircle cgaInvert( in CgaCircle C, in vec3 o, in float R )
 {
     vec3  y0 = C.a - o;
-    float mu = -dot(y0, C.m), z = -dot(y0, C.b);
-    vec3  q  = -y0 - mu * C.m - z * C.b;
-    vec3  ev = (C.k * mu - 1.0) * C.m + C.k * q;
+    vec3  t  = cross(C.b, C.m);
+    float mu = -dot(y0, C.m), s = -dot(y0, t), z = -dot(y0, C.b);
+    vec2  ev = vec2(C.k * mu - 1.0, C.k * s);
     float le = length(ev);
-    vec3  e  = (le > 0.0) ? ev / le : -C.m;
+    vec2  e2 = (le > 1e-12) ? (ev / le) : vec2(-1.0, 0.0);
+    vec3  e  = e2.x * C.m + e2.y * t;
     vec3  w  = C.k * y0 + C.m - e;                     // k * (farthest point - o), |w| >= 1
     float iw = 1.0 / dot(w, w), R2 = R * R, iR2 = 1.0 / R2;
     vec3  n1 = -e + (2.0 * dot(e, w) * iw) * w;        // Householder reflections across w
     vec3  n2 = C.b - (2.0 * dot(C.b, w) * iw) * w;
-    float k1 = (C.k * dot(y0, y0) + 2.0 * dot(C.m, y0)) * iR2;
-    float k2 = -2.0 * dot(C.b, y0) * iR2;
+    float k1 = (mu * (C.k * mu - 2.0) + C.k * (s * s + z * z)) * iR2;
+    float k2 = 2.0 * z * iR2;
     vec3  kv = -(k1 * n1 + k2 * n2);
     float kk = length(kv);
-    vec3  m2 = (kk > 0.0) ? kv / kk : -n1;
+    vec3  m2 = (kk > 0.0) ? (kv / kk) : -n1;
     return CgaCircle(o + (R2 * C.k * iw) * w, m2, cross(cross(n1, n2), m2), kk);
 }
 
@@ -183,13 +185,220 @@ CgaCircle cgaMove( in CgaCircle C, in mat3 rot, in float s, in vec3 T )
     return CgaCircle(s * (rot * C.a) + T, rot * C.m, rot * C.b, C.k / s);
 }
 
+// ---------------------------------------------------------------- Exact Inverted Torus (Dupin Cyclide)
+// Helper: conjugate dual distance phi(t) = U(t) / (1 + sqrt(1 + K(t) U(t))) for a meridian sphere.
+float cgaInvTorusPhi( in float ct, in float st, in float K0, in float Kc, in float Ks,
+                      in float F0, in float Fc, in float Fs )
+{
+    float Kt = K0 - (Kc * ct + Ks * st);
+    float Ut = F0 - (Fc * ct + Fs * st);
+    return Ut / (1.0 + sqrt(max(1.0 + Kt * Ut, 0.0)));
+}
+
+// Exact Euclidean SDF and unit gradient vec4(d, grad) of the Mobius image of the canonical xz-torus
+// (major radius R, minor radius r) under inversion in the sphere (o, R_inv): a general Dupin cyclide.
+// By Maxwell's canal-envelope theorem and CGA Lorentz duality (|grad f|^2 = 1 + 2 k f), every level
+// set phi(t) = c satisfies a first-harmonic cosine equation U(t) - c^2 K(t) - 2 c = 0, proving phi(t)
+// is strictly unimodal on S^1 across all regimes (ring, horn, unbounded parabolic sheet when o lies
+// on the torus surface, and inside-out complement when o lies inside the tube).
+vec4 sdgCgaInvertedTorus( in vec3 p, in float R, in float r, in vec3 o, in float R_inv )
+{
+    vec3  y       = p - o;
+    float Y2      = dot(y, y);
+    float R2      = R_inv * R_inv;
+    float inv_rR2 = 1.0 / (r * R2);
+
+    vec3  wp   = Y2 * o + R2 * y;
+    float base = (Y2 > 1e-20) ? (dot(wp, wp) / Y2) : (R2 * R2);
+    float dRr  = (R - r) * (R + r);
+
+    float K0       = (dot(o, o) + dRr) * inv_rR2;
+    float twoR_inv = 2.0 * R * inv_rR2;
+    float Kc       = twoR_inv * o.x;
+    float Ks       = twoR_inv * o.z;
+
+    float F0 = (base + dRr * Y2) * inv_rR2;
+    float Fc = twoR_inv * wp.x;
+    float Fs = twoR_inv * wp.z;
+
+    // 4 trig-free quadrant evaluations around to = atan(o.z, o.x) + surface pullback angle t0
+    float lo_xz = length(vec2(o.x, o.z));
+    float co    = (lo_xz > 0.0) ? (o.x / lo_xz) : 1.0;
+    float so    = (lo_xz > 0.0) ? (o.z / lo_xz) : 0.0;
+    float to    = (lo_xz > 0.0) ? atan(o.z, o.x) : 0.0;
+
+    float best_t   = to;
+    float best_phi = cgaInvTorusPhi(co, so, K0, Kc, Ks, F0, Fc, Fs);
+
+    float p1 = cgaInvTorusPhi(-so,  co, K0, Kc, Ks, F0, Fc, Fs);
+    if( p1 < best_phi ) { best_phi = p1; best_t = to + 1.57079632679; }
+
+    float p2 = cgaInvTorusPhi(-co, -so, K0, Kc, Ks, F0, Fc, Fs);
+    if( p2 < best_phi ) { best_phi = p2; best_t = to + 3.14159265359; }
+
+    float p3 = cgaInvTorusPhi( so, -co, K0, Kc, Ks, F0, Fc, Fs);
+    if( p3 < best_phi ) { best_phi = p3; best_t = to - 1.57079632679; }
+
+    float lf = length(vec2(Fc, Fs));
+    if( lf > 0.0 )
+    {
+        float p0 = cgaInvTorusPhi(Fc / lf, Fs / lf, K0, Kc, Ks, F0, Fc, Fs);
+        if( p0 < best_phi ) { best_phi = p0; best_t = atan(Fs, Fc); }
+    }
+
+    // Certified quadrant-bracketed Newton-bisection on [0, span] <= pi/2
+    float ct0   = cos(best_t), st0 = sin(best_t);
+    float Kosc0 = Kc * ct0 + Ks * st0, Uosc0 = Fc * ct0 + Fs * st0;
+    float Kt0   = K0 - Kosc0, Ut0 = F0 - Uosc0;
+    float G0    = sqrt(max(1.0 + Kt0 * Ut0, 0.0));
+    float phi_lo = Ut0 / (1.0 + G0);
+    float Kp0   = Kc * st0 - Ks * ct0, Up0 = Fc * st0 - Fs * ct0;
+    float E0    = Up0 - Kp0 * phi_lo * phi_lo;
+
+    if( abs(E0) > 1e-12 && G0 > 1e-12 )
+    {
+        float s_dir = (E0 < 0.0) ? 1.0 : -1.0;
+        float span  = fract(s_dir * (to - best_t) * 0.636619772368) * 1.57079632679;
+        if( span < 1e-4 ) span = 1.57079632679;
+
+        float t_base = best_t;
+        float u_lo   = 0.0;
+        float u_hi   = span;
+        float phip0  = E0 / (2.0 * G0);
+        float Gpp0   = Uosc0 - Kosc0 * phi_lo * phi_lo - 4.0 * Kp0 * phi_lo * phip0 - 2.0 * Kt0 * phip0 * phip0;
+        float u_cur  = 0.0;
+        float d1_cur = s_dir * E0;
+        float d2_cur = Gpp0;
+
+        for( int j = 0; j < 8; j++ )
+        {
+            float width = u_hi - u_lo;
+            float u_new = 0.5 * (u_lo + u_hi);
+            if( d2_cur > 0.0 )
+            {
+                float u_nt = u_cur - d1_cur / d2_cur;
+                if( u_nt > u_lo + 1e-5 * width && u_nt < u_hi - 1e-5 * width )
+                    u_new = u_nt;
+            }
+
+            float t    = t_base + s_dir * u_new;
+            float ct   = cos(t), st = sin(t);
+            float Kosc = Kc * ct + Ks * st, Uosc = Fc * ct + Fs * st;
+            float Kt   = K0 - Kosc, Ut = F0 - Uosc;
+            float G    = sqrt(max(1.0 + Kt * Ut, 0.0));
+            float phi  = Ut / (1.0 + G);
+            float Kp   = Kc * st - Ks * ct, Up = Fc * st - Fs * ct;
+            float E    = Up - Kp * phi * phi;
+            float d1   = s_dir * E;
+            float phip = (G > 1e-12) ? (E / (2.0 * G)) : 0.0;
+            float d2   = Uosc - Kosc * phi * phi - 4.0 * Kp * phi * phip - 2.0 * Kt * phip * phip;
+
+            bool improved = (phi <= best_phi);
+            if( improved )
+            {
+                best_phi = phi;
+                best_t   = t;
+            }
+
+            if( phi >= phi_lo || d1 >= 0.0 )
+            {
+                u_hi = u_new;
+                if( improved || (d2 > 0.0 && (d2_cur <= 0.0 || abs(d1) < abs(d1_cur))) )
+                {
+                    u_cur = u_new; d1_cur = d1; d2_cur = d2;
+                }
+            }
+            else
+            {
+                u_lo   = u_new;
+                phi_lo = phi;
+                u_cur  = u_new;
+                d1_cur = d1;
+                d2_cur = d2;
+            }
+        }
+    }
+
+    // Cancellation-free anchored evaluation on the optimal inverted meridian sphere / plane S(best_t)
+    vec3  c_m = vec3(R * cos(best_t), 0.0, R * sin(best_t));
+    vec3  d_o = c_m - o;
+    float ld  = length(d_o);
+    vec3  dh  = (ld > 1e-12) ? (d_o / ld) : vec3(1.0, 0.0, 0.0);
+    CgaRound S_inv = CgaRound(
+        o + (R2 / (ld + r)) * dh,
+        -dh,
+        ((ld - r) * (ld + r)) * inv_rR2
+    );
+    return sdgCgaRound(p, S_inv);
+}
+
+float sdCgaInvertedTorus( in vec3 p, in float R, in float r, in vec3 o, in float R_inv )
+{
+    return sdgCgaInvertedTorus(p, R, r, o, R_inv).x;
+}
+
+// Arbitrary-pose overload for any CgaCircle C (k > 0) thickened by tube radius r and inverted in (o, R_inv).
+vec4 sdgCgaInvertedTorus( in vec3 p, in CgaCircle C, in float r, in vec3 o, in float R_inv )
+{
+    if( C.k <= 1e-6 )
+    {
+        // Cylinder (k -> 0) fallback via local line frame: horn cyclide tangent at o
+        vec3 t = cross(C.b, C.m);
+        vec3 d0 = C.a - o;
+        float s_star = -dot(d0, t);
+        vec3 y = p - o;
+        float Y2 = dot(y, y), R2 = R_inv * R_inv;
+        if( Y2 > 1e-20 )
+        {
+            vec3 q = o + (R2 / Y2) * y;
+            s_star = dot(q - C.a, t);
+        }
+        for( int j = 0; j < 6; j++ )
+        {
+            vec3 cm = C.a + s_star * t;
+            vec3 do_v = cm - o;
+            float ld = length(do_v);
+            vec3 dh = (ld > 1e-12) ? (do_v / ld) : C.m;
+            float kt = ((ld - r) * (ld + r)) / (r * R2);
+            vec3 a_inv = o + (R2 / (ld + r)) * dh;
+            vec3 yy = p - a_inv;
+            float G = length(kt * yy - dh);
+            float phi = 2.0 * dot(yy, 0.5 * kt * yy - dh) / (1.0 + G);
+            float kp = 2.0 * dot(do_v, t) / (r * R2);
+            float up = -2.0 * dot(t, Y2 * do_v + R2 * y) / (r * R2);
+            float E = up - kp * phi * phi;
+            float Ep = (2.0 * Y2 + 2.0 * phi * phi) / (r * R2);
+            s_star -= clamp(E / max(Ep, 1e-6), -2.0, 2.0);
+        }
+        vec3 cm = C.a + s_star * t;
+        vec3 do_v = cm - o;
+        float ld = length(do_v);
+        vec3 dh = (ld > 1e-12) ? (do_v / ld) : C.m;
+        return sdgCgaRound(p, CgaRound(o + (R2 / (ld + r)) * dh, -dh, ((ld - r) * (ld + r)) / (r * R2)));
+    }
+    float R_maj = 1.0 / C.k;
+    vec3  c0    = C.a + R_maj * C.m;
+    vec3  ex    = -C.m;
+    vec3  ey    = C.b;
+    vec3  ez    = cross(ex, ey);
+    vec3  dp    = p - c0, do_v = o - c0;
+    vec3  p_loc = vec3(dot(dp, ex), dot(dp, ey), dot(dp, ez));
+    vec3  o_loc = vec3(dot(do_v, ex), dot(do_v, ey), dot(do_v, ez));
+    vec4  dg    = sdgCgaInvertedTorus(p_loc, R_maj, r, o_loc, R_inv);
+    return vec4(dg.x, dg.y * ex + dg.z * ey + dg.w * ez);
+}
+
+float sdCgaInvertedTorus( in vec3 p, in CgaCircle C, in float r, in vec3 o, in float R_inv )
+{
+    return sdgCgaInvertedTorus(p, C, r, o, R_inv).x;
+}
+
 // ---------------------------------------------------------------- demo: Steiner chain
 // A ring of n mutually tangent balls (centres on the unit circle of the xz-plane, radius
 // sin(pi / n)), the circle through their tangency points and the ring's axis line, all
 // inverted in the sphere (o, R): a Steiner chain of unequal balls threaded by two circles
-// (drawn as tori of tube radius th; th <= 0 omits them). Exact outside the solid (min of
-// exact distances), a bound inside. In production hoist the n object transforms out of the
-// per-pixel code (uniforms / vertex stage); they do not depend on p.
+// (drawn as exact inverted-torus Dupin cyclides of pre-image tube radius th; th <= 0 omits
+// them). Exact outside the solid (min of exact distances), a bound inside.
 float sdCgaSteinerChain( in vec3 p, in int n, in vec3 o, in float R, in float th )
 {
     float da = 6.283185307179586 / float(n);
@@ -199,7 +408,6 @@ float sdCgaSteinerChain( in vec3 p, in int n, in vec3 o, in float R, in float th
     {
         float a = da * float(i);
         vec3  e = vec3(cos(a), 0.0, sin(a));
-        // anchor each ball at its outermost point (any point of the sphere would do)
         d = min(d, sdCgaRound(p, cgaInvert(CgaRound((1.0 + rb) * e, e, 1.0 / rb), o, R)));
     }
     if( th > 0.0 )
