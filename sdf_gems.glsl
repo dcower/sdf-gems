@@ -17,6 +17,7 @@
 #include "glsl/booleans/opUnionRound3.glsl"
 #include "glsl/booleans/opUnionStairs.glsl"
 #include "glsl/booleans/opXor.glsl"
+#include "glsl/booleans/sdgSminG2Gram.glsl"
 #include "glsl/booleans/sdgSminGram3.glsl"
 #include "glsl/booleans/sminCircular.glsl"
 #include "glsl/booleans/sminCircularApprox.glsl"
