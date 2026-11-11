@@ -309,6 +309,7 @@
 #include "glsl/repetition/opRepPolar.glsl"
 #include "glsl/repetition/sdKelvinFoam.glsl"
 #include "glsl/repetition/sdWeairePhelanFoam.glsl"
+#include "glsl/solgeometry/thSolGeometry.glsl"
 #include "glsl/spacetime/stRetardedTrace.glsl"
 #include "glsl/subriemannian/srHeisenberg.glsl"
 #include "glsl/symplectic/syHamiltonianFlow.glsl"
