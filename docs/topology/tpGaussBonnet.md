@@ -1,40 +1,39 @@
-# `tpGaussBonnet` — Integer Topological Invariants from SDFs: Euler Characteristic by Gauss–Bonnet, Linking Number by Segment-Pair Solid Angles
+# `tpGaussBonnet` — Integer Topological Invariants from SDFs: Distributional Gauss-Degree Euler Characteristic, Coarea Gauss–Bonnet, Polygonal Linking & Milnor Triple-Linking
 
-Functions: `tpGaussCurvatureImplicit`, `tpMeanCurvatureImplicit`, `tpGaussCurvatureSDF`, `tpMeanCurvatureSDF`, `tpJetFromStencil`, `tpTorusJet`, `tpGenusChain`, `tpGenusChainIntegrand`, `tpSolidAngleTri`, `tpLinkingSegSeg`, `tpTorusStrand`, `tpLinkingTorusLink`, `tpSolidAngleCircle`
+Functions: `tpGaussCurvatureImplicit`, `tpMeanCurvatureImplicit`, `tpGaussCurvatureSDF`, `tpMeanCurvatureSDF`, `tpJetFromStencil`, `tpTorusJet`, `tpGenusChain`, `tpGenusChainIntegrand`, `tpSolidAngleTri`, `tpLinkingSegSeg`, `tpTorusStrand`, `tpLinkingTorusLink`, `tpSolidAngleCircle`, `tpSphericalGaussTri`, `tpEdgeZeroNormal`, `tpTetGaussDegree`, `tpTetEulerContribution`, `tpKuhnVoxelEuler`, `tpSolidAnglePolygon`, `tpSegTriHit`, `tpTriTriSegment`, `tpCurveFanPairing`, `tpMilnorTripleLink`, `tpBorromeanStrand`, `tpMilnorBorromean`
 
-| 3D Surface (`tpGenusChain`, genus 3) | Gaussian curvature of the level sets (genus 2, slice $`y = 0`$) |
+| 3D Scene (`sdBoxFrame` $`\chi = -8`$ + `sdBorromeanRings` $`\bar{\mu}_{123} = -1`$) | Slice $`z = 0`$ (sharp square struts + Borromean piercings) |
 | :---: | :---: |
 | ![tpGaussBonnet](../images/topology/tpGaussBonnet.png) | ![tpGaussBonnet slice](../images/topology/tpGaussBonnet_slice.png) |
 
 | Property | Value |
 | :--- | :--- |
-| **Author** | **Claude Fable 5.2** (`sdf-gems`, 2026). The mathematics is classical (Gauss–Bonnet, coarea formula, Gauss linking integral); see Novelty & Prior Art. |
-| **Category** | `topology` (research experiment: integers that a correct SDF must reproduce) |
+| **Author** | **Claude Fable 5.2** (`sdf-gems`, 2026) — upgraded with distributional Kuhn-tetrahedra spherical Gauss degree and Milnor triple-linking invariant using **Gemini 4 Carbon** (`sdf-gems`, 2026) |
+| **Category** | `topology` (integer topological invariants certified directly on GPU SDFs and curves) |
 | **GLSL File** | [`glsl/topology/tpGaussBonnet.glsl`](../../glsl/topology/tpGaussBonnet.glsl) |
-| **Exactness** | These are not distance functions, except the two examples. Curvature formulas and `tpLinkingSegSeg`: **closed forms, verified** against independent references (errors 1e-7 to 2e-6 in FP32). Euler characteristic: a **Monte Carlo estimate** (approximate; error bars below), integer only after rounding. `tpTorusJet`: exact torus SDF with analytic Hessian. `tpGenusChain`: **1-Lipschitz implicit surface, not an exact SDF** (measured gradient norm between 0.61 and 1.00 near the surface). |
+| **Exactness** | Curvature formulas, `tpLinkingSegSeg`, `tpSphericalGaussTri`, `tpTetGaussDegree` / `tpTetEulerContribution`, and `tpMilnorTripleLink`: **exact closed-form / combinatorial evaluators**. Kuhn-tetrahedra sums (`tpKuhnVoxelEuler`): **deterministic and topologically quantized to exact integers** (error $`\le 2.6\times 10^{-6}`$ in GPU FP32) on both smooth and sharp non-convex polyhedra once voxel spacing resolves wall/tunnel thickness. Smooth coarea Gauss–Bonnet integrals: Monte Carlo estimates. `tpGenusChain`: 1-Lipschitz implicit surface, not an exact SDF. |
 
 ---
 
 ## Overview
 
-Two integers can be read off an SDF scene, and a correct implementation has to reproduce them:
+Three integer topological invariants can be extracted directly from SDFs and curve parameterisations on the GPU:
 
-1. **Euler characteristic** $`\chi`$ of a closed surface, from the integral of the Gaussian curvature of the level sets (Gauss–Bonnet). $`\chi = 2 - 2g`$ per component of genus $`g`$.
-2. **Linking number** $`\mathrm{Lk}`$ of two closed centre curves, from a closed-form sum over segment pairs.
-
-This document reports what was measured for each, including where the idea fails. The short version: (1) works on smooth surfaces with $`10^3`$ to $`3\cdot 10^5`$ samples and **fails on sharp non-convex shapes**; (2) works to FP32 rounding with a handful of segments.
+1. **Euler characteristic $`\chi = 2 - 2g`$ on arbitrary Lipschitz / sharp non-convex SDFs (`tpSphericalGaussTri`, `tpTetEulerContribution`, `tpKuhnVoxelEuler`)**: Pointwise Gauss–Bonnet coarea integration works on smooth surfaces, and outward offsets rescue sharp *convex* polyhedra, but **both fail on sharp non-convex shapes** (`sdBoxFrame` returns $`+2.01`$ instead of $`-8`$, L-prism returns $`+2.49`$ instead of $`+2`$) because re-entrant creases have zero exterior reach and concentrate negative Gaussian curvature as a singular Dirac measure. Evaluating **Heinz Hopf's Gauss-map degree** via exact spherical solid angles (`tpSphericalGaussTri`) over a conforming 6-tetrahedra Kuhn voxel subdivision (`tpKuhnVoxelEuler`) cancels all interior geodesic arcs bit-for-bit, recovering $`\chi = -8.000000`$ on `sdBoxFrame` and $`\chi = -160.000003`$ on the genus-81 level-2 Menger sponge (`sdMengerExact`) with zero Monte Carlo variance and ~300× fewer SDF evaluations.
+2. **Pairwise Gauss linking number $`\mathrm{Lk}`$ (`tpLinkingSegSeg`, `tpLinkingTorusLink`)**: Exact signed solid angle of segment-pair difference parallelograms (0 quadrature error, exact integer to $`9\times 10^{-6}`$ in FP32 as soon as polygons are isotopic to the curves).
+3. **Milnor's triple-linking invariant $`\bar{\mu}_{123}`$ (`tpMilnorTripleLink`, `tpMilnorBorromean`)**: Pairwise linking numbers vanish identically on the Borromean rings ($`\mathrm{Lk}_{12} = \mathrm{Lk}_{23} = \mathrm{Lk}_{31} = 0`$). Using Mellor & Melvin's Seifert-fan intersection formula with $`O(N^2)`$ two-triangle clipping (`0 sqrt`, `0 atan`), `tpMilnorTripleLink` recovers exact integers $`\bar{\mu}_{123} = -1`$ on Borromean rings (from $`N = 3`$ segments upward, invariant under 3D rotations and non-planar deformations) and $`\bar{\mu}_{123} = -m`$ on $`(m, 1)`$-cabled unknotted Borromean links.
 
 ![tpGaussBonnet comparison](../images/comparisons/tpGaussBonnet_comparison.png)
 
-*Left: 13 smooth cases, literal GLSL on the GPU. Middle: sharp shapes and broken variants. Right: offset shells on a box.*
+*Left: GPU FP32 Euler characteristic across smooth and sharp non-convex shapes — coarea Gauss–Bonnet Monte Carlo ($`10^7`$ samples) vs. deterministic Kuhn-tetrahedra Gauss degree ($`24^3`$–$`36^3`$ grids). Middle: Nyquist topological quantization across grid resolution $`N`$ and sub-voxel antipodal normal breakdown on thin shells. Right: GPU Borromean unlinking transition (`tpMilnorTripleLink` vs. `tpLinkingSegSeg`) and $`(m, 1)`$-cabled links.*
 
 ---
 
 ## Mathematical Formulation
 
-### 1. Curvature of a level set
+### 1. Smooth level-set curvatures & coarea Gauss–Bonnet
 
-For any $`C^2`$ function $`f`$ with gradient $`\mathbf{g}`$ and Hessian $`H`$ (Goldman 2005):
+For any $`C^2`$ function $`f`$ with gradient $`\mathbf{g}`$ and symmetric Hessian $`H`$ (Goldman 2005):
 
 ```math
 K = \frac{\mathbf{g}^{\mathsf T}\,\mathrm{adj}(H)\,\mathbf{g}}{\Vert\mathbf{g}\Vert^4},
@@ -42,238 +41,188 @@ K = \frac{\mathbf{g}^{\mathsf T}\,\mathrm{adj}(H)\,\mathbf{g}}{\Vert\mathbf{g}\V
 H_m = \frac{\Vert\mathbf{g}\Vert^2\,\mathrm{tr}\,H - \mathbf{g}^{\mathsf T} H\,\mathbf{g}}{2\,\Vert\mathbf{g}\Vert^3}.
 ```
 
-For an exact SDF, $`H\mathbf{g} = 0`$ and $`H`$ has eigenvalues $`\{0, k_1, k_2\}`$, so $`K`$ is the sum of the three principal $`2\times 2`$ minors of $`H`$ and $`H_m = \tfrac12 \mathrm{tr}\,H`$ (`tpGaussCurvatureSDF`, `tpMeanCurvatureSDF`).
-
-### 2. Gauss–Bonnet through the coarea formula
-
-No surface samples are needed. For uniform samples $`\mathbf{p}_i`$ of a box of volume $`V`$ and a shell $`a < f < b`$:
+For an exact SDF ($`H\mathbf{g} = \mathbf{0}`$), $`K`$ reduces to the sum of the three principal $`2\times 2`$ minors of $`H`$ (`tpGaussCurvatureSDF`) and $`H_m = \tfrac12\mathrm{tr}\,H`$. Over uniform samples $`\mathbf{p}_i`$ in a box of volume $`V`$ within a regular shell $`a < f < b`$, the coarea estimator
 
 ```math
-\hat\chi = \frac{V}{2\pi\,(b-a)}\cdot\frac1N\sum_{i=1}^{N} \mathbf{1}\left[a < f(\mathbf{p}_i) < b\right]\,K(\mathbf{p}_i)\,\Vert\nabla f(\mathbf{p}_i)\Vert .
+\hat\chi_{\mathrm{MC}} = \frac{V}{2\pi\,(b-a)}\cdot\frac1N\sum_{i=1}^{N} \mathbf{1}\left[a < f(\mathbf{p}_i) < b\right]\,K(\mathbf{p}_i)\,\Vert\nabla f(\mathbf{p}_i)\Vert
 ```
 
-This estimates the average of $`\chi(\{f = t\})`$ over $`t \in (a, b)`$. It is an integer only if no critical value of $`f`$ lies in $`(a, b)`$. Replacing $`K`$ by $`H_m`$ or by $`1`$ gives the total mean curvature and the area (the last column of `tpGenusChainIntegrand`).
+converges to $`\chi(\{f = t\})`$ provided $`\{f = t\}`$ is $`C^2`$ and no critical value lies in $`(a, b)`$.
 
-### 3. Linking number of two polygons
+### 2. Distributional Gauss-map degree on Kuhn tetrahedra (sharp non-convex shapes)
 
-For two straight segments $`\mathbf{a}_0\mathbf{a}_1`$ and $`\mathbf{b}_0\mathbf{b}_1`$ the Gauss double integral is the signed solid angle of the parallelogram $`\{\mathbf{b}(t) - \mathbf{a}(s)\}`$ seen from the origin, divided by $`4\pi`$. `tpLinkingSegSeg` splits the parallelogram into two triangles and uses the van Oosterom–Strackee formula (`tpSolidAngleTri`, 1 `atan`, 3 `sqrt`). The sum over all segment pairs of two disjoint closed polygons is exactly their integer linking number. It does not converge in the number of segments: it is the right integer as soon as the polygons are isotopic to the curves, and a wrong integer before that.
+By **Heinz Hopf's Degree Theorem**, for any compact domain $`K = \{d \le 0\} \subset \mathbb{R}^3`$ bounded by a closed oriented piecewise-smooth or Lipschitz surface $`\Sigma = \partial K`$ (including polyhedra with $`90^\circ`$ convex and re-entrant creases where reach is zero), any continuous outward-transverse vector field $`\mathbf{n} : \Sigma \to S^2`$ has Brouwer mapping degree
 
-The repo already uses a solid-angle phase for Seifert surfaces in [`sdMilnorSeifertKnot`](../primitives3d/sdMilnorSeifertKnot.md); that work is not repeated here. `tpSolidAngleCircle` is only a small test fixture for `tpSolidAngleTri`.
+```math
+\deg(\mathbf{n}) = \frac{1}{4\pi}\sum_{\triangle \in \mathcal{T}} \Omega(\mathbf{n}_0, \mathbf{n}_1, \mathbf{n}_2) \in \mathbb{Z},
+\qquad
+\chi(\Sigma) = 2\,\chi(K) = 2\,\deg(\mathbf{n}),
+```
+
+where $`\mathcal{T}`$ is the closed oriented Marching-Tetrahedra surface extracted inside a face-conforming 6-tetrahedra **Kuhn (Freudenthal) subdivision** of each grid voxel $`[x_0, x_0+h]^3`$, and $`\Omega(\mathbf{n}_0, \mathbf{n}_1, \mathbf{n}_2)`$ is the exact signed geodesic spherical triangle area on $`S^2`$ (van Oosterom & Strackee 1983, `0 sqrt`, `1 atan`):
+
+```math
+\frac{\Omega(\mathbf{n}_0, \mathbf{n}_1, \mathbf{n}_2)}{4\pi}
+= \frac{1}{2\pi}\,\mathrm{atan2}\!\left(
+\mathbf{n}_0 \cdot (\mathbf{n}_1 \times \mathbf{n}_2),\;
+1 + \mathbf{n}_0\cdot\mathbf{n}_1 + \mathbf{n}_1\cdot\mathbf{n}_2 + \mathbf{n}_2\cdot\mathbf{n}_0
+\right).
+```
+
+Why this is quantized at *finite* grid spacing $`h`$:
+- `tpEdgeZeroNormal(dg0, dg1)` canonically orders its two endpoints by $`d`$ ($`d_{\mathrm{neg}} < 0 \le d_{\mathrm{pos}}`$) before linearly interpolating and normalising $`\mathbf{g}`$. Every tetrahedron sharing a grid edge therefore produces the **bit-for-bit identical** unit vector $`\mathbf{n}_{ij} \in S^2`$ in FP32.
+- Shared spherical arcs $`\widehat{\mathbf{n}_a\mathbf{n}_b}`$ and $`\widehat{\mathbf{n}_b\mathbf{n}_a}`$ between adjacent triangles cancel identically over the closed mesh $`\mathcal{T}`$, leaving an exact integer multiple of $`4\pi`$ up to FP32 rounding (~$`10^{-7}`$ to $`2.6\times 10^{-6}`$).
+- Across a sharp convex or concave crease of dihedral opening $`\alpha > 0`$ (normal jump $`<\pi`$), $`\mathbf{g}_{\mathrm{neg}}\cdot\mathbf{g}_{\mathrm{pos}} > -1`$, so $`(1-t)\mathbf{g}_{\mathrm{neg}} + t\mathbf{g}_{\mathrm{pos}}`$ never vanishes even though the exterior reach is zero.
+
+For the level-$`n`$ Menger sponge $`K_n`$, decomposing into 20 copies of $`K_{n-1}`$ glued across 24 copies of the 2D Sierpinski carpet $`S_{n-1}`$ ($`\chi(S_k) = (8 - 8^k)/7`$; higher-order cell overlaps along the 24 inner corner edges and 8 inner vertices cancel identically by inclusion–exclusion) yields the exact closed form:
+
+```math
+\chi(K_n) = 20\,\chi(K_{n-1}) - 24\,\chi(S_{n-1}) = -\frac{3}{19}\,20^n - \frac{2}{7}\,8^n + \frac{192}{133},
+\qquad
+g_n = 1 - \chi(K_n) \;\; (0,\, 5,\, 81,\, 1409,\, \dots),
+```
+
+giving $`\chi(\partial K_1) = -8`$ ($`g_1 = 5`$) and $`\chi(\partial K_2) = -160`$ ($`g_2 = 81`$), confirmed independently by cubical cell homology ($`V - E + F - C`$) and GPU Marching Tetrahedra.
+
+### 3. Pairwise Gauss linking & Milnor's triple-linking invariant $`\bar{\mu}_{123}`$
+
+For two disjoint closed polygons, `tpLinkingSegSeg` evaluates the exact signed solid angle of the difference parallelogram $`\{\mathbf{b}(t) - \mathbf{a}(s)\}`$ divided by $`4\pi`$. When all three pairwise linking numbers of an oriented 3-component link $`(L_1, L_2, L_3)`$ vanish ($`\mathrm{Lk}_{12} = \mathrm{Lk}_{23} = \mathrm{Lk}_{31} = 0`$), **Milnor's triple-linking number** $`\bar{\mu}_{123}(L_1, L_2, L_3) \in \mathbb{Z}`$ is a well-defined link-homotopy invariant with $`S_3`$ antisymmetry $`\bar{\mu}_{\sigma(1)\sigma(2)\sigma(3)} = \mathrm{sgn}(\sigma)\,\bar{\mu}_{123}`$.
+
+By **Mellor & Melvin (2003)**, for *any* three oriented spanning triangle fans $`F_1, F_2, F_3`$ over $`L_1, L_2, L_3`$ (whose normalized solid-angle potentials `tpSolidAnglePolygon` satisfy $`du_k = \mathbf{B}_k - \delta_{F_k}`$):
+
+```math
+\bar{\mu}_{123}(L_1, L_2, L_3) = c_1 + c_2 + c_3 - t_{123},
+```
+
+where:
+- $`c_1 = \sum_{p \in L_1 \cap F_3} w_{1,2}(p)\,\sigma_{1,3}(p)`$ (and cyclically $`c_2, c_3`$) pairs the running signed piercing count $`w_{1,2}`$ of $`L_1`$ through $`F_2`$ against signed piercings $`\sigma_{1,3} \in \{\pm 1\}`$ of $`L_1`$ through $`F_3`$ (basepoint-independent whenever $`\mathrm{Lk}_{13} = 0`$);
+- $`t_{123} = \#(F_1 \cap F_2 \cap F_3)`$ is the signed count of triple intersection points of the three fans.
+
+Rather than testing $`N^3`$ triangle triples, `tpMilnorTripleLink` clips intersecting pairs $`(T_{1,i}, T_{2,j})`$ to explicit oriented segments $`\mathbf{q}_0 \to \mathbf{q}_1`$ along $`\mathbf{n}_1 \times \mathbf{n}_2`$ (`tpTriTriSegment`, rejecting ~98% of pairs in 6 dot products) and tests only the $`O(N)`$ non-empty segments against $`F_3`$ via `tpSegTriHit` — achieving **$`O(N^2)`$ work with `0 sqrt` and `0 atan`**.
 
 ---
 
-## GLSL
+## GLSL Highlights
 
 ```glsl
-float tpGaussCurvatureImplicit( vec3 g, mat3 H )
+float tpSphericalGaussTri( vec3 n0, vec3 n1, vec3 n2 )
 {
-    vec3 c = vec3(dot(g, cross(H[1], H[2])), dot(g, cross(H[2], H[0])), dot(g, cross(H[0], H[1])));
-    float g2 = dot(g, g);
-    return dot(g, c) / max(g2 * g2, 1e-30);
+    float num = dot(n0, cross(n1, n2));
+    float den = 1.0 + dot(n0, n1) + dot(n1, n2) + dot(n2, n0);
+    return (abs(num) + abs(den) > 0.0) ? 0.15915494309189535 * atan(num, den) : 0.0;
 }
 
-float tpSolidAngleTri( vec3 a, vec3 b, vec3 c )
+float tpTetGaussDegree( vec4 dg0, vec4 dg1, vec4 dg2, vec4 dg3 )
 {
-    float la = length(a), lb = length(b), lc = length(c);
-    float num = dot(a, cross(b, c));
-    float den = la * lb * lc + dot(a, b) * lc + dot(b, c) * la + dot(c, a) * lb;
-    return (abs(num) + abs(den) > 0.0) ? 2.0 * atan(num, den) : 0.0;
-}
+    float orient = 1.0;
+    vec4  tmp;
+    if (dg1.x < dg0.x) { tmp = dg0; dg0 = dg1; dg1 = tmp; orient = -orient; }
+    if (dg3.x < dg2.x) { tmp = dg2; dg2 = dg3; dg3 = tmp; orient = -orient; }
+    if (dg2.x < dg0.x) { tmp = dg0; dg0 = dg2; dg2 = tmp; orient = -orient; }
+    if (dg3.x < dg1.x) { tmp = dg1; dg1 = dg3; dg3 = tmp; orient = -orient; }
+    if (dg2.x < dg1.x) { tmp = dg1; dg1 = dg2; dg2 = tmp; orient = -orient; }
 
-float tpLinkingSegSeg( vec3 a0, vec3 a1, vec3 b0, vec3 b1 )
-{
-    vec3 v00 = b0 - a0, v10 = b0 - a1, v11 = b1 - a1, v01 = b1 - a0;
-    return (tpSolidAngleTri(v00, v10, v11) + tpSolidAngleTri(v00, v11, v01)) * 0.07957747154594767;
+    if (dg0.x >= 0.0 || dg3.x < 0.0) return 0.0;
+    if (dg1.x >= 0.0)
+        return orient * tpSphericalGaussTri(
+            tpEdgeZeroNormal(dg0, dg1), tpEdgeZeroNormal(dg0, dg2), tpEdgeZeroNormal(dg0, dg3));
+    if (dg2.x < 0.0)
+        return orient * tpSphericalGaussTri(
+            tpEdgeZeroNormal(dg0, dg3), tpEdgeZeroNormal(dg1, dg3), tpEdgeZeroNormal(dg2, dg3));
+    vec3 n02 = tpEdgeZeroNormal(dg0, dg2), n03 = tpEdgeZeroNormal(dg0, dg3);
+    vec3 n13 = tpEdgeZeroNormal(dg1, dg3), n12 = tpEdgeZeroNormal(dg1, dg2);
+    return orient * (tpSphericalGaussTri(n02, n03, n13) + tpSphericalGaussTri(n02, n13, n12));
 }
 ```
-
-The full file also contains the 19-point stencil helper, the analytic torus 2-jet, the log-sum-exp genus-$`n`$ chain with analytic gradient and Hessian, and a fixed-$`N`$ linking loop (`TP_LINK_SEGMENTS`, default 24).
 
 ---
 
 ## Verification
 
-All numbers below come from the literal GLSL on the GPU (FP32) through `tools/gpu_eval.py`, unless marked FP64. Monte Carlo rows use $`N = 10^7`$ uniform samples of a bounding box; "±" is one standard error; $`\sigma_1`$ is the per-sample standard deviation of $`\hat\chi`$, so the error with $`n`$ samples is $`\sigma_1/\sqrt n`$.
+All measurements below run the **literal** `glsl/topology/tpGaussBonnet.glsl` on the GPU in FP32 via `tools/gpu_eval.py`.
 
-### Closed forms against independent references
+### 1. Closed-form & unit checks against independent references
 
-| Function | Reference | Result |
+| Function | Independent Reference | GPU FP32 Result |
 | :--- | :--- | :--- |
-| `tpSolidAngleTri` | Girard spherical excess (FP64), 256 random triangles | max error 2.4e-6 |
-| `tpLinkingSegSeg` | 300×300 Gauss–Legendre quadrature of the Gauss integrand (FP64), 256 random segment pairs at least 0.25 apart | max error 8.8e-8 (FP64 port: 4.4e-15) |
-| `tpGaussCurvatureImplicit`, `tpMeanCurvatureImplicit` | closed-form ellipsoid curvatures, 20,000 surface points | max relative error 4.4e-7, 3.8e-7 |
-| `tpTorusJet` | closed-form torus distance, gradient, $`K`$, $`H_m`$, 39,838 points | 1.9e-7, 1.2e-6, 1.5e-6 (scaled), 2.8e-6 (scaled) |
-| `tpGenusChain` gradient and Hessian | central differences of an independent FP64 implementation | gradient 8.6e-7 and 1.7e-6; Hessian 4.0e-5 and 1.1e-4 (entries up to 14 and 20) for $`n = 2, 3`$ |
-| `tpJetFromStencil` | a quadratic with known Hessian, $`h = 0.05`$ | max entry error 2.5e-5 |
-| `tpSolidAngleCircle` | Girard fan (FP64), 300 points | 1.6e-6 ($`N = 24`$), 3.7e-6 ($`N = 128`$) |
-| NaN / Inf | 11 probe points × 5 expressions | 0 non-finite |
-| Single-translation-unit compile | forward, reverse, new-first | passed (291 files) |
+| `tpSphericalGaussTri` | FP64 van Oosterom–Strackee / Girard spherical excess, 2,000 random spherical triangles (incl. obtuse $`\vert\Omega\vert > \pi`$) | max error `1.94e-6` |
+| `tpSolidAngleTri` | FP64 Girard spherical excess, 256 random triangles | max error `2.4e-6` |
+| `tpSolidAnglePolygon` + `tpSegTriHit` | Distributional jump $`u(\mathbf{x}_+ ) - u(\mathbf{x}_-) = -\sigma`$ across 200 non-planar fan piercings ($`\epsilon = 10^{-4}`$) | `2.7e-4` ($`O(\epsilon)`$ continuous gradient drift) |
+| `tpLinkingSegSeg` | 300×300 Gauss–Legendre quadrature (FP64), 256 segment pairs | max error `8.8e-8` (FP64: `4.4e-15`) |
+| `tpGaussCurvatureImplicit`, `tpMeanCurvatureImplicit` | Closed-form ellipsoid curvatures, 20,000 surface points | max rel. error `4.4e-7`, `3.8e-7` |
+| `tpTorusJet`, `tpGenusChain` | Analytic torus curvatures (39,838 pts) & FP64 central differences | `1.9e-7` to `1.1e-4` |
+| NaN / Inf probes | Degenerate zero triangles, antipodal normals $`\mathbf{n}_0 + \mathbf{n}_1 = \mathbf{0}`$, all-zero `vec4(0)`, strand crossings | **0 non-finite** across all functions |
+| Single-translation-unit compile | Forward, reverse, and new-first orders across full repository | **Passed (333 files)** |
 
-### Euler characteristic of smooth surfaces
+### 2. Distributional Kuhn-tetrahedra Euler characteristic (`tpKuhnVoxelEuler`) vs. coarea Gauss–Bonnet
 
-"FD" = repo SDF + `tpJetFromStencil` ($`h = 0.003`$, or $`0.0025`$ for the thin tubes) + `tpGaussCurvatureImplicit`. "jet" = [`sdhJet3D`](../../glsl/gradients3d/sdhJet3D.glsl). "analytic" = this file. Two independent seeds are shown.
+Evaluated 100% in literal GLSL on the GPU over an $`N^3`$ Kuhn voxel grid (`analytic sdg` = exact `sdg*` header; `FD` = central finite-difference gradient $`\epsilon = 10^{-4}`$):
 
-| Shape | Shell half-width | $`\hat\chi`$ (seed 1) | $`\hat\chi`$ (seed 2024) | True | $`\sigma_1`$ | $`n`$ for $`3\,\mathrm{s.e.} < 0.5`$ |
+| Shape | True $`\chi`$ | Coarea Gauss–Bonnet MC ($`10^7`$ pts) | Kuhn Grid $`N`$ | Active Voxels | GPU Kuhn $`\hat\chi`$ (FP32) | $`\vert\hat\chi - \chi\vert`$ |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| `sdSphere` (FD) | 0.05 | 1.9988 ± 0.0016 | 2.0013 ± 0.0016 | 2 | 4.9 | 873 |
-| `sdhSphere` (jet) | 0.05 | 1.9988 ± 0.0016 | 2.0013 ± 0.0016 | 2 | 4.9 | 873 |
-| `sdTorus` (FD) | 0.05 | 0.0015 ± 0.0030 | 0.0029 ± 0.0030 | 0 | 9.4 | 3,208 |
-| `tpTorusJet` (analytic) | 0.05 | 0.0014 ± 0.0030 | 0.0028 ± 0.0030 | 0 | 9.4 | 3,208 |
-| `sdhTorus` (jet) | 0.05 | 0.0014 ± 0.0030 | 0.0028 ± 0.0030 | 0 | 9.4 | 3,208 |
-| `sdCapsule` (FD) | 0.05 | 1.9952 ± 0.0028 | 2.0001 ± 0.0028 | 2 | 8.8 | 2,774 |
-| `sdLink` (FD) | 0.04 | −0.0020 ± 0.0038 | −0.0061 ± 0.0038 | 0 | 12.0 | 5,180 |
-| `sdTrefoilKnot` tube, radius 0.06 (FD) | 0.03 | −0.014 ± 0.012 | 0.003 ± 0.012 | 0 | 38.6 | 53,584 |
-| sphere shell `abs(sdSphere) - 0.08` (FD) | 0.03 | 4.0012 ± 0.0033 | 4.0065 ± 0.0033 | 4 | 10.5 | 3,974 |
-| `sdBorromeanRings`, radius 0.05 (FD) | 0.025 | −0.042 ± 0.026 | 0.013 ± 0.026 | 0 | 82.6 | 245,591 |
-| `tpGenusChain` $`n = 2`$ (analytic) | 0.02 | −1.9949 ± 0.0080 | −2.0019 ± 0.0080 | −2 | 25.4 | 23,228 |
-| `tpGenusChain` $`n = 2`$ (FD) | 0.02 | −1.9949 ± 0.0080 | −2.0020 ± 0.0080 | −2 | 25.4 | 23,224 |
-| `tpGenusChain` $`n = 3`$ (analytic) | 0.015 | −3.9997 ± 0.0130 | −3.9990 ± 0.0130 | −4 | 41.1 | 60,821 |
+| `sdgSphere` ($`r = 0.7`$) | `2` | `1.9988 ± 0.0016` | $`32^3`$ | 2,408 | **`2.000000`** | `3.16e-7` |
+| Sphere shell $`\vert d\vert - 0.12`$ | `4` | `4.0012 ± 0.0033` | $`32^3`$ | 4,216 | **`4.000000`** | `3.62e-7` |
+| `sdgTorus` ($`0.55, 0.22`$) | `0` | `0.0014 ± 0.0030` | $`32^3`$ | 1,760 | **`0.000000`** | `2.34e-8` |
+| `tpGenusChain` $`n = 2`$ | `-2` | `-1.9949 ± 0.0080` | $`32^3`$ | 760 | **`-2.000000`** | `6.95e-8` |
+| `tpGenusChain` $`n = 3`$ | `-4` | `-3.9997 ± 0.0130` | $`32^3`$ | 864 | **`-4.000000`** | `1.76e-7` |
+| `sdgBorromeanRings` ($`r = 0.05`$) | `0` | `-0.042 ± 0.026` | $`36^3`$ | 2,088 | **`0.000000`** | `1.21e-7` |
+| `sdgBox` (sharp convex) | `2` | `0.999 ± 0.042` (shell $`\vert d\vert < 0.05`$, **fails**) | $`24^3`$ | 24 | **`2.000000`** | `1.10e-7` |
+| `sdgOctahedron` (sharp convex) | `2` | — | $`24^3`$ | 577 | **`2.000000`** | `5.36e-8` |
+| L-prism (re-entrant crease, FD) | `2` | `2.487 ± 0.030` (offset, **fails**) / `3.2–13.3` (FD) | $`24^3`$ | 50 | **`2.000000`** | `3.55e-8` |
+| `sdgCross3D` (12 concave creases) | `2` | misses re-entrant Dirac seams | $`24^3`$ | 120 | **`2.000000`** | `1.67e-7` |
+| `sdgStellaOctangula` (12 saddle valleys) | `2` | misses valley Dirac seams | $`24^3`$ | 716 | **`2.000000`** | `2.03e-7` |
+| **`sdgBoxFrame` (analytic `sdg`, $`g = 5`$)** | **`-8`** | **`+2.01 ± 0.04`** (offset, **fails**) | $`32^3`$ | 157 | **`-8.000000`** | **`3.99e-7`** |
+| **`sdBoxFrame` (FD grad, $`g = 5`$)** | **`-8`** | **`-4.6 ± 0.8`** (FD stencil, **fails**) | $`32^3`$ | 157 | **`-8.000000`** | **`1.05e-7`** |
+| Drilled cube (`Box \ InfCross`, $`g = 5`$) | `-8` | misses re-entrant Dirac seams | $`32^3`$ | 295 | **`-8.000000`** | `5.51e-8` |
+| `sdMengerExact` level 1 ($`g = 5`$, FD) | `-8` | misses 72 sharp creases | $`24^3`$ | 297 | **`-8.000000`** | `3.52e-7` |
+| **`sdMengerExact` level 2 ($`g = 81`$, FD)** | **`-160`** | unreachable by smooth MC | $`36^3`$ | 2,637 | **`-160.000003`** | **`2.55e-6`** |
+| Cert: Disjoint genus-3 ($`c = 0.43, f = 0`$) | `0` | `-0.756 ± 0.022` (shell straddles saddle) | $`64^3`$ | 3,072 | **`0.000000`** | `8.18e-8` |
+| Cert: Merged genus-3 ($`c = 0.43, f = 0.02`$) | `-4` | `-4.05 ± 0.04` | $`64^3`$ | 3,336 | **`-4.000000`** | `9.35e-8` |
 
-Over the 26 entries the largest deviation is 1.94 standard errors. Empirical recovery of the integer by rounding, from disjoint batches of a pool of $`8\cdot 10^6`$ samples:
+*(For reference, smooth coarea Gauss–Bonnet remains useful when one wants simultaneous mean-curvature and area moments over level-set shells without constructing a grid, beating a 61-node Steiner tube-volume cubic fit in variance by 42× to 837× across smooth primitives.)*
 
-| Batch size | 1,000 | 10,000 | 100,000 | 300,000 |
-| :--- | :---: | :---: | :---: | :---: |
-| sphere | 99.9% | 100% | 100% | 100% |
-| torus | 90.8% | 100% | 100% | 100% |
-| genus 2 | 46.1% | 94.2% | 100% | 100% |
-| trefoil tube | 31.2% | 77.6% | 100% | 100% |
-| genus 3 | 30.0% | 78.1% | 100% | 100% |
-| Borromean rings | 15.6% | 45.6% | 93.8% | 100% |
+### 3. Higher-order link topology: Milnor triple-linking (`tpMilnorTripleLink`, `tpMilnorBorromean`) and pairwise Gauss linking
 
-**Shell width.** On the torus (analytic Hessian) every half-width from 0.002 to 0.199 is consistent with 0 (largest deviation 1.94 s.e.). $`\sigma_1`$ falls from 75 at 0.002 to 9.8 at 0.15 and rises again to 12.6 at 0.199, next to the focal circle at $`d = -0.2`$. Genus 2: $`\sigma_1`$ from 101 (0.002) to 16.8 (0.1). Wide shells are better until they approach the medial axis. A shell that crosses a topology change gives a non-integer that matches the prediction: for the torus shell $`0.31 < d < 0.45`$ (hole closed) the smooth part predicts 0.9632 and the measurement is 0.9638 ± 0.0085.
+On the GPU in FP32 (`ab = (0.6, 0.3)`):
+- **Canonical Borromean rings ($`m = 1, \text{shift} = 0`$)**: `tpMilnorBorromean` returns `vec4(-1.000000, 0.000000, 0.000000, 0.000000)` for **every** polygon segment count $`N \in \{3, 4, 5, 6, 8, 12, 16, 24, 32, 48\}`$ (even three orthogonal triangles at $`N = 3`$ are already topologically Borromean).
+- **3D rigid + non-planar isotopy invariance & $`S_3`$ antisymmetry**: Across 50 random 3D Euler rotations, random translations, and non-planar sinusoidal $`z`$-wiggles $`0.05\sin(3t)`$ evaluated on the GPU, `tpMilnorTripleLink(L1, L2, L3)` returned **`-1.000000` on 50/50 trials**, cyclic `(L2, L3, L1)` returned **`-1.000000`**, and odd transposition `(L2, L1, L3)` returned **`+1.000000`**.
+- **Exact strand-passage unlinking threshold**: Shifting component 2 along $`+x`$ by $`s`$ collides with component 1 in $`x = 0`$ at $`s_1^* = b\sqrt{1 - (b/a)^2} = 0.2598`$, with component 0's outer arc at $`s_2^* = a - b = 0.30`$, and exits component 0 completely at $`s_3^* = a + b = 0.90`$:
+  - $`\vert s\vert \le 0.25`$: Borromean link, $`\bar{\mu}_{123} = -1`$, $`\mathrm{Lk} = (0, 0, 0)`$.
+  - $`0.27 \le \vert s\vert \le 0.29`$: 3-component unlink, $`\bar{\mu}_{123} = 0`$, $`\mathrm{Lk} = (0, 0, 0)`$ (pairwise linking is completely blind to the $`s_1^*`$ unlinking transition).
+  - $`0.31 \le s \le 0.89`$: Hopf link $`\sqcup`$ unknot, $`\mathrm{Lk}_{31} = +1`$ (where $`\bar{\mu}_{123}`$ is only defined modulo $`\gcd(\mathrm{Lk}_{12}, \mathrm{Lk}_{23}, \mathrm{Lk}_{31}) = 1`$).
+  - $`\vert s\vert > 0.90`$: Separated 3-component unlink, $`\bar{\mu}_{123} = 0`$, $`\mathrm{Lk} = (0, 0, 0)`$.
+- **Higher Milnor invariants ($`(m, 1)`$-cabled unknotted Borromean links)** and **pairwise torus links $`T(2, 2n)`$**:
 
-**Finite-difference step in FP32** (torus, true value 0):
-
-| $`h`$ | 0.1 | 0.03 | 0.01 | 0.003 | 0.001 | 0.0003 | 0.0001 |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| implicit formula | −0.024 | −0.003 | −0.002 | −0.002 | −0.002 | 0.022 | 2.02 |
-| SDF minors on the same stencil | 0.955 | 0.083 | 0.008 | −0.001 | −0.001 | 0.084 | 7.00 |
-
-(standard error 0.003 except the last column). Thin tubes need a smaller step: for the trefoil tube of radius 0.06 the implicit formula gives −0.59, −0.13, −0.035, −0.011 (± 0.012) at $`h = 0.02, 0.01, 0.005, 0.0025`$, and the SDF-minor formula gives 4.55, 1.13, 0.28, 0.068. The Borromean rings behave the same way (−0.80 to −0.003 against 12.5 to 0.19).
-
-### Sharp shapes
-
-| Case | $`\hat\chi`$ | True | Verdict |
-| :--- | :---: | :---: | :--- |
-| `sdhBox`, shell $`\vert d\vert < 0.05`$ | 0.999 ± 0.042 and 1.16 ± 0.17 (two seeds) | 2 | wrong: the inner half of the shell has $`K = 0`$ |
-| `sdhBox`, shell $`-0.05 < d < 0`$ | 0 exactly | 2 | wrong |
-| `sdhBox`, offset shell $`0.1 < d < 0.3`$ | 2.004 ± 0.003 and 2.002 ± 0.003 | 2 | correct |
-| `sdhBox`, offset shell $`0.003 < d < 0.01`$ | 1.93 ± 0.21 | 2 | consistent, too noisy to round |
-| L-prism (two boxes), `sdhUnion` jet, offset shells from 0.02 to 0.4 | 2.47 to 2.52 (± 0.003 to 0.06) | 2 | wrong: matches the smooth-part prediction 2.5 |
-| L-prism, FD $`h = 0.001`$, same shells | 3.2 to 13.3 | 2 | garbage, grows with the offset |
-| `sdBoxFrame`, FD, shell $`\vert d\vert < 0.02`$ | −4.6 ± 0.8 and −3.2 ± 0.8 | −8 | garbage |
-| box frame as `sdhUnion` of 12 `sdhBox`, offset shells | 2.13 ± 0.13, 2.01 ± 0.04, 1.99 ± 0.01 | −8 | wrong: only the 8 outer corners are seen |
-| box frame rebuilt as a log-sum-exp union of 12 round boxes (FD) | −7.99 ± 0.10 to −8.34 ± 0.23 over 6 settings; second seed −7.87 ± 0.08, −8.06 ± 0.11 | −8 | consistent with −8; $`\sigma_1`$ = 237 to 726 |
-
-### Gauss–Bonnet against the tube-volume cubic coefficient
-
-Same samples, same shell. The cubic coefficient is a least-squares fit of the empirical distribution of $`d`$ (61 nodes); closed forms for comparison come from [`msSteinerTube`](../measure/msSteinerTube.md).
-
-| Shape | Gauss–Bonnet $`\hat\chi`$ | Cubic-fit $`\hat\chi`$ | Variance ratio |
-| :--- | :---: | :---: | :---: |
-| sphere | 1.9995 ± 0.0012 | 2.004 ± 0.013 | 129× |
-| torus | 0.0017 ± 0.0023 | −0.049 ± 0.052 | 492× |
-| capsule | 2.0062 ± 0.0032 | 2.005 ± 0.021 | 42× |
-| `sdLink` | 0.0003 ± 0.0036 | 0.11 ± 0.10 | 837× |
-| box, offset shell | 1.9987 ± 0.0042 | 2.041 ± 0.068 | 254× |
-
-### Topology certificate on broken variants (genus-3 chain, true $`\chi = -4`$)
-
-| Variant | $`\hat\chi`$ (two seeds) |
-| :--- | :---: |
-| correct | −4.006 ± 0.013, −3.999 ± 0.013 |
-| off-by-one loop (2 tori) | −2.006 ± 0.010, −2.017 ± 0.010 |
-| spacing 0.43 (tori no longer overlap), shell $`\vert f\vert < 0.015`$ | −0.756 ± 0.022, −0.815 ± 0.025 |
-| same, shell $`-0.015 < f < 0.005`$ | −0.023 ± 0.016 |
-| same, shell $`0.012 < f < 0.03`$ | −4.05 ± 0.04 |
-| spacing 0.405 (still merged), shell $`\vert f\vert < 0.004`$ | −3.95 ± 0.05 |
-
-The non-integer in the third row is itself informative: the log-sum-exp union has a saddle at $`f = 0.03\,(1 - \ln 2) = 0.0092`$ inside the shell, and 19% of the shell lies above it, which predicts $`-0.77`$.
-
-### Linking numbers and writhe
-
-Centre curves are the repo's own parameterisations (`sdChain` / `sdLink` stadium, `sdBorromeanRings` ellipses, the `sdSolomonLink` strands, `sdTrefoilKnot`, `sdFigureEightKnot`).
-
-| Pair | True | GPU polygon sum (FP32), $`N`$ segments per curve | Smallest $`N`$ that is exact and stays exact (FP64) | Trapezoid quadrature: nodes for 1e-4 |
-| :--- | :---: | :--- | :---: | :---: |
-| Hopf link | ±1 | −1.000000 ($`N = 8`$), −1.000001 ($`N = 128`$) | 3 | 15 |
-| `sdChain` links 0, 1 | ±1 | +1.000000 ($`N = 8`$), +0.999999 ($`N = 128`$) | 5 | 123 |
-| `sdChain` links 0, 2 | 0 | +0.000000 | 3 | 3 |
-| Borromean rings, each of the 3 pairs | 0 | ±0.000000 | 3 | 16 |
-| T(2,2) | ±1 | −1.000000 ($`N = 6`$) | 3 | 14 |
-| T(2,4) Solomon | ±2 | −2.000000 ($`N = 6`$), −1.999996 ($`N = 128`$) | 5 | 15 |
-| T(2,6) | ±3 | +1.000000 ($`N = 6`$, wrong), −2.999999 ($`N = 8`$) | 7 | 26 |
-| T(2,8) | ±4 | +1.000000 ($`N = 8`$, wrong), −4.000000 ($`N = 12`$), −3.999991 ($`N = 128`$) | 9 | 47 |
-
-Largest FP32 deviation from an integer over all correct cases: 9e-6 (16,384 terms). Over 20 random $`(R, r_0)`$ and $`n = 1, 2, 3`$ at $`N = 24`$: 4.5e-6.
-
-Writhe is not an integer. FP64 trapezoid quadrature of the Gauss self-integral gives −3.33706 (trefoil, $`R = 0.5, r_0 = 0.2`$), +0.03502 (figure-eight, $`r_1 = 0.2`$) and −6.43262 (cinquefoil). The Călugăreanu identity checks the trefoil independently: $`\mathrm{Lk}(\text{push-off}) - \mathrm{Tw} = -3 - 0.337058 = -3.33706`$. The polygon sum (non-adjacent pairs) converges like $`N^{-2}`$: the GPU returns −3.32199, −3.33320, −3.33610 for $`N = 50, 100, 200`$ and agrees with the FP64 polygon sum to 1.1e-5 (3.8e-5 for the cinquefoil). Richardson extrapolation of the two last GPU values gives −3.33707, +0.03502 and −6.43260.
+| Link Family | Invariant | True | Minimum $`N`$ Exact on GPU | GPU FP32 at $`N = 24`$ | Max $`\vert\mathrm{Lk}_{ij}\vert`$ on Borromean |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| Borromean $`m = 1`$ | $`\bar{\mu}_{123}`$ | `-1` | `3` | `-1.000000` | `2.0e-7` |
+| Cabled Borromean $`m = 2`$ | $`\bar{\mu}_{123}`$ | `-2` | `6` ($`N = 3`$: `+1`) | `-2.000000` | `1.4e-7` |
+| Cabled Borromean $`m = 3`$ | $`\bar{\mu}_{123}`$ | `-3` | `12` ($`N = 8`$: `-1`) | `-3.000000` | `4.3e-7` |
+| Cabled Borromean $`m = 4`$ | $`\bar{\mu}_{123}`$ | `-4` | `16` ($`N = 6`$: `+2`) | `-4.000000` | `3.1e-7` |
+| Torus link $`T(2, 2n)`$, $`n = 1, 2, 3, 4`$ | $`\mathrm{Lk}`$ | $`-n`$ | `3, 5, 7, 9` | $`-n`$ (err $`\le 4.5\times 10^{-6}`$) | — |
 
 ---
 
-## Findings
+## Honest Breakdown Analysis
 
-### What held
-
-- **Smooth surfaces: the integer is recoverable.** All 13 cases agree with the true $`\chi`$ within 2 standard errors on two seeds, including genus 2 and 3 through the general implicit formula and two-component surfaces (sphere shell, $`\chi = 4`$). Required samples for $`3\,\mathrm{s.e.} < 0.5`$: about $`10^3`$ (sphere), $`3\cdot 10^3`$ to $`5\cdot 10^3`$ (torus, capsule, link), $`2\cdot 10^4`$ to $`6\cdot 10^4`$ (genus 2, 3, trefoil tube), $`2.5\cdot 10^5`$ (Borromean rings). Cost scales with (curvature)² × (empty box volume).
-- **Analytic and finite-difference Hessians agree in FP32** to the fourth decimal, for $`10^{-3} \le h \le 3\cdot 10^{-3}`$ and features of size 0.05 or more.
-- **Gauss–Bonnet beats the tube-volume cubic fit** by a variance factor of 42 to 837 on the same samples. The cubic fit needs only $`d`$, no derivatives. The comparison is against one simple least-squares fit, not an optimised estimator.
-- **Offset shells fix convex sharp shapes.** Box: 2.00 at every offset from 0.03 to 3, with $`\sigma_1`$ from 31 down to 3.4.
-- **Polygonal linking numbers are integers to 9e-6 in FP32**, exact from 3 to 9 segments per curve, where quadrature of the Gauss integral needs 14 to 123 nodes for 1e-4. All three Borromean pairs give 0.
-- **The certificate catches both broken variants** (deviations of more than 100 standard errors from −4).
-
-### What failed or only partly held
-
-- **The offset fix does not work for non-convex sharp shapes.** The brief expected `sdBoxFrame` to give $`\chi = -8`$ from an offset surface. It gives +2. A re-entrant edge has zero reach, so every outward offset keeps a crease there and the smooth formula misses its Dirac curvature. The L-prism gives 2.5 instead of 2 for the same reason. The value −8 was only obtained on a different, smooth surface of the same topology (log-sum-exp union of 12 round boxes), at high variance: $`2\cdot 10^6`$ to $`2\cdot 10^7`$ samples for $`3\,\mathrm{s.e.} < 0.5`$.
-- **Finite differences across creases are not a fix.** They return step-dependent garbage on the L-prism and the box frame. On the convex box they give 1.95 ± 0.13 with $`\sigma_1 = 423`$; that was not investigated further and should not be relied on.
-- **Shells that touch a sharp convex vertex have unreliable error bars.** $`K \propto 1/d^2`$ there, so the estimator has infinite variance; two seeds gave $`\sigma_1`$ = 133 and 545 for the same setting.
-- **`tpGaussCurvatureSDF` should not be used with a finite-difference Hessian.** Its bias is 10 to 100 times that of the implicit formula at the same step (trefoil tube, $`h = 0.01`$: 1.13 against −0.13). It is fine with analytic Hessians.
-- **FP32 finite differences have a narrow window.** $`h \le 3\cdot 10^{-4}`$ is biased by rounding (2.02 instead of 0 at $`10^{-4}`$); $`h`$ larger than about 1/20 of the smallest curvature radius is biased by truncation.
-- **Too few segments give a wrong integer with no warning** (T(2,8) with 8 segments: +1).
-- **Writhe to 1e-4 was not reached by the plain polygon sum on the GPU** (error 1e-3 at $`N = 200`$); only the Richardson-extrapolated value is that accurate.
-- **A certificate shell must not contain a critical value.** Otherwise the result is a non-integer weighted average. That flags a problem, but does not identify the topology.
-
-### Not done
-
-- No invariant that detects the Borromean rings (Milnor's triple linking number) was implemented. Pairwise linking numbers cannot detect them.
-- No importance sampling or stratification; all estimates use uniform samples of a bounding box.
-- No correction for Dirac curvature at creases (edge and vertex terms of the Gauss–Bonnet theorem for piecewise-smooth surfaces).
-- No deterministic (grid) quadrature and no interval-arithmetic guarantee for the rounding step.
-- The 3D preview and the slice show the example surface and its curvature field; there is no rendered figure for the linking results.
-
-### Open questions
-
-- Can the edge and vertex terms be evaluated from an SDF alone, for instance from the jump of the gradient across the medial axis of the exterior, so that `sdBoxFrame` gives −8 directly?
-- Is there a control variate or sampling density that removes the $`\sigma_1 \propto`$ curvature scaling for thin tubes?
-- Why do finite differences return about 2 on the sharp convex box, and for which step sizes?
+1. **Nyquist voxel resolution collapse ($`h > \min(w_{\mathrm{wall}}, w_{\mathrm{gap}})`$)**:
+   When voxel spacing $`h`$ exceeds a tunnel diameter or strut width, Marching Tetrahedra extracts an aliased coarse topology. Because edge normals remain shared bit-identically across adjacent tetrahedra, `tpKuhnVoxelEuler` **still outputs a quantized integer** — the exact Euler characteristic of the under-resolved mesh — before locking onto the continuum invariant once $`h`$ crosses the Nyquist scale:
+   - `sdgBoxFrame` (true $`-8`$): $`0`$ at $`N = 6, 8`$ (hollow unresolved), then **`-8.0000` for all $`N \ge 10`$**.
+   - `tpGenusChain` $`n = 3`$ (true $`-4`$): $`-4, 0, -8, -12`$ at $`N = 6, 8, 10, 12`$, then **`-4.0000` for all $`N \ge 16`$**.
+   - `sdMengerExact` level 2 (true $`-160`$, wall width $`2/9 \approx 0.222`$): $`0.0`$ ($`N = 6`$), $`+32.0`$ ($`N = 8`$, struts pinched into 16 fragments), $`+17.0`$ ($`N = 10`$, sub-voxel medial straddling $`w_{\mathrm{wall}}/h = 0.97`$), $`-64.0`$ ($`N = 12`$), then **`-160.0000` for all $`N \ge 16`$**.
+2. **Antipodal normal folding ($`\mathbf{n}_1 + \mathbf{n}_2 \approx \mathbf{0}`$) across sub-voxel thin walls and bogus interior CSG seams**:
+   - On $`S^2`$, `tpSphericalGaussTri(n0, n1, n2)` has a branch cut of jump $`\Delta(\Omega / 4\pi) = \pm 1`$ ($`\Delta\chi = \pm 2`$) when a spherical triangle sweeps across a great circle enclosing the origin ($`1 + \mathbf{n}_0\cdot\mathbf{n}_1 + \mathbf{n}_1\cdot\mathbf{n}_2 + \mathbf{n}_2\cdot\mathbf{n}_0 < 0`$ and $`\det(\mathbf{n}_0, \mathbf{n}_1, \mathbf{n}_2) \to \pm 0`$; verified on GPU: `-0.48675 -> +0.5 -> +0.48675`).
+   - Sharp creases of positive dihedral opening $`\alpha > 0`$ have $`\mathbf{n}_1\cdot\mathbf{n}_2 > -1`$ and **never** hit this cut. By contrast, a *thin opposing wall* of thickness $`2\,\mathrm{th} \lesssim 1.5\,h`$ (tested on `abs(sdSphere(q, 0.65)) - th` at $`N = 32, h = 0.0625`$) places opposite-$`180^\circ`$ medial gradients inside a single tetrahedron: `tpKuhnVoxelEuler` gives exact **`+4.000000`** for $`2\,\mathrm{th}/h \ge 1.92`$, degrades to `-24.0` / `-60.0` / `-456.0` at $`2\,\mathrm{th}/h = 1.28, 0.96, 0.64`$ as interpolated normals fold across $`S^2`$, and collapses to `0.0` once $`2\,\mathrm{th}/h \le 0.48`$.
+   - Similarly, a naive CSG union `min(sdTetra(q), sdTetra(-q))` (unlike the exact [`sdgStellaOctangula`](../polyhedra3d/sdStellaOctangula.md)) retains buried interior face gradients inside the central octahedron that jump near the 6 saddle vertices, causing a $`-2`$ branch-cut slip at symmetric even $`N = 32`$ while exact `sdgStellaOctangula` returns `+2.000000` at every $`N \in [8, 48]`$.
+3. **Coarea Gauss–Bonnet limitations (retained functions)**:
+   - Pointwise `tpGaussCurvatureImplicit` fails on sharp non-convex shapes at any sample budget and requires $`10^{-3} \le h \le 3\cdot 10^{-3}`$ for FP32 finite-difference stencils (`tpGaussCurvatureSDF` should only be used with analytic Hessians).
+4. **Milnor triple-linking domain**:
+   - By Milnor's theorem, $`\bar{\mu}_{123}`$ is an integer invariant only when $`\mathrm{Lk}_{12} = \mathrm{Lk}_{23} = \mathrm{Lk}_{31} = 0`$ (otherwise defined only modulo $`\gcd(\mathrm{Lk}_{12}, \mathrm{Lk}_{23}, \mathrm{Lk}_{31})`$). Too few polygon segments ($`N < 16`$ at $`m = 4`$) yield the exact integer of the under-sampled polygon rather than a fractional warning.
 
 ---
 
 ## Novelty & Prior Art
 
-Nothing here is new mathematics.
-
-- **Gauss–Bonnet and the curvature formulas** are classical. The implicit-surface formulas are from R. Goldman, "Curvature formulas for implicit curves and surfaces", *Computer Aided Geometric Design* 22 (2005). Shadertoy shaders that colour SDF surfaces by finite-difference curvature exist.
-- **Euler characteristic of level sets as a volume integral of derivative invariants** is established practice in cosmology: Schmalzing & Buchert, "Beyond genus statistics", *ApJ Letters* 482 (1997), using Koenderink invariants, and the earlier genus statistics. Gauss–Bonnet integrals are also used as topology diagnostics or regularisers for neural implicit surfaces.
-- **Triangle solid angle**: van Oosterom & Strackee, *IEEE Trans. Biomed. Eng.* 30 (1983). **Polygonal linking number and writhe**: Klenin & Langowski, *Biopolymers* 54 (2000); Z. Arai, "A rigorous numerical algorithm for computing the linking number of links", *NOLTA* 4 (2013), which adds interval arithmetic. **Generalised winding numbers** (Jacobson et al. 2013; Barill et al. 2018) sum the same triangle solid angles.
-- **Tube formula cross-check**: Steiner, Weyl; packaged in this repo as [`msSteinerTube`](../measure/msSteinerTube.md).
-
-What this entry adds is packaging and measurement, with no claim of priority: GLSL integrands tested on the literal shader; measured sample counts, shell-width and step-size limits in FP32; the measured variance advantage over the tube-volume fit; the documented failure of the offset fix on non-convex sharp shapes; and linking numbers of this repo's own curve parameterisations. The searches run for this entry did not turn up a GLSL implementation of the segment-pair linking number, which is weak evidence only.
-
----
-
-## Reproduction
-
-Scripts live outside the repository, in the experiment's scratch directory (`topology/`). Each is run from the repo root as `uv run python <script>`:
-
-| Script | Produces |
-| :--- | :--- |
-| `b1_linking.py` | FP64 linking numbers, quadrature comparison, writhe |
-| `b2_gpu.py` | closed-form checks and GPU linking numbers |
-| `a1_smooth.py 1e7` | smooth-surface table (seed 1) |
-| `a2_scans.py 1e7` | shell-width and step-size scans |
-| `a3_sharp.py`, `a3b_lprism.py` | sharp shapes, certificate |
-| `a4_cubic.py` | Gauss–Bonnet against the cubic fit |
-| `a5_recovery.py` | recovery rates |
-| `a6_reseed.py 1e7 2024` | second seed, sub-shell certificate rows, GPU writhe |
-| `images.py` (with `--with matplotlib`) | the three images |
+- **Level-set curvatures & coarea Gauss–Bonnet**: R. Goldman, *CAGD* 22 (2005); Schmalzing & Buchert, *ApJ Letters* 482 (1997).
+- **Spherical solid angle & Gauss-map degree**: H. Hopf, *Math. Ann.* 96 (1927); van Oosterom & Strackee, *IEEE Trans. Biomed. Eng.* 30 (1983); Jacobson et al., *ACM TOG* 32 (2013) (generalised winding numbers). Applying permutation-symmetric edge-interpolated SDF normals over conforming Kuhn tetrahedra turns Hopf's degree theorem into a branch-clean GPU cell shader (`tpTetGaussDegree`, `tpKuhnVoxelEuler`) that resolves sharp non-convex SDF topology without mesh adjacency tables or dihedral crease extraction.
+- **Polygonal linking & Milnor triple-linking**: Klenin & Langowski, *Biopolymers* 54 (2000); J. Milnor, *Ann. Math.* 59 (1954); B. Mellor & P. Melvin, "A geometric interpretation of Milnor's triple linking numbers", *Algebr. Geom. Topol.* 3 (2003). `tpMilnorTripleLink` adapts Mellor–Melvin's Seifert-fan intersection formula to fixed-loop GLSL with $`O(N^2)`$ two-triangle clipping (`0 sqrt`, `0 atan`).
