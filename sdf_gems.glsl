@@ -171,6 +171,7 @@
 #include "glsl/primitives2d/sdCircleWave2D.glsl"
 #include "glsl/primitives2d/sdConchoidNicomedes2D.glsl"
 #include "glsl/primitives2d/sdCross2D.glsl"
+#include "glsl/primitives2d/sdCubicBezier2D.glsl"
 #include "glsl/primitives2d/sdCutDisk2D.glsl"
 #include "glsl/primitives2d/sdCycloid2D.glsl"
 #include "glsl/primitives2d/sdDevilCurve2D.glsl"
