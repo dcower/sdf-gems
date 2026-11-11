@@ -54,6 +54,7 @@
 #include "glsl/deform/opSphereInvert.glsl"
 #include "glsl/deform/opSphericalExtrude.glsl"
 #include "glsl/deform/opSweep.glsl"
+#include "glsl/deform/opSweepBishop.glsl"
 #include "glsl/deform/opTaper.glsl"
 #include "glsl/deform/opTwist.glsl"
 #include "glsl/duality/suSupport.glsl"
