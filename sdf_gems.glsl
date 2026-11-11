@@ -105,6 +105,7 @@
 #include "glsl/measure/msSteinerTube.glsl"
 #include "glsl/medial/mdMedialRadius.glsl"
 #include "glsl/modular/moFordCircles.glsl"
+#include "glsl/morphprox/mpMoreauOpening.glsl"
 #include "glsl/obstacle/obElasticEnvelope.glsl"
 #include "glsl/origami/orMiuraOri.glsl"
 #include "glsl/padic/paUltrametricTree.glsl"
