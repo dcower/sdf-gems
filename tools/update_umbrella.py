@@ -42,17 +42,32 @@ def main():
         f.write("\n".join(lines))
 
     missing_docs = []
-    missing_readme_links = []
+    missing_catalog_links = []
+    missing_root_links = []
     with open("README.md") as f:
         readme_txt = f.read()
+    cat_readmes = {}
+    for cr in sorted(glob.glob("docs/*/README.md")):
+        cat = cr.split(os.sep)[1]
+        with open(cr) as f:
+            cat_readmes[cat] = f.read()
+        if f"(docs/{cat}/README.md)" not in readme_txt:
+            missing_root_links.append(cr)
+
     for g in ordered_glsl:
         if g == common_file:
             continue
+        parts = g.split(os.sep)
+        cat = parts[1]
+        stem = os.path.splitext(parts[2])[0]
         doc_path = re.sub(r"^glsl/", "docs/", re.sub(r"\.glsl$", ".md", g))
         if not os.path.exists(doc_path):
             missing_docs.append((g, doc_path))
-        if f"({g})" not in readme_txt and f"({doc_path})" not in readme_txt:
-            missing_readme_links.append(g)
+        cat_txt = cat_readmes.get(cat, "")
+        if f"({stem}.md)" not in cat_txt or f"(../../{g})" not in cat_txt:
+            missing_catalog_links.append(g)
+        if f"({doc_path})" not in readme_txt and f"({g})" not in readme_txt:
+            missing_root_links.append(g)
 
     md_files = ["README.md"] + sorted(glob.glob("docs/**/*.md", recursive=True))
     missing_images = []
@@ -79,8 +94,11 @@ def main():
     if missing_docs:
         print("ERROR: Missing documentation files:", missing_docs)
         sys.exit(1)
-    if missing_readme_links:
-        print("ERROR: GLSL headers missing from README.md tables:", missing_readme_links)
+    if missing_catalog_links:
+        print("ERROR: GLSL headers missing from docs/<category>/README.md tables:", missing_catalog_links)
+        sys.exit(1)
+    if missing_root_links:
+        print("ERROR: Entries missing from root README.md:", missing_root_links)
         sys.exit(1)
     if missing_images:
         print("ERROR: Missing image files:", missing_images)

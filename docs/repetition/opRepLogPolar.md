@@ -1,6 +1,6 @@
 # Conformal Log-Polar & Gaussian-Integer Log-Spiral Domain Repetition (`opRepLogPolar`, `opRepLogSpiral`)
 
-![Conformal Log-Polar and Golden-Spiral Repetition](../../docs/images/repetition/opRepLogPolar.png)
+![Conformal Log-Polar and Golden-Spiral Repetition](../images/repetition/opRepLogPolar.png)
 
 > **Source**: [`glsl/repetition/opRepLogPolar.glsl`](../../glsl/repetition/opRepLogPolar.glsl)
 > **Category**: `repetition` | **Exact**: Yes ($`0.0\%`$ raymarching overstep via Exact Conformal Exponential Metric; $`0.0`$ branch-cut seam across $`\theta = \pm\pi`$)
@@ -10,7 +10,7 @@
 
 ## Visual Comparison: Tangent-Space Overstep & Branch-Cut Tearing vs. Conformal Exponential Metric & Gaussian-Integer Spiral
 
-![Log-Polar and Spiral Repetition Comparison](../../docs/images/comparisons/log_polar_spiral_comparison.png)
+![Log-Polar and Spiral Repetition Comparison](../images/comparisons/log_polar_spiral_comparison.png)
 
 ---
 

@@ -29,7 +29,7 @@
 
 ## Motivation & Geometric Gap Addressed in `sdf-gems`
 
-Existing Bézier primitives in `sdf-gems` ([`sdBezier2D`](sdBezier2D.md) and [`sdBezier3D`](../primitives3d/sdBezier3D.md)) only support **degree-2 quadratic Béziers**, whose stationarity equation $`(B(t) - \mathbf{p}) \cdot B'(t) = 0`$ reduces to a depressed cubic solved via Cardano's formula. Geometrically, a quadratic Bézier is always a planar parabolic arc: it can **never inflect** (form an S-curve), **never form a cusp**, **never self-intersect** in a crunodal teardrop loop, and **never twist out of a plane in 3D** (its torsion vanishes identically, $`\tau(t) \equiv 0`$).
+Existing Bézier primitives in `sdf-gems` ([`sdBezier2D`](sdBezier2D.md) and [`sdBezier3D`](../curves3d/sdBezier3D.md)) only support **degree-2 quadratic Béziers**, whose stationarity equation $`(B(t) - \mathbf{p}) \cdot B'(t) = 0`$ reduces to a depressed cubic solved via Cardano's formula. Geometrically, a quadratic Bézier is always a planar parabolic arc: it can **never inflect** (form an S-curve), **never form a cusp**, **never self-intersect** in a crunodal teardrop loop, and **never twist out of a plane in 3D** (its torsion vanishes identically, $`\tau(t) \equiv 0`$).
 
 For a **degree-3 cubic Bézier** $`B(t) = (1 - t)^3 P_0 + 3(1 - t)^2 t P_1 + 3(1 - t) t^2 P_2 + t^3 P_3`$ ($`t \in [0, 1]`$), minimizing $`D(t) = \|B(t) - \mathbf{p}\|^2`$ requires solving the **degree-5 quintic** stationarity equation:
 ```math

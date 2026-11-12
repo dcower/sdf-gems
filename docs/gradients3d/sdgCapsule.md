@@ -1,6 +1,6 @@
 # 1-SFU Singularity-Free 3D Capsule Distance & Gradient (`sdgCapsule`, `sdgCapsuleY`)
 
-![sdgCapsule and sdgCapsuleY](../../docs/images/gradients3d/sdgCapsule.png)
+![sdgCapsule and sdgCapsuleY](../images/gradients3d/sdgCapsule.png)
 
 > **Source**: [`glsl/gradients3d/sdgCapsule.glsl`](../../glsl/gradients3d/sdgCapsule.glsl)
 > **Category**: `gradients3d` | **Exact**: Yes ($`0.0`$ distance & gradient error, $`1`$ `inversesqrt`, $`0`$ spine `NaN`s)
@@ -10,7 +10,7 @@
 
 ## Visual Overview: 0/1/2-SFU Singularity-Free 3D Curved Primitive Gradients
 
-![Curved Primitives 3D Gradients Comparison](../../docs/images/comparisons/curved_primitives_gradients_comparison.png)
+![Curved Primitives 3D Gradients Comparison](../images/comparisons/curved_primitives_gradients_comparison.png)
 
 ---
 

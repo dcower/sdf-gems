@@ -3,7 +3,7 @@
 //
 // Solves:
 //   1. Superluminal Dielectric Wake Geometry & Dispersive Phase Thresholds in SDF Volumes:
-//      - Existing stRetardedTrace (glsl/spacetime/) enforces subluminal vacuum motion (beta < 1).
+//      - Existing stRetardedTrace (glsl/optics/) enforces subluminal vacuum motion (beta < 1).
 //      - Inside a dispersive dielectric SDF of phase index n(lambda) > 1, a relativistic charge
 //        moving at v = beta * c with 1/n(lambda) < beta < 1 outruns light in the medium, forming
 //        a sharp Mach-Cherenkov shock cone of wake half-aperture sin(psi_wake) = 1 / (beta * n)

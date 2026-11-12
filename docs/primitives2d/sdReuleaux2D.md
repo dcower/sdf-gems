@@ -1,6 +1,6 @@
 # Exact 0-Trig, 1-`sqrt` Constant-Width 2D Reuleaux Polygons (`sdReuleauxTriangle2D`, `sdReuleauxPentagon2D`, `sdReuleauxPolygon2D`)
 
-![sdReuleaux2D](../../docs/images/primitives2d/sdReuleaux2D.png)
+![sdReuleaux2D](../images/primitives2d/sdReuleaux2D.png)
 
 > **Source**: [`glsl/primitives2d/sdReuleaux2D.glsl`](../../glsl/primitives2d/sdReuleaux2D.glsl)
 > **Category**: `primitives2d` | **Exact**: Yes ($`0`$ trig, $`0`$ divisions, $`1`$ `sqrt` across $`100\%`$ of $`\mathbb{R}^2`$)
@@ -10,7 +10,7 @@
 
 ## Visual Comparison: Naive 3-Disk CSG (`max`) vs. Exact 1-`sqrt` Reuleaux Primitives
 
-![Reuleaux Constant-Width Comparison](../../docs/images/comparisons/reuleaux_constant_width_comparison.png)
+![Reuleaux Constant-Width Comparison](../images/comparisons/reuleaux_constant_width_comparison.png)
 
 ---
 

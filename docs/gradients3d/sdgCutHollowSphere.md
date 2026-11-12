@@ -1,6 +1,6 @@
 # 1/2-SFU Signed-Square & Conjugate-Rim 3D Cut Hollow Sphere Gradient (`sdgCutHollowSphere`)
 
-![sdgCutHollowSphere](../../docs/images/gradients3d/sdgCutHollowSphere.png)
+![sdgCutHollowSphere](../images/gradients3d/sdgCutHollowSphere.png)
 
 > **Source**: [`glsl/gradients3d/sdgCutHollowSphere.glsl`](../../glsl/gradients3d/sdgCutHollowSphere.glsl)
 > **Category**: `gradients3d` | **Exact**: Yes ($`1`$ `inversesqrt` in spherical shell [$`65.4\%`$ of space], $`2`$ in rim, $`0`$ `NaN`s)
@@ -10,7 +10,7 @@
 
 ## Visual Overview: 0/1/2-SFU Singularity-Free 3D Curved Primitive Gradients
 
-![Curved Primitives 3D Gradients Comparison](../../docs/images/comparisons/curved_primitives_gradients_comparison.png)
+![Curved Primitives 3D Gradients Comparison](../images/comparisons/curved_primitives_gradients_comparison.png)
 
 ---
 

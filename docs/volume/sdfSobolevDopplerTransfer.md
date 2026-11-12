@@ -20,7 +20,7 @@
 
 ## Motivation & Moving-Medium Gap Addressed in `glsl/volume/`
 
-[`glsl/volume/sdfOsculatingTomography.glsl`](../../glsl/volume/sdfOsculatingTomography.glsl) integrates static continuum shells, while [`glsl/spacetime/stRetardedTrace.glsl`](../../glsl/spacetime/stRetardedTrace.glsl) traces rigid opaque surfaces in vacuum. Neither models **differentially moving volumetric gas** (stellar winds, supernovae, protoplanetary disks, relativistic black-hole accretion tori), where supersonic velocity shear shifts narrow spectral-line opacity into localized **3D Doppler resonance surfaces**. Naive raymarching of narrow lines ($`v_{\text{th}} \ll V_{\text{flow}}`$) requires thousands of steps per pixel just to avoid stepping right over the thin resonance sheet.
+[`glsl/volume/sdfOsculatingTomography.glsl`](../../glsl/volume/sdfOsculatingTomography.glsl) integrates static continuum shells, while [`glsl/optics/stRetardedTrace.glsl`](../../glsl/optics/stRetardedTrace.glsl) traces rigid opaque surfaces in vacuum. Neither models **differentially moving volumetric gas** (stellar winds, supernovae, protoplanetary disks, relativistic black-hole accretion tori), where supersonic velocity shear shifts narrow spectral-line opacity into localized **3D Doppler resonance surfaces**. Naive raymarching of narrow lines ($`v_{\text{th}} \ll V_{\text{flow}}`$) requires thousands of steps per pixel just to avoid stepping right over the thin resonance sheet.
 
 ---
 

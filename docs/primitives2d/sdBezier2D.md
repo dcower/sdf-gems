@@ -62,4 +62,4 @@ is a weakly perturbed linear equation. Starting from the exact line-segment proj
 
 ## GLSL Implementation
 
-See [`glsl/primitives2d/sdBezier2D.glsl`](../../glsl/primitives2d/sdBezier2D.glsl) (and 3D [`glsl/primitives3d/sdBezier3D.glsl`](../../glsl/primitives3d/sdBezier3D.glsl)).
+See [`glsl/primitives2d/sdBezier2D.glsl`](../../glsl/primitives2d/sdBezier2D.glsl) (and 3D [`glsl/curves3d/sdBezier3D.glsl`](../../glsl/curves3d/sdBezier3D.glsl)).

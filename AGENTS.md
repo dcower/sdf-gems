@@ -12,9 +12,9 @@
 - **Single-Translation-Unit Compatibility**: Every `.glsl` header in `glsl/` must compile cleanly when included together via `sdf_gems.glsl` in any order. Guard shared helpers or cross-included functions with `#ifndef SDF_GEMS_HAS_<NAME>` macros.
 
 ## Documentation & README Formatting
-- **Modular Structure**: Every SDF or operator belongs in its own `glsl/<category>/<name>.glsl` header with a matching `docs/<category>/<name>.md` explanation and rendered previews in `docs/images/<category>/`.
+- **Modular Structure**: Every SDF or operator belongs in its own `glsl/<category>/<name>.glsl` header (using the consolidated top-level categories: `primitives3d`, `polyhedra`, `curves3d`, `primitives2d`, `booleans`, `gradients3d`, `deform`, `repetition`, `volume`, `optics`, `duality`, and `common`—avoid creating new one-off singleton category directories) with a matching `docs/<category>/<name>.md` explanation and rendered previews in `docs/images/<category>/`.
 - **GitHub-Safe Math Only**: Write inline math as `` $`...`$ `` and display math as a ```` ```math ```` block (inside list items, use `` $`\displaystyle ...`$ `` on its own line). Never use bare `$...`` $` / `$ ``$...$$`: GitHub eats backslash escapes (`\%`, `\{`, `\|`, `\\`, `\,` ...) and runs emphasis/link syntax across them. Inside table rows, math and code spans must not contain an unescaped `|`. `uv run tools/update_umbrella.py` enforces this; `uv run tools/lint_math.py --fix --render --github` converts, renders with MathJax + KaTeX, and verifies against GitHub's renderer.
-- **Narrow `README.md` Tables**: Keep all category tables in `README.md` to 3 compact columns (`Preview | Function | Summary`) with a single `96px`-wide thumbnail and short function name link so the page never scrolls horizontally.
+- **Clean Root `README.md` & Per-Category Galleries (`docs/<category>/README.md`)**: Keep the root `README.md` concise (category showcase table + collapsed quick-search index), and place individual 3-column visual rows (`Preview | Function | Summary`) in their respective `docs/<category>/README.md` gallery so pages stay fast and never scroll horizontally.
 
 ## Mandatory Visual & Numerical Verification
 - **Inspect Every Rendered Image**: Never commit a generated `.png` without viewing it via `read_file` first. Verify that:

@@ -40,8 +40,8 @@ uv run tools/gpu_eval.py --new glsl/primitives3d/sdFoo.glsl --call "vec4(sdFoo(P
 
 ```python
 from tools.gpu_eval import gpu_eval, gpu_fn, glsl_args
-sd  = gpu_fn(["glsl/polyhedra3d/sdSnubCube.glsl"], f"vec4(sdSnubCube(p, {glsl_args(0.55)}))")  # numpy callable
-out = gpu_eval(["glsl/polyhedra3d/sdSnubCube.glsl"], "sdgSnubCube(p, 0.55)", pts)             # (N,4) float32
+sd  = gpu_fn(["glsl/polyhedra/sdSnubCube.glsl"], f"vec4(sdSnubCube(p, {glsl_args(0.55)}))")  # numpy callable
+out = gpu_eval(["glsl/polyhedra/sdSnubCube.glsl"], "sdgSnubCube(p, 0.55)", pts)             # (N,4) float32
 ```
 
 - Compiles with the platform's real GLSL compiler (OpenGL 4.1 core via `moderngl`) and evaluates in FP32 via transform feedback.

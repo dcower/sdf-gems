@@ -1,6 +1,6 @@
 # Exact 0-Trig 3D Reuleaux Tetrahedron & Constant-Width Rotor (`sdReuleauxTetrahedron`, `sdReuleauxRotor3D`)
 
-![sdReuleaux3D](../../docs/images/primitives3d/sdReuleaux3D.png)
+![sdReuleaux3D](../images/primitives3d/sdReuleaux3D.png)
 
 > **Source**: [`glsl/primitives3d/sdReuleaux3D.glsl`](../../glsl/primitives3d/sdReuleaux3D.glsl)
 > **Category**: `primitives3d` | **Exact**: Yes ($`0`$ trig, $`0`$ divisions, $`1`$ `sqrt` in face & vertex wedges, $`2`$ `sqrt`s in arc edge)
@@ -10,7 +10,7 @@
 
 ## Visual Overview: 2D & 3D Constant-Width Reuleaux Primitives
 
-![Reuleaux Constant-Width Comparison](../../docs/images/comparisons/reuleaux_constant_width_comparison.png)
+![Reuleaux Constant-Width Comparison](../images/comparisons/reuleaux_constant_width_comparison.png)
 
 ---
 

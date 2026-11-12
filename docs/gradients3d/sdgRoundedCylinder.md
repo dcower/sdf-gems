@@ -1,6 +1,6 @@
 # 0/1/2-SFU Cap-Voronoi 3D Rounded Cylinder Distance & Gradient (`sdgRoundedCylinder`)
 
-![sdgRoundedCylinder](../../docs/images/gradients3d/sdgRoundedCylinder.png)
+![sdgRoundedCylinder](../images/gradients3d/sdgRoundedCylinder.png)
 
 > **Source**: [`glsl/gradients3d/sdgRoundedCylinder.glsl`](../../glsl/gradients3d/sdgRoundedCylinder.glsl)
 > **Category**: `gradients3d` | **Exact**: Yes ($`0`$ SFU in flat-cap Voronoi region, $`1`$ SFU in cylindrical wall, $`2`$ SFUs in rim)
@@ -10,7 +10,7 @@
 
 ## Visual Overview: 0/1/2-SFU Singularity-Free 3D Curved Primitive Gradients
 
-![Curved Primitives 3D Gradients Comparison](../../docs/images/comparisons/curved_primitives_gradients_comparison.png)
+![Curved Primitives 3D Gradients Comparison](../images/comparisons/curved_primitives_gradients_comparison.png)
 
 ---
 

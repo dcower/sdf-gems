@@ -57,7 +57,7 @@ Consequences used in the file:
 4. **Warm start along a ray.** When the query point moves to $`\mathbf{p}'`$, the simplex is still inside $`K`$ and the old plane is still valid: $`lo' = lo + \mathbf{n}\cdot(\mathbf{p}' - \mathbf{p})`$ with zero support evaluations (`suRestart`).
 5. **Ray step from the plane** (`suRayStep`): a ray with unit direction $`\mathbf{r}`$ cannot reach $`K`$ before $`t = lo / (-\mathbf{n}\cdot\mathbf{r}) \ge lo`$; if $`\mathbf{n}\cdot\mathbf{r} \ge 0`$ the ray misses $`K`$ entirely.
 6. **Interior: non-convex.** Inside $`K`$ the same formula holds, $`d_K(\mathbf{p}) = -\min_{\mathbf{n}} (h_K(\mathbf{n}) - \mathbf{n}\cdot\mathbf{p})`$, but the objective has several local minima on the sphere (one per face-like region). Any $`\mathbf{n}`$ still gives $`\mathbf{n}\cdot\mathbf{p} - h_K(\mathbf{n}) \le d_K(\mathbf{p})`$, which *over*-estimates the depth: the wrong side for interior marching. `SU_INTERIOR` is a heuristic local search (best 3 of 26 fixed directions, each refined by up to `SU_PROBES = 4` "step outside, solve the exterior problem there, reuse its plane" rounds).
-7. **Mean width.** $`w(K) = 2\langle h_K\rangle_{S^2} = M(K) / (2\pi)`$ where $`M`$ is the integrated mean curvature, and $`w(A \oplus B) = w(A) + w(B)`$. Used only as a cross-check against [`glsl/measure/msSteinerTube.glsl`](../../glsl/measure/msSteinerTube.glsl).
+7. **Mean width.** $`w(K) = 2\langle h_K\rangle_{S^2} = M(K) / (2\pi)`$ where $`M`$ is the integrated mean curvature, and $`w(A \oplus B) = w(A) + w(B)`$. Used only as a cross-check against [`glsl/duality/msSteinerTube.glsl`](../../glsl/duality/msSteinerTube.glsl).
 
 ### FP32 stall (a failure that was found and handled)
 

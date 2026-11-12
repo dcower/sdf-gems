@@ -1,6 +1,6 @@
 # 1/2-SFU Singularity-Free 3D Capped Torus Distance & Gradient (`sdgCappedTorus`)
 
-![sdgCappedTorus](../../docs/images/gradients3d/sdgCappedTorus.png)
+![sdgCappedTorus](../images/gradients3d/sdgCappedTorus.png)
 
 > **Source**: [`glsl/gradients3d/sdgCappedTorus.glsl`](../../glsl/gradients3d/sdgCappedTorus.glsl)
 > **Category**: `gradients3d` | **Exact**: Yes ($`1`$ `inversesqrt` in spherical cap sector [$`63.2\%`$ of space], $`2`$ in arc, $`0`$ `NaN`s)
@@ -10,7 +10,7 @@
 
 ## Visual Overview: 0/1/2-SFU Singularity-Free 3D Curved Primitive Gradients
 
-![Curved Primitives 3D Gradients Comparison](../../docs/images/comparisons/curved_primitives_gradients_comparison.png)
+![Curved Primitives 3D Gradients Comparison](../images/comparisons/curved_primitives_gradients_comparison.png)
 
 ---
 
